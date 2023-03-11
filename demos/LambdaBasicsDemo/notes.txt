@@ -1,0 +1,51 @@
+We will deploy a simple API Gateway API and one single lambda function; the API gateway resource will use a GET method and it will be implemented as la lambda proxy invocation.
+The function will just print/return a simple hello world in different languages depending on the path, query parameters and body request.
+We will be using async/await syntax and also the moment library just to get familiar with the use of external packages within the Serverless lambda architecture.
+
+Note that you can send a body within a GET request but it is not recomended, use POST instead
+
+you can find more about SAM here:
+
+
+instructions:
+
+Note: This first two steps are a brief overview of what I did two create the SAM template/project
+you dont need to do it and in the guide folder there is a file in which I explain in detail the features of
+SAM and CFN.
+========================================================================================================================================================
+1-run: sam init
+(remember you need to have sam installed on your local environment https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/install-sam-cli.html)
+sam has some prerequisites to run, most of them are optional since they are to use some local testing features
+of sam within docker containers on your local containers but I recomend to follow the complete intallation in
+the link above
+
+2-Answer the promps with the desired configuration, in my case it was:
+AWS Quick Start Templates
+Hello world Example
+N
+13 (node 16.x)
+1 (zip)
+1 (Hello world Example)
+N
+y
+LambdaBasicsSAM
+=======================================================================================================================================================
+The following steps are so you can deploy the sam template and test it locally (local testing only available
+if you followd the SAM cli prerequisites and installed docker).
+
+1- To test the function by itself locally sit on the root directory of the SAM project and run:
+sam local invoke "multiHellorWorld" -e .\events\multiHelloWorldTestEvent.json
+This will invoke the logical name of the function you have in the template.yaml file and will use the -e flag to
+specify a test event which you can find inside events folder.(remeber that you need to allow docker to share the volumes of your pc)
+
+2-With the use we have on our template.yaml file an Api gateway resource will be created implicitly
+https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
+To test the function and the api locally run the following command.
+sam local start-api --debug or sam local start-api
+
+It will give you an ip with a port, use postman to test the path which is used to call our function:
+example(this path is specified in the template.yaml file within the definition of our resources):
+Running on http://127.0.0.1:3000/helloMulti/{name}
+Note: Within the repo there is a folder called postman which will contain an exported json of the collection
+I use through the research you can import it into your postman if you want, remember creating an environment
+for the collection and create the variable host.
