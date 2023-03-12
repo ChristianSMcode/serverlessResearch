@@ -15,7 +15,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\"message\":\"Envie esto desde una peticion get\"}",
+					"raw": "",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -29,6 +29,40 @@
 						"{{host}}"
 					],
 					"path": [
+						"helloMulti",
+						"Christian"
+					],
+					"query": [
+						{
+							"key": "lang",
+							"value": "es"
+						},
+						{
+							"key": "age",
+							"value": "24"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "multiHelloWorldAWS",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://h369qkt86i.execute-api.us-west-2.amazonaws.com/Prod/helloMulti/Christian?lang=es&age=24",
+					"protocol": "https",
+					"host": [
+						"h369qkt86i",
+						"execute-api",
+						"us-west-2",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"Prod",
 						"helloMulti",
 						"Christian"
 					],

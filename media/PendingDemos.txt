@@ -3,3 +3,5 @@ Create Api on api gateway and a function which works with path parameters, query
 Api gateway proxy and not proxy ways.
 Node modules with aws lambda best practices.
 Include a basic example with python.
+nested stacks could be usefull to structure the deployment of a full infrastructure
+
