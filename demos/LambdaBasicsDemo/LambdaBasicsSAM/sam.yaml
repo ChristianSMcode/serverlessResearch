@@ -1,0 +1,43 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: 'LambdaBasicsSAM Testing lambda with SAM and Api Gateway
+
+  '
+Globals:
+  Function:
+    Timeout: 3
+    MemorySize: 128
+Resources:
+  multiHellorWorld:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: s3://ressolve-research-basic-lambda-lemo/620783fdd35114462b2d4d205caad821
+      Handler: multiHelloWorld.handler
+      Runtime: nodejs16.x
+      Architectures:
+      - x86_64
+      Events:
+        HelloWorld:
+          Type: Api
+          Properties:
+            Path: /helloMulti/{name}
+            Method: get
+    Metadata:
+      SamResourceId: multiHellorWorld
+Outputs:
+  HelloWorldApi:
+    Description: API Gateway endpoint URL for Prod stage for Hello World function
+    Value:
+      Fn::Sub: https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/
+  HelloWorldFunction:
+    Description: Multi hello world Function ARN
+    Value:
+      Fn::GetAtt:
+      - multiHellorWorld
+      - Arn
+  HelloWorldFunctionIamRole:
+    Description: Implicit IAM Role created for multi hello world function
+    Value:
+      Fn::GetAtt:
+      - multiHellorWorld
+      - Arn

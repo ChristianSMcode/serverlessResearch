@@ -1,0 +1,84 @@
+{
+	"info": {
+		"_postman_id": "b8fd4490-1343-4b39-8ac3-3c22f26ecf73",
+		"name": "ressolveResearch",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "multiHelloWorld",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}/helloMulti/Christian?lang=es&age=24",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"helloMulti",
+						"Christian"
+					],
+					"query": [
+						{
+							"key": "lang",
+							"value": "es"
+						},
+						{
+							"key": "age",
+							"value": "24"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "multiHelloWorldAWS",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://h369qkt86i.execute-api.us-west-2.amazonaws.com/Prod/helloMulti/Christian?lang=es&age=24",
+					"protocol": "https",
+					"host": [
+						"h369qkt86i",
+						"execute-api",
+						"us-west-2",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"Prod",
+						"helloMulti",
+						"Christian"
+					],
+					"query": [
+						{
+							"key": "lang",
+							"value": "es"
+						},
+						{
+							"key": "age",
+							"value": "24"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -1,0 +1,7 @@
+In this document I will list pending Ideas or demos to try:
+Create Api on api gateway and a function which works with path parameters, query string parameters and request body parameters.(video 29,30)
+Api gateway proxy and not proxy ways.
+Node modules with aws lambda best practices.
+Include a basic example with python.
+nested stacks could be usefull to structure the deployment of a full infrastructure
+
