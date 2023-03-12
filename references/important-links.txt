@@ -25,3 +25,5 @@ SAM documentation:
 -https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-getting-started.html
 Note: within each demo you will find specifics links to other interesting SAM topics like implicit resource
 creation.
+To see all the properties you could specify within a SAM resource go to:
+https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-specification-resources-and-properties.html
