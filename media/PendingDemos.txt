@@ -4,4 +4,6 @@ Api gateway proxy and not proxy ways.
 Node modules with aws lambda best practices.
 Include a basic example with python.
 nested stacks could be usefull to structure the deployment of a full infrastructure
-
+Incluir investigacion personalizada (mas actualizada leyendo documentacion)
+Incluir documentacion api definition Swagger 2.0
+Incluir diferentes formas de definir los recursos.
