@@ -1,4 +1,4 @@
-Note: For now you can Ignore the README.md file (automatically generated with SAM cli and the samconfig.toml file)
+Note: For now you can ignore the README.md file (automatically generated with SAM cli and the samconfig.toml file)
 
 We will deploy a simple API Gateway API and one single lambda function.The API gateway resource will use a GET method and it will be 
 implemented as la lambda proxy invocation.
