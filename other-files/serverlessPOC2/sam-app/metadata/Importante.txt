@@ -1,0 +1,34 @@
+-Cuando se use SAM o CloudFormation definir el orden en que se crean los recursos
+la politica de eliminacion y por consecuente el orden en que se eliminan es sumamente importante
+-Recordar tener en cuenta al hacer modificaciones en el template el tipo de actualizacion que hará CloudFormation
+Recrear recurso,interrumpir recurso,no interrumpir recurso.
+-Extension util para acelerar desarrollo en VSC "Serverless IDE"
+-No se puede eliminar un stack al que otro stack hace referencia a sus outputs sin eliminar el previo
+-Si un recurso al actualizarse debe ser recreado y este tiene alguna referencia en los outputs no podrá actualizarse
+si está siendo usado por otro stack (usar CI/CD)
+-Pasar link de queues como parametros a lambda (simplicidad/seguridad) o tomarlos tipo "quemado" desde el stack
+-Recursos intermedios para dar permisos fuera de la creacion intrinseca del recurso, util para evitar
+dependencias circulares
+-Algunas configuraciones en algunos servicios pueden no estar implementadas en CloudFormation
+pero se pueden usar workarounds como lambdas que configuren esto, herramientas de ci/cd o el uso de comandos
+de cli/sdk (Esto puede ocasionar drifting)
+-Tambien recursos que involucren dependencia circular pueden se aislados de sus conexiones creando un recurso especifico que linkeados
+permita conectarse despues de que ya están creados los recursos principales.(No todos los recursos tienen esta posibilidad)
+-Para los archivo de los endpoints se podría usar Versionamiento y nombrar los archivos siempre con el mismo nombre?
+
+Notas:
+Formas de hacer el template:
+----------------------------
+-Guias SAM
+-Mezcla SAM y CF
+-Solo CF
+Los recursos pueden ser linkeados/referenciados:
+--------------------------------------------------
+-De origen a destino
+-De destino a origen
+-En ambas direcciones
+-De destino a destino (recursos que incluyan la posibilidad de definirlos dentro de ellos mismos)
+-------------------------------------------------------------------------------------------------
+**Las ventajas son más relacionadas con la ordenación, rehusabilidad y facilidad de desarrollo e 
+investigación, algunos recursos pueden tener mas propiedades y maleabilidad 
+si son definidos como individuos en lugar de como dependencias (AWS::Serverless::...,AWS::<Specific>::...)

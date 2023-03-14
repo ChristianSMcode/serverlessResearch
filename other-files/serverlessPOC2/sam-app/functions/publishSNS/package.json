@@ -1,0 +1,15 @@
+{
+  "name": "writetosqs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "writeSQSmessage.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@aws-sdk/client-sns": "^3.236.0",
+    "aws-sdk": "^2.1279.0"
+  }
+}

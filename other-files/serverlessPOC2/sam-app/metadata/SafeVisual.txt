@@ -1,0 +1,681 @@
+AWSTemplateFormatVersion: 2010-09-09
+Transform: 'AWS::Serverless-2016-10-31'
+Description: POC for serverless deployment with SAM
+Globals:
+  Function:
+    Runtime: nodejs16.x
+    Timeout: 30
+Parameters:
+  helloWorldDescription:
+    Description: Testing parameters by making the hellow world description dynamic.
+    Type: String
+  StageNameAccessApi:
+    Description: Testing constrains by changing the stage of the api dynamically.
+    Type: 'AWS::SSM::Parameter::Value<String>'
+    Default: stageParamNameAccessApi
+  StageNameLogicApi:
+    Description: Testing constrains by changing the stage of the api dynamically.
+    Type: 'AWS::SSM::Parameter::Value<String>'
+    Default: stageParamNameLogicApi
+  ApiVersion:
+    Description: testing types by changing the api version dynamically.
+    Type: Number
+    MinValue: 1
+    MaxValue: 5
+    ConstraintDescription: Must be a number between 1 and 5
+Resources:
+  helloWorld:
+    Type: 'AWS::Serverless::Function'
+    Description: !Ref helloWorldDescription
+    Properties:
+      CodeUri: functions/helloWorld
+      Handler: hello.handler
+      Events:
+        AccessApi:
+          Type: Api
+          Name: AccessApiEventHelloWorld
+          Properties:
+            Path: /helloWorld
+            Method: GET
+            RestApiId: !Ref AccessApi
+        LogicApi:
+          Type: Api
+          Name: LogicApiEventHelloWorld
+          Properties:
+            Path: /helloWorld
+            Method: GET
+            RestApiId: !Ref LogicApi
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 71cfd7cf-8c0b-4375-af1f-d2719fe1ac55
+  addKeyToPlan:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      CodeUri: functions/addApiToPlan
+      Handler: addApiToPlan.handler
+      Role: !GetAtt addKeyToPlanRole.Arn
+      Events:
+        AccessApi:
+          Type: Api
+          Name: AccessApiEventAddKeyToPlan
+          Properties:
+            Path: /addToPlan
+            Method: POST
+            RestApiId: !Ref AccessApi
+    DependsOn:
+      - addKeyToPlanRole
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: ba04e296-b659-47c7-abe3-10e54fc8d53e
+  createKey:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      CodeUri: functions/createApiKey
+      Handler: createApiKey.handler
+      Role: !GetAtt createKeyRole.Arn
+      Events:
+        AccessApi:
+          Type: Api
+          Name: AccessApiEventCreateKey
+          Properties:
+            Path: /createKey
+            Method: POST
+            RestApiId: !Ref AccessApi
+    DependsOn:
+      - createKeyRole
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 4d463e12-ee71-487e-a56e-d5d15a9c014c
+  createPlan:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      CodeUri: functions/createUsagePlan
+      Handler: createUsagePlan.handler
+      Role: !GetAtt createPlanRole.Arn
+      Events:
+        AccessApi:
+          Type: Api
+          Name: AccessApiEventCreatePlan
+          Properties:
+            Path: /createPlan
+            Method: POST
+            RestApiId: !Ref AccessApi
+    DependsOn:
+      - createPlanRole
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 0737eced-6529-4aab-8942-6461aa09d221
+  fullCreateApiKeyFunction:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      CodeUri: functions/fullApiProcess
+      Handler: fullApiKeyGeneration.handler
+      Role: !GetAtt addCreateApiKeyFunctionRole.Arn
+      Events:
+        AccessApi:
+          Type: Api
+          Name: AccessApiEventFullWorkflow
+          Properties:
+            Path: /fullApiWorkflow
+            Method: POST
+            RestApiId: !Ref AccessApi
+    DependsOn:
+      - addCreateApiKeyFunctionRole
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 1c12c66a-b2dc-4404-9b8c-a3ac52613185
+  writeToSQS:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Environment:
+        Variables:
+          WRITE_QUEUE_URL: !GetAtt WriteQueue.QueueUrl
+      CodeUri: functions/writeToSQS
+      Handler: writeSQSmessage.handler
+      Role: !GetAtt writeSQSrole.Arn
+      Events:
+        LogicApi:
+          Type: Api
+          Name: LogicApiEventWriteSQS
+          Properties:
+            Path: /writeSQSmessage
+            Method: POST
+            RestApiId: !Ref LogicApi
+    DependsOn:
+      - writeSQSrole
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: c43a7e71-9017-4c01-83fe-9c7e84305fd1
+  WriteQueue:
+    Type: 'AWS::SQS::Queue'
+    Properties:
+      QueueName: mainSourceQueue
+      DelaySeconds: 0
+      VisibilityTimeout: 15
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: c54579e9-38ae-4616-8c4a-36c2202104d5
+  ClaroInitialKey:
+    Type: 'AWS::ApiGateway::ApiKey'
+    Properties:
+      Enabled: true
+      Name: ClaroKey
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 71ad78fc-80d3-420c-8fb7-99dc8c7041fb
+  MovistarInitialKey:
+    Type: 'AWS::ApiGateway::ApiKey'
+    Properties:
+      Enabled: true
+      Name: MovistarKey
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 83db128f-7980-4b26-add7-92ad16d8a23b
+  ClaroLinKey:
+    Type: 'AWS::ApiGateway::UsagePlanKey'
+    Properties:
+      KeyType: API_KEY
+      KeyId: !Ref ClaroInitialKey
+      UsagePlanId: !Ref ClaroUsagePlan
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 087c5b1a-6fe9-4779-9124-9ade507b9e6a
+  MovistarLinKey:
+    Type: 'AWS::ApiGateway::UsagePlanKey'
+    Properties:
+      KeyType: API_KEY
+      KeyId: !Ref MovistarInitialKey
+      UsagePlanId: !Ref MovistarUsagePlan
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 918c9f55-7615-4ebc-a31c-2be802224914
+  ClaroUsagePlan:
+    Type: 'AWS::ApiGateway::UsagePlan'
+    DependsOn: LogicApi
+    Properties:
+      ApiStages:
+        - ApiId: !Ref LogicApi
+          Stage: !Ref LogicApi.Stage
+      UsagePlanName: ClaroUsagePlan
+      Quota:
+        Limit: 1000
+        Period: MONTH
+      Throttle:
+        BurstLimit: 200
+        RateLimit: 100
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 596421cc-e647-4b16-a4bb-60e1a55628cd
+  MovistarUsagePlan:
+    Type: 'AWS::ApiGateway::UsagePlan'
+    DependsOn: LogicApi
+    Properties:
+      ApiStages:
+        - ApiId: !Ref LogicApi
+          Stage: !Ref LogicApi.Stage
+      UsagePlanName: MovistarUsagePlan
+      Quota:
+        Limit: 1000
+        Period: MONTH
+      Throttle:
+        BurstLimit: 200
+        RateLimit: 100
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 9667c987-906f-4817-a008-4b2034fb091e
+  writeSQSrole:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action:
+              - 'sts:AssumeRole'
+      Policies:
+        - PolicyName: api-gateway-policy
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action:
+                  - 'sqs:DeleteMessage'
+                  - 'sqs:SendMessage'
+                Resource:
+                  - !GetAtt WriteQueue.Arn
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 9dd96d6f-bcc1-4d6e-ad10-f4cfb5623ed5
+  addKeyToPlanRole:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action:
+              - 'sts:AssumeRole'
+      Policies:
+        - PolicyName: api-gateway-policy
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action:
+                  - 'apigateway:POST'
+                Resource:
+                  - 'arn:aws:apigateway:us-west-2::/usageplans/*/keys'
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 128a05e4-389c-4e66-bfbc-671931b824cb
+  createKeyRole:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action:
+              - 'sts:AssumeRole'
+      Policies:
+        - PolicyName: api-gateway-policy
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action:
+                  - 'apigateway:CREATE_API_KEY'
+                  - 'apigateway:POST'
+                Resource:
+                  - 'arn:aws:apigateway:us-west-2::/apikeys'
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 188f76bc-0e2f-4e80-a652-fd945534ce34
+  createPlanRole:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action:
+              - 'sts:AssumeRole'
+      Policies:
+        - PolicyName: api-gateway-policy
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action:
+                  - 'apigateway:POST'
+                Resource:
+                  - 'arn:aws:apigateway:us-west-2::/usageplans'
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 2e3f21b5-aed1-4c07-b4f4-535a0707362e
+  addCreateApiKeyFunctionRole:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action:
+              - 'sts:AssumeRole'
+      Policies:
+        - PolicyName: api-gateway-policy
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action:
+                  - 'apigateway:CREATE_API_KEY'
+                  - 'apigateway:POST'
+                Resource:
+                  - 'arn:aws:apigateway:us-west-2::/apikeys'
+              - Effect: Allow
+                Action:
+                  - 'apigateway:UPDATE'
+                  - 'apigateway:PUT'
+                  - 'apigateway:POST'
+                Resource:
+                  - 'arn:aws:apigateway:us-west-2::/usageplans/*/keys'
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 09905204-57eb-4898-9db7-0b723ce4cd47
+  AccessApi:
+    Type: 'AWS::Serverless::Api'
+    Properties:
+      Name: AccessApi
+      StageName: !Ref StageNameAccessApi
+      DefinitionBody:
+        swagger: '2.0'
+        info:
+          title: AccessApi
+          version: !Ref ApiVersion
+        basePath: /test
+        shemes:
+          - https
+        paths:
+          /helloWorld:
+            get:
+              consumes:
+                - application/json
+              produces:
+                - application/json
+              responses:
+                '200':
+                  description: ok
+              x-amazon-apigateway-integration:
+                type: aws_proxy
+                uri:
+                  'Fn::Sub': >-
+                    arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${helloWorld.Arn}/invocations
+                httpMethod: POST
+          /addToPlan:
+            post:
+              consumes:
+                - application/json
+              produces:
+                - application/json
+              responses:
+                '200':
+                  description: ok
+              x-amazon-apigateway-integration:
+                type: aws_proxy
+                uri:
+                  'Fn::Sub': >-
+                    arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${addKeyToPlan.Arn}/invocations
+                httpMethod: POST
+          /createKey:
+            post:
+              consumes:
+                - application/json
+              produces:
+                - application/json
+              responses:
+                '200':
+                  description: ok
+              x-amazon-apigateway-integration:
+                type: aws_proxy
+                uri:
+                  'Fn::Sub': >-
+                    arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${createKey.Arn}/invocations
+                httpMethod: POST
+          /createPlan:
+            post:
+              consumes:
+                - application/json
+              produces:
+                - application/json
+              responses:
+                '200':
+                  description: ok
+              x-amazon-apigateway-integration:
+                type: aws_proxy
+                uri:
+                  'Fn::Sub': >-
+                    arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${createPlan.Arn}/invocations
+                httpMethod: POST
+          /fullApiWorkflow:
+            post:
+              consumes:
+                - application/json
+              produces:
+                - application/json
+              responses:
+                '200':
+                  description: ok
+              x-amazon-apigateway-integration:
+                type: aws_proxy
+                uri:
+                  'Fn::Sub': >-
+                    arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${fullCreateApiKeyFunction.Arn}/invocations
+                httpMethod: POST
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 1a45b1bc-e5d1-40ec-a333-88bcf2f41e72
+  LogicApi:
+    Type: 'AWS::Serverless::Api'
+    Properties:
+      Name: LogicApi
+      StageName: !Ref StageNameLogicApi
+      DefinitionBody:
+        swagger: '2.0'
+        info:
+          title: LogicApi
+          version: !Ref ApiVersion
+        basePath: /test
+        shemes:
+          - https
+        paths:
+          /helloWorld:
+            get:
+              consumes:
+                - application/json
+              produces:
+                - application/json
+              responses:
+                '200':
+                  description: ok
+              x-amazon-apigateway-integration:
+                type: aws_proxy
+                uri:
+                  'Fn::Sub': >-
+                    arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${helloWorld.Arn}/invocations
+                httpMethod: POST
+          /writeSQSmessage:
+            post:
+              consumes:
+                - application/json
+              produces:
+                - application/json
+              responses:
+                '200':
+                  description: ok
+              x-amazon-apigateway-integration:
+                type: aws_proxy
+                uri:
+                  'Fn::Sub': >-
+                    arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${writeToSQS.Arn}/invocations
+                httpMethod: POST
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 307e9fa4-e294-4fcf-b5a8-3d0ab1e9caa2
+Metadata:
+  'AWS::CloudFormation::Designer':
+    307e9fa4-e294-4fcf-b5a8-3d0ab1e9caa2:
+      size:
+        width: 60
+        height: 60
+      position:
+        x: 460
+        'y': 470
+      z: 1
+      embeds: []
+    1a45b1bc-e5d1-40ec-a333-88bcf2f41e72:
+      size:
+        width: 60
+        height: 60
+      position:
+        x: 460
+        'y': 280
+      z: 1
+      embeds: []
+    09905204-57eb-4898-9db7-0b723ce4cd47:
+      size:
+        width: 60
+        height: 60
+      position:
+        x: 770
+        'y': 340
+      z: 1
+      embeds: []
+    2e3f21b5-aed1-4c07-b4f4-535a0707362e:
+      size:
+        width: 60
+        height: 60
+      position:
+        x: 770
+        'y': 110
+      z: 1
+      embeds: []
+    188f76bc-0e2f-4e80-a652-fd945534ce34:
+      size:
+        width: 60
+        height: 60
+      position:
+        x: 770
+        'y': 190
+      z: 1
+      embeds: []
+    128a05e4-389c-4e66-bfbc-671931b824cb:
+      size:
+        width: 60
+        height: 60
+      position:
+        x: 770
+        'y': 270
+      z: 1
+      embeds: []
+    9667c987-906f-4817-a008-4b2034fb091e:
+      size:
+        width: 60
+        height: 60
+      position:
+        x: 220
+        'y': 520
+      z: 1
+      embeds: []
+    596421cc-e647-4b16-a4bb-60e1a55628cd:
+      size:
+        width: 60
+        height: 60
+      position:
+        x: 310
+        'y': 470
+      z: 1
+      embeds: []
+    83db128f-7980-4b26-add7-92ad16d8a23b:
+      size:
+        width: 60
+        height: 60
+      position:
+        x: 220
+        'y': 310
+      z: 1
+      embeds: []
+    918c9f55-7615-4ebc-a31c-2be802224914:
+      size:
+        width: 60
+        height: 60
+      position:
+        x: 220
+        'y': 410
+      z: 1
+      embeds: []
+    71ad78fc-80d3-420c-8fb7-99dc8c7041fb:
+      size:
+        width: 60
+        height: 60
+      position:
+        x: 310
+        'y': 260
+      z: 1
+      embeds: []
+    087c5b1a-6fe9-4779-9124-9ade507b9e6a:
+      size:
+        width: 60
+        height: 60
+      position:
+        x: 310
+        'y': 360
+      z: 1
+      embeds: []
+    c54579e9-38ae-4616-8c4a-36c2202104d5:
+      size:
+        width: 60
+        height: 60
+      position:
+        x: 560
+        'y': 620
+      z: 1
+      embeds: []
+    9dd96d6f-bcc1-4d6e-ad10-f4cfb5623ed5:
+      size:
+        width: 60
+        height: 60
+      position:
+        x: 650
+        'y': 620
+      z: 1
+      embeds: []
+    c43a7e71-9017-4c01-83fe-9c7e84305fd1:
+      size:
+        width: 60
+        height: 60
+      position:
+        x: 650
+        'y': 490
+      z: 1
+      embeds: []
+    1c12c66a-b2dc-4404-9b8c-a3ac52613185:
+      size:
+        width: 60
+        height: 60
+      position:
+        x: 650
+        'y': 340
+      z: 1
+      embeds: []
+    0737eced-6529-4aab-8942-6461aa09d221:
+      size:
+        width: 60
+        height: 60
+      position:
+        x: 650
+        'y': 110
+      z: 1
+      embeds: []
+    4d463e12-ee71-487e-a56e-d5d15a9c014c:
+      size:
+        width: 60
+        height: 60
+      position:
+        x: 650
+        'y': 190
+      z: 1
+      embeds: []
+    ba04e296-b659-47c7-abe3-10e54fc8d53e:
+      size:
+        width: 60
+        height: 60
+      position:
+        x: 650
+        'y': 270
+      z: 1
+      embeds: []
+    71cfd7cf-8c0b-4375-af1f-d2719fe1ac55:
+      size:
+        width: 60
+        height: 60
+      position:
+        x: 650
+        'y': 420
+      z: 1
+      embeds: []

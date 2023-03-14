@@ -11,5 +11,7 @@ VALIDACION QUERY STRING Y HEADERS CFN
 body validation with models CFN
 Gateway responses
 hacer esto con definicion implicita, no implicita y las dos a la vez
+post deployment (cache,stage throttling and per method throttling,tags,SSL certificate,add CW role)CFN
+generar y explorar SDK automatico
 
 COMPRAR DOMINIO EN GODADDY Y PASARLO A ROUTE 53 LUEGO ASSIGNARLO A LA API COMO CUSTOM DOMAIN
