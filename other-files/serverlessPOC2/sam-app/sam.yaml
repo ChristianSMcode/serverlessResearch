@@ -1,0 +1,988 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: POC for serverless deployment with SAM
+Globals:
+  Function:
+    Runtime: nodejs16.x
+    Timeout: 30
+Parameters:
+  EnvironmentName:
+    Description: Environment Name
+    Type: String
+    AllowedValues:
+    - development
+    - production
+    ConstraintDescription: must be development or production
+  helloWorldDescription:
+    Description: Testing parameters by making the hellow world description dynamic.
+    Type: String
+  StageNameAccessApi:
+    Description: Testing constrains by changing the stage of the api dynamically.
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: stageParamNameAccessApi
+  StageNameLogicApi:
+    Description: Testing constrains by changing the stage of the api dynamically.
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: stageParamNameLogicApi
+  ApiVersion:
+    Description: testing types by changing the api version dynamically.
+    Type: Number
+    MinValue: 1
+    MaxValue: 5
+    ConstraintDescription: Must be a number between 1 and 5
+  TypeDeploy:
+    Description: TypeDeploy
+    Type: String
+    AllowedValues:
+    - a
+    - b
+    - c
+    ConstraintDescription: must be a,b or c
+Rules:
+  ProdeAllowEnv:
+    RuleCondition:
+      Fn::Equals:
+      - Ref: EnvironmentName
+      - development
+    Assertions:
+    - Assert:
+        Fn::Or:
+        - Fn::Equals:
+          - b
+          - Ref: TypeDeploy
+        - Fn::Equals:
+          - c
+          - Ref: TypeDeploy
+      AssertDescription: For dev Environment only TypeDeploy b or c are available
+Mappings:
+  EnvironmentToApiStage:
+    development:
+      currentEnv: dev-env
+    production:
+      currentEnv: prod-env
+  TestEnvLambdaVariable:
+    devEnv:
+      testVar: DEV_ENV
+    prodEnv:
+      testVar: PROD_ENV
+Conditions:
+  CreateDevPlan:
+    Fn::Equals:
+    - Ref: EnvironmentName
+    - development
+  CreateOutPlan:
+    Fn::Equals:
+    - Ref: EnvironmentName
+    - production
+Resources:
+  helloWorld:
+    Type: AWS::Serverless::Function
+    Description:
+      Ref: helloWorldDescription
+    Properties:
+      CodeUri: s3://sam-poc/e3b714d2f5e57a48f6dc973703f54513
+      Handler: hello.handler
+      Events:
+        AccessApi:
+          Type: Api
+          Name: AccessApiEventHelloWorld
+          Properties:
+            Path: /helloWorld
+            Method: GET
+            RestApiId:
+              Ref: AccessApi
+        LogicApi:
+          Type: Api
+          Name: LogicApiEventHelloWorld
+          Properties:
+            Path: /helloWorld
+            Method: GET
+            RestApiId:
+              Ref: LogicApi
+    Metadata:
+      SamResourceId: helloWorld
+  addKeyToPlan:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: s3://sam-poc/8147bb8886a282ada039f77a39474713
+      Handler: addApiToPlan.handler
+      Role:
+        Fn::GetAtt:
+        - addKeyToPlanRole
+        - Arn
+      Events:
+        AccessApi:
+          Type: Api
+          Name: AccessApiEventAddKeyToPlan
+          Properties:
+            Path: /addToPlan
+            Method: POST
+            RestApiId:
+              Ref: AccessApi
+    DependsOn:
+    - addKeyToPlanRole
+    Metadata:
+      SamResourceId: addKeyToPlan
+  createKey:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: s3://sam-poc/419e521e2cae8fb2c55d607552e563c9
+      Handler: createApiKey.handler
+      Role:
+        Fn::GetAtt:
+        - createKeyRole
+        - Arn
+      Events:
+        AccessApi:
+          Type: Api
+          Name: AccessApiEventCreateKey
+          Properties:
+            Path: /createKey
+            Method: POST
+            RestApiId:
+              Ref: AccessApi
+    DependsOn:
+    - createKeyRole
+    Metadata:
+      SamResourceId: createKey
+  createPlan:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: s3://sam-poc/ebbdb1c05586e3ab426f74f374dbff46
+      Handler: createUsagePlan.handler
+      Role:
+        Fn::GetAtt:
+        - createPlanRole
+        - Arn
+      Events:
+        AccessApi:
+          Type: Api
+          Name: AccessApiEventCreatePlan
+          Properties:
+            Path: /createPlan
+            Method: POST
+            RestApiId:
+              Ref: AccessApi
+    DependsOn:
+    - createPlanRole
+    Metadata:
+      SamResourceId: createPlan
+  fullCreateApiKeyFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: s3://sam-poc/45638c6f6953847a4774fb952a4efc0c
+      Handler: fullApiKeyGeneration.handler
+      Role:
+        Fn::GetAtt:
+        - addCreateApiKeyFunctionRole
+        - Arn
+      Events:
+        AccessApi:
+          Type: Api
+          Name: AccessApiEventFullWorkflow
+          Properties:
+            Path: /fullApiWorkflow
+            Method: POST
+            RestApiId:
+              Ref: AccessApi
+    DependsOn:
+    - addCreateApiKeyFunctionRole
+    Metadata:
+      SamResourceId: fullCreateApiKeyFunction
+  writeToSQS:
+    Type: AWS::Serverless::Function
+    Properties:
+      Environment:
+        Variables:
+          WRITE_QUEUE_URL:
+            Fn::GetAtt:
+            - WriteQueue
+            - QueueUrl
+          MAPPIPNG_ENV_TEST:
+            Fn::FindInMap:
+            - TestEnvLambdaVariable
+            - devEnv
+            - testVar
+          MAPPIPNG_PARAM_TEST:
+            Fn::FindInMap:
+            - EnvironmentToApiStage
+            - Ref: EnvironmentName
+            - currentEnv
+      CodeUri: s3://sam-poc/35769717744e0dc28d8e3e3765a33b84
+      Handler: writeSQSmessage.handler
+      Role:
+        Fn::GetAtt:
+        - writeSQSrole
+        - Arn
+      Events:
+        LogicApi:
+          Type: Api
+          Name: LogicApiEventWriteSQS
+          Properties:
+            Auth:
+              ApiKeyRequired: true
+              Authorizer: NONE
+            Path: /sqs/writeSQSmessage
+            Method: POST
+            RestApiId:
+              Ref: LogicApi
+    DependsOn:
+    - writeSQSrole
+    Metadata:
+      SamResourceId: writeToSQS
+  readSQS:
+    Type: AWS::Serverless::Function
+    Properties:
+      Environment:
+        Variables:
+          WRITE_QUEUE_URL:
+            Fn::GetAtt:
+            - WriteQueue
+            - QueueUrl
+      CodeUri: s3://sam-poc/415fbd98be5e3138c1d1c2db3045336a
+      Handler: readFromSQS.handler
+      Role:
+        Fn::GetAtt:
+        - ReadSQSrole
+        - Arn
+      Events:
+        LogicApi:
+          Type: Api
+          Name: LogicApiEventReadSQS
+          Properties:
+            Auth:
+              ApiKeyRequired: true
+              Authorizer: NONE
+            Path: /sqs/readSQSmessage
+            Method: GET
+            RestApiId:
+              Ref: LogicApi
+    DependsOn:
+    - ReadSQSrole
+    Metadata:
+      SamResourceId: readSQS
+  publishSNS:
+    Type: AWS::Serverless::Function
+    Properties:
+      Environment:
+        Variables:
+          TOPIC_SNS_ARN:
+            Ref: snsTopic
+      CodeUri: s3://sam-poc/79df80cf3f3bc097716b179b6bafe9ad
+      Handler: publishSNS.handler
+      Role:
+        Fn::GetAtt:
+        - PublishSNSrole
+        - Arn
+      Events:
+        LogicApi:
+          Type: Api
+          Name: LogicApiEventPublishSNS
+          Properties:
+            Auth:
+              ApiKeyRequired: true
+              Authorizer: NONE
+            Path: /sns/publishSNS
+            Method: POST
+            RestApiId:
+              Ref: LogicApi
+    DependsOn:
+    - PublishSNSrole
+    Metadata:
+      SamResourceId: publishSNS
+  asyncCall:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: s3://sam-poc/24a8fd35d4b18a774123bde8a636a0ad
+      Handler: asyncCall.handler
+      Role:
+        Fn::GetAtt:
+        - asyncCallRole
+        - Arn
+      Events:
+        AccessApi:
+          Type: Api
+          Name: TestAsync
+          Properties:
+            Path: /testAsync
+            Method: POST
+            RestApiId:
+              Ref: AccessApi
+    Metadata:
+      SamResourceId: asyncCall
+  sqsLambdaTrigger:
+    Type: AWS::Serverless::Function
+    Properties:
+      Timeout: 10
+      CodeUri: s3://sam-poc/d6fa7c6023ec3e673111cfb87c30b3dc
+      Handler: trigger.handler
+      Role:
+        Fn::GetAtt:
+        - lambdaTriggerRole
+        - Arn
+      Events:
+        SqsEvent:
+          Type: SQS
+          Properties:
+            BatchSize: 1
+            Queue:
+              Fn::GetAtt:
+              - subQueue1
+              - Arn
+            Enabled: true
+    Metadata:
+      SamResourceId: sqsLambdaTrigger
+  WriteQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      RedrivePolicy:
+        deadLetterTargetArn:
+          Fn::GetAtt:
+          - FailedMSGQueue
+          - Arn
+        maxReceiveCount: 1
+      QueueName: mainSourceQueue
+      DelaySeconds: 0
+      VisibilityTimeout: 15
+    Metadata:
+      SamResourceId: WriteQueue
+  subQueue1:
+    Type: AWS::SQS::Queue
+    Properties:
+      RedrivePolicy:
+        deadLetterTargetArn:
+          Fn::GetAtt:
+          - FailedMSGQueue
+          - Arn
+        maxReceiveCount: 1
+      QueueName: subQueue1
+      DelaySeconds: 0
+      VisibilityTimeout: 15
+    Metadata:
+      SamResourceId: subQueue1
+  AllowSubQueue1:
+    Type: AWS::SQS::QueuePolicy
+    Properties:
+      Queues:
+      - Ref: subQueue1
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+        - Effect: Allow
+          Principal: '*'
+          Action: SQS:SendMessage
+          Resource:
+            Fn::GetAtt:
+            - subQueue1
+            - Arn
+          Condition:
+            ArnEquals:
+              aws:SourceArn:
+                Ref: snsTopic
+    Metadata:
+      SamResourceId: AllowSubQueue1
+  subQueue2:
+    Type: AWS::SQS::Queue
+    Properties:
+      RedrivePolicy:
+        deadLetterTargetArn:
+          Fn::GetAtt:
+          - FailedMSGQueue
+          - Arn
+        maxReceiveCount: 1
+      QueueName: subQueue2
+      DelaySeconds: 0
+      VisibilityTimeout: 15
+    Metadata:
+      SamResourceId: subQueue2
+  AllowSubQueue2:
+    Type: AWS::SQS::QueuePolicy
+    Properties:
+      Queues:
+      - Ref: subQueue2
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+        - Effect: Allow
+          Principal: '*'
+          Action: SQS:SendMessage
+          Resource:
+            Fn::GetAtt:
+            - subQueue2
+            - Arn
+          Condition:
+            ArnEquals:
+              aws:SourceArn:
+                Ref: snsTopic
+    Metadata:
+      SamResourceId: AllowSubQueue2
+  FailedMSGQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      RedriveAllowPolicy:
+        redrivePermission: allowAll
+      QueueName: FailedMSGQueue
+      DelaySeconds: 0
+      VisibilityTimeout: 15
+    Metadata:
+      SamResourceId: FailedMSGQueue
+  snsTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      TopicName: snsOriginTopic
+      Subscription:
+      - Endpoint:
+          Fn::GetAtt:
+          - subQueue1
+          - Arn
+        Protocol: sqs
+      - Endpoint:
+          Fn::GetAtt:
+          - subQueue2
+          - Arn
+        Protocol: sqs
+    Metadata:
+      SamResourceId: snsTopic
+  ClaroInitialKey:
+    Type: AWS::ApiGateway::ApiKey
+    Properties:
+      Enabled: true
+      Name: ClaroKey
+    Metadata:
+      SamResourceId: ClaroInitialKey
+  MovistarInitialKey:
+    Type: AWS::ApiGateway::ApiKey
+    Properties:
+      Enabled: true
+      Name: MovistarKey
+    Metadata:
+      SamResourceId: MovistarInitialKey
+  ClaroLinKey:
+    Type: AWS::ApiGateway::UsagePlanKey
+    Properties:
+      KeyType: API_KEY
+      KeyId:
+        Ref: ClaroInitialKey
+      UsagePlanId:
+        Ref: ClaroUsagePlan
+    Metadata:
+      SamResourceId: ClaroLinKey
+  MovistarLinKey:
+    Type: AWS::ApiGateway::UsagePlanKey
+    Properties:
+      KeyType: API_KEY
+      KeyId:
+        Ref: MovistarInitialKey
+      UsagePlanId:
+        Ref: MovistarUsagePlan
+    Metadata:
+      SamResourceId: MovistarLinKey
+  ClaroUsagePlan:
+    Type: AWS::ApiGateway::UsagePlan
+    DependsOn: LogicApi
+    Properties:
+      ApiStages:
+      - ApiId:
+          Ref: LogicApi
+        Stage:
+          Ref: LogicApi.Stage
+      UsagePlanName: ClaroUsagePlan
+      Quota:
+        Limit: 1000
+        Period: MONTH
+      Throttle:
+        BurstLimit: 200
+        RateLimit: 100
+    Metadata:
+      SamResourceId: ClaroUsagePlan
+  OutUsagePlan:
+    Type: AWS::ApiGateway::UsagePlan
+    Condition: CreateOutPlan
+    Properties:
+      ApiStages:
+      - ApiId:
+          Fn::ImportValue: MyApiOut
+        Stage:
+          Fn::ImportValue: MyApiStageOut
+      UsagePlanName: OutUsagePlan
+      Quota:
+        Limit: 1000
+        Period: MONTH
+      Throttle:
+        BurstLimit: 200
+        RateLimit: 100
+    Metadata:
+      SamResourceId: OutUsagePlan
+  MovistarUsagePlan:
+    Type: AWS::ApiGateway::UsagePlan
+    DependsOn: LogicApi
+    Properties:
+      ApiStages:
+      - ApiId:
+          Ref: LogicApi
+        Stage:
+          Ref: LogicApi.Stage
+      UsagePlanName: MovistarUsagePlan
+      Quota:
+        Limit: 1000
+        Period: MONTH
+      Throttle:
+        BurstLimit: 200
+        RateLimit: 100
+    Metadata:
+      SamResourceId: MovistarUsagePlan
+  TesterUsagePlan:
+    Type: AWS::ApiGateway::UsagePlan
+    Condition: CreateDevPlan
+    DependsOn: LogicApi
+    Properties:
+      ApiStages:
+      - ApiId:
+          Ref: LogicApi
+        Stage:
+          Ref: LogicApi.Stage
+      UsagePlanName: TesterUsagePlan
+      Quota:
+        Limit: 1000
+        Period: MONTH
+      Throttle:
+        BurstLimit: 200
+        RateLimit: 100
+    Metadata:
+      SamResourceId: TesterUsagePlan
+  writeSQSrole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service:
+            - lambda.amazonaws.com
+          Action:
+          - sts:AssumeRole
+      Policies:
+      - PolicyName: api-gateway-policy
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+          - Effect: Allow
+            Action:
+            - sqs:DeleteMessage
+            - sqs:SendMessage
+            Resource:
+            - Fn::GetAtt:
+              - WriteQueue
+              - Arn
+      ManagedPolicyArns:
+      - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+    Metadata:
+      SamResourceId: writeSQSrole
+  ReadSQSrole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service:
+            - lambda.amazonaws.com
+          Action:
+          - sts:AssumeRole
+      Policies:
+      - PolicyName: api-gateway-policy
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+          - Effect: Allow
+            Action:
+            - sqs:DeleteMessage
+            - sqs:ReceiveMessage
+            Resource:
+            - Fn::GetAtt:
+              - WriteQueue
+              - Arn
+      ManagedPolicyArns:
+      - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+    Metadata:
+      SamResourceId: ReadSQSrole
+  PublishSNSrole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service:
+            - lambda.amazonaws.com
+          Action:
+          - sts:AssumeRole
+      Policies:
+      - PolicyName: api-gateway-policy
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+          - Effect: Allow
+            Action:
+            - sns:Publish
+            Resource:
+            - Ref: snsTopic
+      ManagedPolicyArns:
+      - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+    Metadata:
+      SamResourceId: PublishSNSrole
+  lambdaTriggerRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service:
+            - lambda.amazonaws.com
+          Action:
+          - sts:AssumeRole
+      Policies:
+      - PolicyName: api-gateway-policy
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+          - Effect: Allow
+            Action:
+            - sqs:DeleteMessage
+            - sqs:ReceiveMessage
+            - sqs:GetQueueAttributes
+            Resource:
+            - Fn::GetAtt:
+              - subQueue1
+              - Arn
+      ManagedPolicyArns:
+      - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+    Metadata:
+      SamResourceId: lambdaTriggerRole
+  addKeyToPlanRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service:
+            - lambda.amazonaws.com
+          Action:
+          - sts:AssumeRole
+      Policies:
+      - PolicyName: api-gateway-policy
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+          - Effect: Allow
+            Action:
+            - apigateway:POST
+            Resource:
+            - arn:aws:apigateway:us-west-2::/usageplans/*/keys
+      ManagedPolicyArns:
+      - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+    Metadata:
+      SamResourceId: addKeyToPlanRole
+  createKeyRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service:
+            - lambda.amazonaws.com
+          Action:
+          - sts:AssumeRole
+      Policies:
+      - PolicyName: api-gateway-policy
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+          - Effect: Allow
+            Action:
+            - apigateway:CREATE_API_KEY
+            - apigateway:POST
+            Resource:
+            - arn:aws:apigateway:us-west-2::/apikeys
+      ManagedPolicyArns:
+      - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+    Metadata:
+      SamResourceId: createKeyRole
+  createPlanRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service:
+            - lambda.amazonaws.com
+          Action:
+          - sts:AssumeRole
+      Policies:
+      - PolicyName: api-gateway-policy
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+          - Effect: Allow
+            Action:
+            - apigateway:POST
+            Resource:
+            - arn:aws:apigateway:us-west-2::/usageplans
+      ManagedPolicyArns:
+      - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+    Metadata:
+      SamResourceId: createPlanRole
+  addCreateApiKeyFunctionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service:
+            - lambda.amazonaws.com
+          Action:
+          - sts:AssumeRole
+      Policies:
+      - PolicyName: api-gateway-policy
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+          - Effect: Allow
+            Action:
+            - apigateway:CREATE_API_KEY
+            - apigateway:POST
+            Resource:
+            - arn:aws:apigateway:us-west-2::/apikeys
+          - Effect: Allow
+            Action:
+            - apigateway:UPDATE
+            - apigateway:PUT
+            - apigateway:POST
+            Resource:
+            - arn:aws:apigateway:us-west-2::/usageplans/*/keys
+      ManagedPolicyArns:
+      - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+    Metadata:
+      SamResourceId: addCreateApiKeyFunctionRole
+  asyncCallRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service:
+            - lambda.amazonaws.com
+          Action:
+          - sts:AssumeRole
+      ManagedPolicyArns:
+      - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+    Metadata:
+      SamResourceId: asyncCallRole
+  AccessApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      Name: AccessApi
+      StageName:
+        Ref: StageNameAccessApi
+      DefinitionBody:
+        swagger: '2.0'
+        info:
+          title: AccessApi
+          version:
+            Ref: ApiVersion
+        basePath: /test
+        shemes:
+        - https
+        paths:
+          /helloWorld:
+            get:
+              consumes:
+              - application/json
+              produces:
+              - application/json
+              responses:
+                '200':
+                  description: ok
+              x-amazon-apigateway-integration:
+                type: aws_proxy
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${helloWorld.Arn}/invocations
+                httpMethod: POST
+          /addToPlan:
+            post:
+              consumes:
+              - application/json
+              produces:
+              - application/json
+              responses:
+                '200':
+                  description: ok
+              x-amazon-apigateway-integration:
+                type: aws_proxy
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${addKeyToPlan.Arn}/invocations
+                httpMethod: POST
+          /createKey:
+            post:
+              consumes:
+              - application/json
+              produces:
+              - application/json
+              responses:
+                '200':
+                  description: ok
+              x-amazon-apigateway-integration:
+                type: aws_proxy
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${createKey.Arn}/invocations
+                httpMethod: POST
+          /createPlan:
+            post:
+              consumes:
+              - application/json
+              produces:
+              - application/json
+              responses:
+                '200':
+                  description: ok
+              x-amazon-apigateway-integration:
+                type: aws_proxy
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${createPlan.Arn}/invocations
+                httpMethod: POST
+          /fullApiWorkflow:
+            post:
+              consumes:
+              - application/json
+              produces:
+              - application/json
+              responses:
+                '200':
+                  description: ok
+              x-amazon-apigateway-integration:
+                type: aws_proxy
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${fullCreateApiKeyFunction.Arn}/invocations
+                httpMethod: POST
+          /testAsync:
+            post:
+              x-amazon-apigateway-integration:
+                type: aws
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${asyncCall.Arn}/invocations
+                httpMethod: POST
+                responses:
+                  default:
+                    statusCode: 200
+                    responseTemplates:
+                      application/json: '{"statusCode": 200, "body": "Event created"}'
+                requestParameters:
+                  integration.request.header.X-Amz-Invocation-Type: '''Event'''
+                passthroughBehavior: when_no_match
+                contentHandling: CONVERT_TO_TEXT
+    Metadata:
+      SamResourceId: AccessApi
+  LogicApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      Name: LogicApi
+      StageName:
+        Ref: StageNameLogicApi
+      DefinitionBody:
+        swagger: '2.0'
+        info:
+          title: LogicApi
+          version:
+            Ref: ApiVersion
+        basePath: /test
+        schemes:
+        - https
+        securityDefinitions:
+          api_key:
+            type: apiKey
+            name: x-api-key
+            in: header
+            x-amazon-apigateway-api-key-source: HEADER
+        paths:
+          /helloWorld:
+            get:
+              security:
+              - api_key: []
+              x-amazon-apigateway-api-key-required: true
+              consumes:
+              - application/json
+              produces:
+              - application/json
+              responses:
+                '200':
+                  description: ok
+              x-amazon-apigateway-integration:
+                type: aws_proxy
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${helloWorld.Arn}/invocations
+                httpMethod: POST
+          /sqs/writeSQSmessage:
+            post:
+              security:
+              - api_key: []
+              consumes:
+              - application/json
+              produces:
+              - application/json
+              responses:
+                '200':
+                  description: ok
+              x-amazon-apigateway-integration:
+                type: aws_proxy
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${writeToSQS.Arn}/invocations
+                httpMethod: POST
+          /sqs/readSQSmessage:
+            get:
+              security:
+              - api_key: []
+              consumes:
+              - application/json
+              produces:
+              - application/json
+              responses:
+                '200':
+                  description: ok
+              x-amazon-apigateway-integration:
+                type: aws_proxy
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${readSQS.Arn}/invocations
+                httpMethod: POST
+          /sns/publishSNS:
+            post:
+              security:
+              - api_key: []
+              consumes:
+              - application/json
+              produces:
+              - application/json
+              responses:
+                '200':
+                  description: ok
+              x-amazon-apigateway-integration:
+                type: aws_proxy
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${publishSNS.Arn}/invocations
+                httpMethod: POST
+    Metadata:
+      SamResourceId: LogicApi

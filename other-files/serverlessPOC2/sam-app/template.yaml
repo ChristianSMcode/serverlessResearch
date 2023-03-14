@@ -1,0 +1,964 @@
+AWSTemplateFormatVersion : '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: POC for serverless deployment with SAM
+#GlobalSettings -------------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------
+Globals:
+  Function:
+    Runtime: nodejs16.x
+    Timeout: 30
+#----------------------------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------
+#Parameters -----------------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------
+Parameters:
+  EnvironmentName:
+    Description: Environment Name
+    Type: String
+    AllowedValues: [development,production]
+    ConstraintDescription: must be development or production
+
+  helloWorldDescription:
+    Description: Testing parameters by making the hellow world description dynamic.
+    Type: String
+  
+  StageNameAccessApi:
+    Description: Testing constrains by changing the stage of the api dynamically.
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: stageParamNameAccessApi
+  
+  StageNameLogicApi:
+    Description: Testing constrains by changing the stage of the api dynamically.
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: stageParamNameLogicApi
+  
+  ApiVersion:
+    Description: testing types by changing the api version dynamically.
+    Type: Number
+    MinValue: 1
+    MaxValue: 5
+    ConstraintDescription: Must be a number between 1 and 5
+
+  TypeDeploy:
+    Description: TypeDeploy
+    Type: String
+    AllowedValues: [a,b,c]
+    ConstraintDescription: must be a,b or c
+#----------------------------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------
+#Rules compare parameters agains each other (Like a more robust condition within parameters)---------
+#----------------------------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------
+Rules:
+  ProdeAllowEnv:
+    RuleCondition: !Equals
+      - !Ref EnvironmentName
+      - development
+    Assertions:
+      - Assert:
+          Fn::Or:
+            - !Equals [b,!Ref TypeDeploy]
+            - !Equals [c,!Ref TypeDeploy]
+        AssertDescription: For dev Environment only TypeDeploy b or c are available
+#----------------------------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------
+#Mappings--------------------------------------------------------------------------------------------
+#They are hardcoded variables we know ahead of time
+#----------------------------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------
+Mappings:
+  EnvironmentToApiStage:
+    development:
+      currentEnv: dev-env
+    production:
+      currentEnv: prod-env
+
+  TestEnvLambdaVariable:
+    devEnv:
+      testVar: DEV_ENV
+    prodEnv:
+      testVar: PROD_ENV
+
+  #THE FOLLOWING MAPPING WILL NOT WORK BECAUSE THE VALUES HAVE TO BE HARDCODED
+  #AND USING !REF HERE IS NOT VALID
+  #EnvironmentToApiStage:
+  #  development:
+  #    AccessApiStage: !Ref StageNameAccessApi
+  #    LogicApiStage: !Ref StageNameLogicApi
+  #  production:
+  #    AccessApiStage: Prod
+  #    LogicApiStage: Prod
+#----------------------------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------
+#Conditions to create aditional resources------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------
+Conditions:
+  CreateDevPlan: !Equals [ !Ref EnvironmentName, development]
+  CreateOutPlan: !Equals [ !Ref EnvironmentName, production]
+#----------------------------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------
+#ResourcesDefinition --------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------
+Resources:  
+  #AccessApi Functions ------------------------------------------------------------------------------
+  #--------------------------------------------------------------------------------------------------
+  #--------------------------------------------------------------------------------------------------
+  helloWorld:
+    Type: AWS::Serverless::Function
+    Description: !Ref helloWorldDescription
+    Properties:
+      CodeUri: functions/helloWorld
+      Handler: hello.handler
+      Events:
+        AccessApi:
+          Type: Api
+          Name: AccessApiEventHelloWorld
+          Properties:
+            Path: /helloWorld
+            Method: GET
+            RestApiId: !Ref AccessApi
+        LogicApi:
+          Type: Api
+          Name: LogicApiEventHelloWorld
+          Properties:
+            Path: /helloWorld
+            Method: GET
+            RestApiId: !Ref LogicApi
+
+  addKeyToPlan:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: functions/addApiToPlan
+      Handler: addApiToPlan.handler
+      Role: !GetAtt addKeyToPlanRole.Arn
+      Events:
+        AccessApi:
+          Type: Api
+          Name: AccessApiEventAddKeyToPlan
+          Properties:
+            Path: /addToPlan
+            Method: POST
+            RestApiId: !Ref AccessApi
+    DependsOn:
+      - addKeyToPlanRole
+  
+  createKey:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: functions/createApiKey
+      Handler: createApiKey.handler
+      Role: !GetAtt createKeyRole.Arn
+      Events:
+        AccessApi:
+          Type: Api
+          Name: AccessApiEventCreateKey
+          Properties:
+            Path: /createKey
+            Method: POST
+            RestApiId: !Ref AccessApi
+    DependsOn:
+      - createKeyRole
+
+  createPlan:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: functions/createUsagePlan
+      Handler: createUsagePlan.handler
+      Role: !GetAtt createPlanRole.Arn
+      Events:
+        AccessApi:
+          Type: Api
+          Name: AccessApiEventCreatePlan
+          Properties:
+            Path: /createPlan
+            Method: POST
+            RestApiId: !Ref AccessApi
+    DependsOn:
+      - createPlanRole
+
+  fullCreateApiKeyFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: functions/fullApiProcess
+      Handler: fullApiKeyGeneration.handler
+      Role: !GetAtt addCreateApiKeyFunctionRole.Arn
+      Events:
+        AccessApi:
+          Type: Api
+          Name: AccessApiEventFullWorkflow
+          Properties:
+            Path: /fullApiWorkflow
+            Method: POST
+            RestApiId: !Ref AccessApi
+    DependsOn:
+      - addCreateApiKeyFunctionRole
+  #--------------------------------------------------------------------------------------------------
+  #--------------------------------------------------------------------------------------------------
+  #--------------------------------------------------------------------------------------------------
+  #LogicApiFunctions
+  #--------------------------------------------------------------------------------------------------
+  #--------------------------------------------------------------------------------------------------
+  writeToSQS:
+    Type: AWS::Serverless::Function
+    Properties:
+      Environment:
+        Variables:
+          WRITE_QUEUE_URL: !GetAtt WriteQueue.QueueUrl
+          MAPPIPNG_ENV_TEST: !FindInMap [TestEnvLambdaVariable,devEnv,testVar]
+          MAPPIPNG_PARAM_TEST: !FindInMap [EnvironmentToApiStage,!Ref EnvironmentName,currentEnv]
+      CodeUri: functions/writeToSQS
+      Handler: writeSQSmessage.handler
+      Role: !GetAtt writeSQSrole.Arn
+      Events:
+        LogicApi:
+          Type: Api
+          Name: LogicApiEventWriteSQS
+          Properties:
+            Auth:
+              ApiKeyRequired: true
+              Authorizer: NONE
+            Path: /sqs/writeSQSmessage
+            Method: POST
+            RestApiId: !Ref LogicApi
+    DependsOn:
+      - writeSQSrole
+  
+  readSQS:
+    Type: AWS::Serverless::Function
+    Properties:
+      Environment:
+        Variables:
+          WRITE_QUEUE_URL: !GetAtt WriteQueue.QueueUrl
+      CodeUri: functions/readSQS
+      Handler: readFromSQS.handler
+      Role: !GetAtt ReadSQSrole.Arn
+      Events:
+        LogicApi:
+          Type: Api
+          Name: LogicApiEventReadSQS
+          Properties:
+            Auth:
+              ApiKeyRequired: true
+              Authorizer: NONE
+            Path: /sqs/readSQSmessage
+            Method: GET
+            RestApiId: !Ref LogicApi
+    DependsOn:
+      - ReadSQSrole
+  
+  publishSNS:
+    Type: AWS::Serverless::Function
+    Properties:
+      Environment:
+        Variables:
+          TOPIC_SNS_ARN: !Ref snsTopic
+      CodeUri: functions/publishSNS
+      Handler: publishSNS.handler
+      Role: !GetAtt PublishSNSrole.Arn
+      Events:
+        LogicApi:
+          Type: Api
+          Name: LogicApiEventPublishSNS
+          Properties:
+            Auth:
+              ApiKeyRequired: true
+              Authorizer: NONE
+            Path: /sns/publishSNS
+            Method: POST
+            RestApiId: !Ref LogicApi
+    DependsOn:
+      - PublishSNSrole
+  #--------------------------------------------------------------------------------------------------
+  #--------------------------------------------------------------------------------------------------
+  #--------------------------------------------------------------------------------------------------
+  #SQS LAMBDA FUNCTIONS------------------------------------------------------------------------------
+  #--------------------------------------------------------------------------------------------------
+  #--------------------------------------------------------------------------------------------------
+  #Testing lambda features---------------------------------------------------------------------------
+  #--------------------------------------------------------------------------------------------------
+  #--------------------------------------------------------------------------------------------------
+  asyncCall:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: functions/asyncGateCall
+      Handler: asyncCall.handler
+      Role: !GetAtt asyncCallRole.Arn
+      Events:
+        AccessApi:
+          Type: Api
+          Name: TestAsync
+          Properties:
+            Path: /testAsync
+            Method: POST
+            RestApiId: !Ref AccessApi
+  #--------------------------------------------------------------------------------------------------
+  #--------------------------------------------------------------------------------------------------
+  #--------------------------------------------------------------------------------------------------  
+  sqsLambdaTrigger:
+    Type: AWS::Serverless::Function
+    Properties:
+      Timeout: 10
+      CodeUri: functions/lambdaTrigger
+      Handler: trigger.handler
+      Role: !GetAtt lambdaTriggerRole.Arn
+      Events:
+        SqsEvent:
+          Type: SQS
+          Properties:
+            BatchSize: 1
+            Queue: !GetAtt subQueue1.Arn
+            Enabled: true
+  #--------------------------------------------------------------------------------------------------
+  #--------------------------------------------------------------------------------------------------
+  #--------------------------------------------------------------------------------------------------
+  #SQS QUEUES AND SNS TOPICS-------------------------------------------------------------------------
+  #--------------------------------------------------------------------------------------------------
+  #--------------------------------------------------------------------------------------------------
+  #--------------------------------------------------------------------------------------------------
+  WriteQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      RedrivePolicy:
+        deadLetterTargetArn: !GetAtt FailedMSGQueue.Arn
+        maxReceiveCount: 1
+      QueueName: mainSourceQueue
+      DelaySeconds: 0
+      VisibilityTimeout: 15
+
+  subQueue1:
+    Type: AWS::SQS::Queue
+    Properties:
+      RedrivePolicy:
+        deadLetterTargetArn: !GetAtt FailedMSGQueue.Arn
+        maxReceiveCount: 1
+      QueueName: subQueue1
+      DelaySeconds: 0
+      VisibilityTimeout: 15
+
+  AllowSubQueue1:
+    Type: AWS::SQS::QueuePolicy
+    Properties:
+      Queues:
+        - !Ref subQueue1
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal: '*'
+            Action: 'SQS:SendMessage'
+            Resource: !GetAtt subQueue1.Arn
+            Condition:
+              ArnEquals:
+                aws:SourceArn: !Ref snsTopic
+
+  subQueue2:
+    Type: AWS::SQS::Queue
+    Properties:
+      RedrivePolicy:
+        deadLetterTargetArn: !GetAtt FailedMSGQueue.Arn
+        maxReceiveCount: 1
+      QueueName: subQueue2
+      DelaySeconds: 0
+      VisibilityTimeout: 15
+
+  AllowSubQueue2:
+    Type: AWS::SQS::QueuePolicy
+    Properties:
+      Queues:
+        - !Ref subQueue2
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal: '*'
+            Action: 'SQS:SendMessage'
+            Resource: !GetAtt subQueue2.Arn
+            Condition:
+              ArnEquals:
+                aws:SourceArn: !Ref snsTopic
+
+  FailedMSGQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      RedriveAllowPolicy:
+        redrivePermission: allowAll ###How can I achive to byQueue (circular dependency)
+      QueueName: FailedMSGQueue
+      DelaySeconds: 0
+      VisibilityTimeout: 15
+  
+  snsTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      TopicName: snsOriginTopic
+      Subscription:
+        - Endpoint: !GetAtt subQueue1.Arn
+          Protocol: sqs
+        - Endpoint: !GetAtt subQueue2.Arn
+          Protocol: sqs
+    
+  #--------------------------------------------------------------------------------------------------
+  #--------------------------------------------------------------------------------------------------
+  #--------------------------------------------------------------------------------------------------
+  #StartedApiKeys------------------------------------------------------------------------------------
+  #--------------------------------------------------------------------------------------------------
+  #--------------------------------------------------------------------------------------------------
+  #--------------------------------------------------------------------------------------------------
+  ClaroInitialKey:
+    Type: AWS::ApiGateway::ApiKey
+    Properties:
+      Enabled: true
+      Name: ClaroKey
+
+  MovistarInitialKey:
+    Type: AWS::ApiGateway::ApiKey
+    Properties:
+      Enabled: true
+      Name: MovistarKey
+  #Link api keys to usage plans----------------------------------------------------------------------  
+  #--------------------------------------------------------------------------------------------------
+  #--------------------------------------------------------------------------------------------------
+  #--------------------------------------------------------------------------------------------------
+  ClaroLinKey:
+    Type: AWS::ApiGateway::UsagePlanKey
+    Properties:
+      KeyType: API_KEY
+      KeyId: !Ref ClaroInitialKey
+      UsagePlanId: !Ref ClaroUsagePlan
+
+  MovistarLinKey:
+    Type: AWS::ApiGateway::UsagePlanKey
+    Properties:
+      KeyType: API_KEY
+      KeyId: !Ref MovistarInitialKey
+      UsagePlanId: !Ref MovistarUsagePlan
+  #--------------------------------------------------------------------------------------------------
+  #--------------------------------------------------------------------------------------------------
+  #--------------------------------------------------------------------------------------------------
+  #Usage Plans--------------------------------------------------------------------------------------
+  #--------------------------------------------------------------------------------------------------
+  #--------------------------------------------------------------------------------------------------
+  #--------------------------------------------------------------------------------------------------
+  ClaroUsagePlan:
+    Type: AWS::ApiGateway::UsagePlan
+    DependsOn: LogicApi
+    Properties:
+      ApiStages:
+        - ApiId: !Ref LogicApi
+          Stage: !Ref LogicApi.Stage
+      UsagePlanName: ClaroUsagePlan
+      Quota:
+        Limit: 1000
+        Period: MONTH
+      Throttle:
+        BurstLimit: 200
+        RateLimit: 100
+  #--------------------------------------------------------------------------------------------------
+  #--------------------------------------------------------------------------------------------------
+  #--------------------------------------------------------------------------------------------------
+  #This usage plan is to test outputs so it is being created and asigned to an api 
+  #that was created with a different stack
+  #--------------------------------------------------------------------------------------------------
+  #--------------------------------------------------------------------------------------------------
+  #--------------------------------------------------------------------------------------------------
+  OutUsagePlan:
+    Type: AWS::ApiGateway::UsagePlan
+    Condition: CreateOutPlan
+    Properties:
+      ApiStages:
+        - ApiId: !ImportValue MyApiOut
+          Stage: !ImportValue MyApiStageOut
+      UsagePlanName: OutUsagePlan
+      Quota:
+        Limit: 1000
+        Period: MONTH
+      Throttle:
+        BurstLimit: 200
+        RateLimit: 100
+  
+  MovistarUsagePlan:
+    Type: AWS::ApiGateway::UsagePlan
+    DependsOn: LogicApi
+    Properties:
+      ApiStages:
+        - ApiId: !Ref LogicApi
+          Stage: !Ref LogicApi.Stage
+      UsagePlanName: MovistarUsagePlan
+      Quota:
+        Limit: 1000
+        Period: MONTH
+      Throttle:
+        BurstLimit: 200
+        RateLimit: 100
+  
+  TesterUsagePlan:
+    Type: AWS::ApiGateway::UsagePlan
+    Condition: CreateDevPlan
+    DependsOn: LogicApi
+    Properties:
+      ApiStages:
+        - ApiId: !Ref LogicApi
+          Stage: !Ref LogicApi.Stage
+      UsagePlanName: TesterUsagePlan
+      Quota:
+        Limit: 1000
+        Period: MONTH
+      Throttle:
+        BurstLimit: 200
+        RateLimit: 100
+  #--------------------------------------------------------------------------------------------------
+  #--------------------------------------------------------------------------------------------------
+  #--------------------------------------------------------------------------------------------------
+  #Roles resources LogicApi--------------------------------------------------------------------------
+  #--------------------------------------------------------------------------------------------------
+  #--------------------------------------------------------------------------------------------------
+  #--------------------------------------------------------------------------------------------------
+  writeSQSrole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Policies:
+        - PolicyName: api-gateway-policy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - sqs:DeleteMessage
+                  - sqs:SendMessage
+                Resource:
+                  - !GetAtt WriteQueue.Arn
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+  
+  ReadSQSrole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Policies:
+        - PolicyName: api-gateway-policy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - sqs:DeleteMessage
+                  - sqs:ReceiveMessage
+                Resource:
+                  - !GetAtt WriteQueue.Arn
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+  
+  PublishSNSrole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Policies:
+        - PolicyName: api-gateway-policy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - sns:Publish
+                Resource:
+                  - !Ref snsTopic
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+  
+  lambdaTriggerRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Policies:
+        - PolicyName: api-gateway-policy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - sqs:DeleteMessage
+                  - sqs:ReceiveMessage
+                  - sqs:GetQueueAttributes
+                Resource:
+                  - !GetAtt subQueue1.Arn
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole 
+  #--------------------------------------------------------------------------------------------------
+  #--------------------------------------------------------------------------------------------------
+  #--------------------------------------------------------------------------------------------------
+  #Roles resources AccessAPI-------------------------------------------------------------------------
+  #--------------------------------------------------------------------------------------------------
+  #--------------------------------------------------------------------------------------------------
+  #--------------------------------------------------------------------------------------------------
+  addKeyToPlanRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Policies:
+        - PolicyName: api-gateway-policy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - apigateway:POST
+                Resource:
+                  - arn:aws:apigateway:us-west-2::/usageplans/*/keys
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+
+  createKeyRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Policies:
+        - PolicyName: api-gateway-policy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - apigateway:CREATE_API_KEY
+                  - apigateway:POST
+                Resource:
+                  - arn:aws:apigateway:us-west-2::/apikeys
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+
+  createPlanRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Policies:
+        - PolicyName: api-gateway-policy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - apigateway:POST
+                Resource:
+                  - arn:aws:apigateway:us-west-2::/usageplans
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+
+  addCreateApiKeyFunctionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Policies:
+        - PolicyName: api-gateway-policy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - apigateway:CREATE_API_KEY
+                  - apigateway:POST
+                Resource:
+                  - arn:aws:apigateway:us-west-2::/apikeys
+              - Effect: Allow
+                Action:
+                  - apigateway:UPDATE
+                  - apigateway:PUT
+                  - apigateway:POST
+                Resource:
+                  - arn:aws:apigateway:us-west-2::/usageplans/*/keys
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+  
+  asyncCallRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+
+  #--------------------------------------------------------------------------------------------------
+  #--------------------------------------------------------------------------------------------------
+  #--------------------------------------------------------------------------------------------------
+  #--------------------------------------------------------------------------------------------------
+  #Api Resources
+  #--------------------------------------------------------------------------------------------------
+  #--------------------------------------------------------------------------------------------------
+  #--------------------------------------------------------------------------------------------------
+  AccessApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      Name: AccessApi
+      StageName: !Ref StageNameAccessApi
+      #CustomDomainConfig: 
+      #  DomainName: ressolve.ai
+      #  CertificateArn:
+      DefinitionBody:
+        swagger: "2.0"
+        info:
+          title: AccessApi
+          version: !Ref ApiVersion
+        basePath: /test
+        shemes:
+          - https
+        paths:
+          /helloWorld:
+            get:
+              consumes:
+              - application/json
+              produces:
+              - application/json
+              responses:
+                '200':
+                  description: ok
+              x-amazon-apigateway-integration:
+                type: aws_proxy
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${helloWorld.Arn}/invocations
+                httpMethod: POST
+          /addToPlan:
+            post:
+              consumes:
+              - application/json
+              produces:
+              - application/json
+              responses:
+                '200':
+                  description: ok
+              x-amazon-apigateway-integration:
+                type: aws_proxy
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${addKeyToPlan.Arn}/invocations
+                httpMethod: POST
+          /createKey:
+            post:
+              consumes:
+              - application/json
+              produces:
+              - application/json
+              responses:
+                '200':
+                  description: ok
+              x-amazon-apigateway-integration:
+                type: aws_proxy
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${createKey.Arn}/invocations
+                httpMethod: POST
+          /createPlan:
+            post:
+              consumes:
+              - application/json
+              produces:
+              - application/json
+              responses:
+                '200':
+                  description: ok
+              x-amazon-apigateway-integration:
+                type: aws_proxy
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${createPlan.Arn}/invocations
+                httpMethod: POST
+          /fullApiWorkflow:
+            post:
+              consumes:
+              - application/json
+              produces:
+              - application/json
+              responses:
+                '200':
+                  description: ok
+              x-amazon-apigateway-integration:
+                type: aws_proxy
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${fullCreateApiKeyFunction.Arn}/invocations
+                httpMethod: POST
+          /testAsync:
+            post:
+              x-amazon-apigateway-integration:
+                type: aws
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${asyncCall.Arn}/invocations
+                httpMethod: POST
+                responses:
+                  default:
+                    statusCode: 200
+                    responseTemplates:Event created"}'
+                requestParameters:
+                      application/json: '{"statusCode": 200, "body": "
+                  integration.request.header.X-Amz-Invocation-Type: "'Event'"
+                passthroughBehavior: when_no_match
+                contentHandling: CONVERT_TO_TEXT
+
+  LogicApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      Name: LogicApi
+      StageName: !Ref StageNameLogicApi
+      DefinitionBody:
+        swagger: "2.0"
+        info:
+          title: LogicApi
+          version: !Ref ApiVersion
+        basePath: /test
+        schemes:
+          - https
+        securityDefinitions:
+          api_key:
+            type: apiKey
+            name: x-api-key
+            in: header
+            x-amazon-apigateway-api-key-source: HEADER
+        paths:
+          /helloWorld:
+            get:
+              security:
+              - api_key: []
+              x-amazon-apigateway-api-key-required: true
+              consumes:
+              - application/json
+              produces:
+              - application/json
+              responses:
+                '200':
+                  description: ok
+              x-amazon-apigateway-integration:
+                type: aws_proxy
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${helloWorld.Arn}/invocations
+                httpMethod: POST
+          /sqs/writeSQSmessage:
+            post:
+              security:
+              - api_key: []
+              consumes:
+              - application/json
+              produces:
+              - application/json
+              responses:
+                '200':
+                  description: ok
+              x-amazon-apigateway-integration:
+                type: aws_proxy
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${writeToSQS.Arn}/invocations
+                httpMethod: POST
+          /sqs/readSQSmessage:
+            get:
+              security:
+              - api_key: []
+              consumes:
+              - application/json
+              produces:
+              - application/json
+              responses:
+                '200':
+                  description: ok
+              x-amazon-apigateway-integration:
+                type: aws_proxy
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${readSQS.Arn}/invocations
+                httpMethod: POST
+          /sns/publishSNS:
+            post:
+              security:
+              - api_key: []
+              consumes:
+              - application/json
+              produces:
+              - application/json
+              responses:
+                '200':
+                  description: ok
+              x-amazon-apigateway-integration:
+                type: aws_proxy
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${publishSNS.Arn}/invocations
+                httpMethod: POST
+  #--------------------------------------------------------------------------------------------------
+  #--------------------------------------------------------------------------------------------------
+  #--------------------------------------------------------------------------------------------------
+
+ 
+

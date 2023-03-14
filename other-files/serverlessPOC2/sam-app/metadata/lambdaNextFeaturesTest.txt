@@ -1,0 +1,29 @@
+Lambda test with cloudFormation.
+================================
+-Testear invocacion asyncrona desde api gateway(Crear llamado y desentenderse de la respuesta)(26)
+R//Se puede (https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-lambda-integration-async.html)
+(Handle debuggin of api gateway)
+-Porque el parametro de descripcion sale mal (escapar espacios?)
+incluso el cliente puede decidir si quiere invocacion asynchrona o syncrona
+-Familiarizarse con el context object (probar diferentes eventos y los metodos del context object, api gateway y SQS)(27)
+-Query strign parameters,path parameters (testear los parametros de la URL tanto los del path como los de "variables")
+-Repasar billing de las lambdas
+-Usar encripcion en las variables de entorno de las funciones lambdas
+-Experimentar el uso de multiple threads en lambda (Una segunda "funcion" corre a medida que el contenedor es reutilizado)
+-Agregar tag a funciones
+-Testear fail y retry con DLQs y lambdas (99-102)(SQS y SNS)
+-Use lambdas along VPC's
+-Como funcionan o que provecho se le puede sacar a los alias de un lambda con cloudFormation.
+-Traffic shifting alguna ventaja en implementarlo de forma automatica con cloudFormation o mejor usarlo de forma manual
+WARNNING"DRIFTING"
+-Agregar descripciones a las funciones lambda.
+-Logging function invocation in CloudTrail (No recuerdo especificamente pero investigar un poco al respecto)
+-Test events en local testing de las funciones así como conservar estos test events al hacer deploy con SAM
+-Probar los aliases de lambda y pensar en aplicaciones de los mismos.
+-Revisar los usos del monitoreo de las funciones lambda.
+NOTA: En caso de invocaciones sync el error puede ser reportado al cliente pero en invocaciones async
+lambda reintenta 2 veces y luego el error se puede manejar con DLQs
+-Probar console.WARNNING console.err y throw err comportamientos en las lambdas.
+
+
+
