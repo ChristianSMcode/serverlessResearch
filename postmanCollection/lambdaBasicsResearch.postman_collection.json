@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "b8fd4490-1343-4b39-8ac3-3c22f26ecf73",
-		"name": "ressolveResearch",
+		"name": "lambdaBasicsResearch",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
