@@ -1,5 +1,44 @@
 Note: For now you can ignore the README.md file (automatically generated with SAM cli and the samconfig.toml file)
 
+Explanation:
+
+As the first part of the demo we will just create a new explicit API with two endpoints with integration type of lambda function with non-proxy-integration and proxy integration, the proxy one will implement Validators for the body, the headers and the querystringparameters (remember that you can also specify path parameters that are mandatory)
+
+I create this folder with name "implicit" meaning that this was going to use implicit resource creation that
+SAM provides, however now we can point some of the weaknesses of implicit resource creation such as:
+-Limited control over resource configuration (In case of an API we could not define the non-proxy-integration)
+-Limited support for advance features of the resources
+-etc
+
+So, due to this, even if I called the folder with the word Implicit we will use Explicit resource definition along with implicit resource definition.Since we need some advanced features of API gateway this resource will be defined explicitly but the lambda role for example will still get created implicitly although we could do it explicitly aswell by changing the type from AWS::Serverless::Function for AWS::Lambda::Function however keep in mind that if not necessary it can be better to stick to implicit reource creationg since it reduces the general tecnical overhead.
+
+I then proceeded to create an AWS::Serverless::Api explicit resource and referenced the Api (RestApiId: !Ref ApiGatewayBasics) in the function resource, this way I can have far more control than with implicit resource API creation
+Note: Remember that logical names are like variables and can be referenced and even read its properties but
+it is different from the REAL name of a resource.
+
+I used the swagger 2.0 api definition to create the API resource, If you dont understand the syntax dont worry
+since the swagger 2.0 and 3.0 API definition concepts and syntax will be covered within the guide/additional-guides folder.
+Since swagger and AWS are two separated thing there are things called exensions which you can see more about
+here: https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-swagger-extensions.html
+
+To specify non-proxy for the resource I had to use the aws extension (x-amazon-apigateway-integration)
+setting the type to 'aws'
+Then in the Uri property I specified the following uri:
+Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${calculatorFunction.Arn}/invocations
+
+That Uri is the endpoint of the backend for integration of the aws service, so we are in fact having two clients processes, we call API gateway and then API gateway calls Lambda, thats why we specified the httpMehtod twice once within the path/function and anotherwant inside the method definition for the specific reosurce.
+Notice how in the console it looks like lambda integration has its own non-proxy integration but thats nothing
+more that a front end trick since in reality it is aws integration pointing towars lambda service.
+
+IMPORTANT CONSIDERATIONS:
+During this demo I realized that local testing doesnt work the intended way while using request validators,
+you can define the validators and deploy the stack first then test the validators within AWS API gateway and they will work.Refer to:
+"When you run the API locally with sam local start-api, it uses the local Lambda function and API Gateway emulator to handle the requests, which do not enforce request validation by default. This is because the emulator is intended for local development and testing purposes, and the main goal is to provide a simple and fast way to test your API without relying on the cloud resources."
+Remember also that even if you can specify the request parameters like this within the function resource:       
+- method.request.header.Header-Test
+- method.request.querystring.test
+It is not very well integrated and it should be easier as well as better configurable to do it within the API resource.This is due to if the RestApiId, if is provided then the ResquesParameters will get ignore resulting in, that this property only works for implicit API resource creation, you can see an example of this in the LambdaBasicsDemo demo where the api gets in fact created implicitly
+
 General considarions:
 Example on how to call the endpoint/resource is within the postman collection in which you can see the url and path/query parameters.
 

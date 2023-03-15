@@ -1,72 +1,69 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
-Description: >
-  ApiGatewatBasicsSAM-Implicit
+Description: 'ApiGatewatBasicsSAM-Implicit
 
   Sample SAM Template for ApiGatewatBasicsSAM-Implicit
 
-# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+  '
 Globals:
   Function:
     Timeout: 3
     MemorySize: 128
-
 Resources:
   calculatorFunctionNonProxy:
-    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Type: AWS::Serverless::Function
     Properties:
       Description: Testing
-      CodeUri: calculator/
+      CodeUri: s3://ressolve-research-gateway-basics-demo/a13f0c9ad56fe076b9dc5fb076fa4ca5
       Handler: calculator.handler
       Runtime: nodejs16.x
       Architectures:
       - x86_64
       Events:
         ApiEvent:
-          Type: Api 
+          Type: Api
           Properties:
             Path: /calculate3/{operation}
             Method: POST
-            RestApiId: !Ref ApiGatewayBasics
-            #RequestParameters:
-            #  - method.request.header.Header-Test
-            #  - method.request.querystring.test
-                  
-
-  
+            RestApiId:
+              Ref: ApiGatewayBasics
+    Metadata:
+      SamResourceId: calculatorFunctionNonProxy
   calculatorProxy:
-    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Type: AWS::Serverless::Function
     Properties:
-      CodeUri: calculator2/
+      CodeUri: s3://ressolve-research-gateway-basics-demo/e64f4185e5b78357539c02d8e78b9586
       Handler: calculator.handler
       Runtime: nodejs16.x
       Architectures:
       - x86_64
       Events:
         ApiEvent:
-          Type: Api 
+          Type: Api
           Properties:
             Path: /calculate2/{operation}
             Method: POST
-            RestApiId: !Ref ApiGatewayBasics
-  
+            RestApiId:
+              Ref: ApiGatewayBasics
+    Metadata:
+      SamResourceId: calculatorProxy
   ApiGatewayBasics:
     Type: AWS::Serverless::Api
     Properties:
       Name: ApiGatewayBasics
       StageName: TestingGateway
       DefinitionBody:
-        swagger: "2.0"
+        swagger: '2.0'
         info:
           title: ApiGatewayBasics-title
           version: '1'
         basePath: /baseTestPath
         schemes:
-          - https
+        - https
         x-amazon-apigateway-request-validators:
           headerAndStringParams:
             validateRequestBody: false
-            validateRequestParameters: true 
+            validateRequestParameters: true
         paths:
           /calculate1/{operation}:
             post:
@@ -82,18 +79,17 @@ Resources:
                 uri:
                   Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${calculatorFunctionNonProxy.Arn}/invocations
                 httpMethod: POST
-          
           /calculate2/{operation}:
             post:
               parameters:
-                - name: test
-                  in: query
-                  type: string
-                  required: true
-                - name: Header-Test
-                  in: header
-                  type: string
-                  required: true
+              - name: test
+                in: query
+                type: string
+                required: true
+              - name: Header-Test
+                in: header
+                type: string
+                required: true
               consumes:
               - application/json
               produces:
@@ -109,4 +105,5 @@ Resources:
                   Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${calculatorProxy.Arn}/invocations
                 httpMethod: POST
               x-amazon-apigateway-request-validator: headerAndStringParams
-
+    Metadata:
+      SamResourceId: ApiGatewayBasics
