@@ -13,5 +13,9 @@ Gateway responses
 hacer esto con definicion implicita, no implicita y las dos a la vez
 post deployment (cache,stage throttling and per method throttling,tags,SSL certificate,add CW role)CFN
 generar y explorar SDK automatico
+INCLUIR DOCUMENTACION Y SWAGGER FILE
+Incluir Api keys y usage plans functions (creado en endpoints y en CFN)
+Ver como incluir SaaS Marketplace
+
 
 COMPRAR DOMINIO EN GODADDY Y PASARLO A ROUTE 53 LUEGO ASSIGNARLO A LA API COMO CUSTOM DOMAIN
