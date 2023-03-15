@@ -1,0 +1,24 @@
+Here I will list some interesting/useful topics and in which document you can read about it, therefore think
+of this as a "content table" which only contains the more relevant concepts:
+
+Async/sync lambda using API Gateway              -- 1-Lambda basics guide         page(3)
+Proxy and non-proxy integration                  -- 1-Lambda basics guide         page(5)
+Lambda limitations                               -- 1-Lambda basics guide         page(6)
+
+API types (VPC)                                  -- 2-Api gateway basics guide    page(1-2)
+Proxy and non-proxy integration                  -- 2-Api gateway basics guide    page(3)
+Integration Types                                -- 2-Api gateway basics guide    page(2-4)
+CORS  and CORS headers                           -- 2-Api gateway basics guide    page(4-5,7-9)
+Request Validators                               -- 2-Api gateway basics guide    page(5-6)
+Mapping/transformations                          -- 2-Api gateway basics guide    page(6-7)
+MODELS**                                         -- 2-Api gateway basics guide    page(9-11)
+Gateway responses                                -- 2-Api gateway basics guide    page(11-12)
+Cache                                            -- 2-Api gateway basics guide    page(12)
+Throttling                                       -- 2-Api gateway basics guide    page(13)
+SSL certificate                                  -- 2-Api gateway basics guide    page(13)
+Logging                                          -- 2-Api gateway basics guide    page(13-14)
+SDK Generation                                   -- 2-Api gateway basics guide    page(15)
+API keys/Usage plans                             -- 2-Api gateway basics guide    page(16-17)
+SaaS Marketplace/Usage plans                     -- 2-Api gateway basics guide    page(17)
+
+Cold Start lambda                                -- 4-Api gateway deep dive   
