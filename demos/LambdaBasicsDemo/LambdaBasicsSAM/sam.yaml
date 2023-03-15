@@ -22,6 +22,9 @@ Resources:
           Properties:
             Path: /helloMulti/{name}
             Method: get
+            RequestParameters:
+            - method.request.querystring.lang
+            - method.request.querystring.age
     Metadata:
       SamResourceId: multiHellorWorld
 Outputs:

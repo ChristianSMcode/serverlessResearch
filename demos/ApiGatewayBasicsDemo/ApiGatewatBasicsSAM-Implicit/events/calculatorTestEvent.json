@@ -1,0 +1,7 @@
+{
+  "operation":"add",
+  "input":{
+    "operand1":5,
+    "operand2":3
+  }
+}

@@ -25,6 +25,9 @@ Resources:
           Properties:
             Path: /helloMulti/{name}
             Method: get
+            RequestParameters:
+              - method.request.querystring.lang
+              - method.request.querystring.age
 
 Outputs:
   # Find out more about other implicit resources you can reference within SAM
