@@ -1,2 +1,0 @@
-This folder is just part of my personal reasearch and learning process, there could be usefull things here
-like generating API keys using the AWS sdk v3 or things like Cloud Formation features however this is not well structured and I decided to include it here just in case and not as part of the main structure guide/research
