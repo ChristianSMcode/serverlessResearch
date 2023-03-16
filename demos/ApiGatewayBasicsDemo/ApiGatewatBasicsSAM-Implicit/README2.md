@@ -37,7 +37,19 @@ you can define the validators and deploy the stack first then test the validator
 Remember also that even if you can specify the request parameters like this within the function resource:       
 - method.request.header.Header-Test
 - method.request.querystring.test
-It is not very well integrated and it should be easier as well as better configurable to do it within the API resource.This is due to if the RestApiId, if is provided then the ResquesParameters will get ignore resulting in, that this property only works for implicit API resource creation, you can see an example of this in the LambdaBasicsDemo demo where the api gets in fact created implicitly
+It is not very well integrated and it should be easier as well as better configurable to do it within the API resource.This is due to if the RestApiId, if is provided then the ResquesParameters will get ignore resulting in, that this property only works for implicit API resource creation, you can see an example of this in the LambdaBasicsDemo demo where the api gets in fact created implicitly, and its good to know that when working with explicit resources some properties might get overwrited or unconsidered.
+
+Now moving on into mock integration type, I have included an endpoint called /mockIntegration, the main purpose of using the mock integration type is to test your API Gateway configuration and ensure that the request/response mapping templates are correct before deploying the API to a live backend.
+With the mock integration type, you can simulate a backend endpoint without actually having a real backend. This allows you to test your API Gateway configuration and see how it would behave in a real environment without incurring any actual backend costs.
+
+Additionally, you can use the mock integration type to generate sample responses for your API, which can be useful for documentation or for testing client applications that will be consuming your API.
+There are little tricks within this integration type like that the integration reques mapping template accepst all kind of keys but the only useful is the statusCode which will define what response integration template will be used, other interesting thin is that since mock integration doesnt offer a backend the body is always lost within the integration request and is not reachable within the integration response tho I found a trick (which I dont suggest to use in relevant scenarios since this may get fixed/patched by aws which is to set the body to be a parameter within the integration request, since parameters like headers,paths and queryStringParameters are accesible in the integration response that will make the body accesible aswell as transformable in the integration response.)
+
+You can read about this workaround here:
+https://stackoverflow.com/questions/47918477/aws-api-gateway-use-mock-integration-to-echo-response-body
+
+Note: This integration type could cause some very creative solutions.It cant be tested locally with sam local
+start-api command
 
 General considarions:
 Example on how to call the endpoint/resource is within the postman collection in which you can see the url and path/query parameters.
