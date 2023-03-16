@@ -1,0 +1,254 @@
+{
+	"info": {
+		"_postman_id": "a9cd6291-35d9-40cf-b381-6fbd01b43a88",
+		"name": "GatewayBasicsResearch",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "httpIntegrationAWS",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://f0x7vtxsv2.execute-api.us-west-2.amazonaws.com/TestingGateway/httpIntegration",
+					"protocol": "https",
+					"host": [
+						"f0x7vtxsv2",
+						"execute-api",
+						"us-west-2",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"TestingGateway",
+						"httpIntegration"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "httpIntegrationAWS",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nombre\":\"Christian\",\r\n    \"edad\":24\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://f0x7vtxsv2.execute-api.us-west-2.amazonaws.com/TestingGateway/httpIntegration",
+					"protocol": "https",
+					"host": [
+						"f0x7vtxsv2",
+						"execute-api",
+						"us-west-2",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"TestingGateway",
+						"httpIntegration"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "calculatorFunctionNonProxy Copy",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"operand1\":5,\r\n    \"operand2\":3\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}} /calculate/add",
+					"protocol": "http",
+					"host": [
+						"{{host}} "
+					],
+					"path": [
+						"calculate",
+						"add"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "calculatorNonProxyAWS",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"operand1\":5,\r\n    \"operand2\":3\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://68m0ciw6p0.execute-api.us-west-2.amazonaws.com/TestingGateway/calculate/add",
+					"protocol": "https",
+					"host": [
+						"68m0ciw6p0",
+						"execute-api",
+						"us-west-2",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"TestingGateway",
+						"calculate",
+						"add"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "calculatorFunctionProxy",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Header-Test",
+						"value": "header-validated",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"input\": { \r\n        \"operand1\":5,\r\n        \"operand2\":5\r\n        }\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}} /calculate2/substract?test=querystringvalidated",
+					"protocol": "http",
+					"host": [
+						"{{host}} "
+					],
+					"path": [
+						"calculate2",
+						"substract"
+					],
+					"query": [
+						{
+							"key": "test",
+							"value": "querystringvalidated"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "morckIntegrationAWS",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Header-Test",
+						"value": "header-validated",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\":\"Christian\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://f0x7vtxsv2.execute-api.us-west-2.amazonaws.com/TestingGateway/mockIntegration?scope=internall",
+					"protocol": "https",
+					"host": [
+						"f0x7vtxsv2",
+						"execute-api",
+						"us-west-2",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"TestingGateway",
+						"mockIntegration"
+					],
+					"query": [
+						{
+							"key": "scope",
+							"value": "internall"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "calculatorProxyAWS",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Header-Test",
+						"value": "hederTested",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"input\": { \r\n        \"operand1\":5,\r\n        \"operand2\":5\r\n        }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://rb86af6909.execute-api.us-west-2.amazonaws.com/TestingGateway/calculate2/add?test=querytested",
+					"protocol": "https",
+					"host": [
+						"rb86af6909",
+						"execute-api",
+						"us-west-2",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"TestingGateway",
+						"calculate2",
+						"add"
+					],
+					"query": [
+						{
+							"key": "test",
+							"value": "querytested"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

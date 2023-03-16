@@ -31,9 +31,7 @@ Resources:
             #RequestParameters:
             #  - method.request.header.Header-Test
             #  - method.request.querystring.test
-                  
-
-  
+                    
   calculatorProxy:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
@@ -109,6 +107,7 @@ Resources:
                   Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${calculatorProxy.Arn}/invocations
                 httpMethod: POST
               x-amazon-apigateway-request-validator: headerAndStringParams
+          
           /mockIntegration:
               post:
                 consumes:
@@ -144,6 +143,40 @@ Resources:
                       : 200,\r\n  #else\r\n    \"statusCode\": 400,\r\n  #end\r\n}"
                   passthroughBehavior: "when_no_templates"
                   type: "mock"
+
+          /httpIntegration:
+            get:
+              consumes:
+              - application/json
+              produces:
+              - application/json
+              responses:
+                '200':
+                  description: ok
+              x-amazon-apigateway-integration:
+                type: HTTP
+                uri: https://jsonplaceholder.typicode.com/users
+                httpMethod: GET
+                responses:
+                  default:
+                    statusCode: 200
+                  passthroughBehaviour: "when_no_match"
+            post:
+              consumes:
+              - application/json
+              produces:
+              - application/json
+              responses:
+                '200':
+                  description: ok
+              x-amazon-apigateway-integration:
+                type: HTTP_PROXY
+                uri: https://jsonplaceholder.typicode.com/posts
+                httpMethod: POST
+                responses:
+                  default:
+                    statusCode: 200
+                  passthroughBehaviour: "when_no_match"
 
 
 

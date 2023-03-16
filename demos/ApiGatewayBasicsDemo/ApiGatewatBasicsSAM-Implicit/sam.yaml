@@ -142,5 +142,38 @@ Resources:
                     \n  #end\r\n}"
                 passthroughBehavior: when_no_templates
                 type: mock
+          /httpIntegration:
+            get:
+              consumes:
+              - application/json
+              produces:
+              - application/json
+              responses:
+                '200':
+                  description: ok
+              x-amazon-apigateway-integration:
+                type: HTTP
+                uri: https://jsonplaceholder.typicode.com/users
+                httpMethod: GET
+                responses:
+                  default:
+                    statusCode: 200
+                  passthroughBehaviour: when_no_match
+            post:
+              consumes:
+              - application/json
+              produces:
+              - application/json
+              responses:
+                '200':
+                  description: ok
+              x-amazon-apigateway-integration:
+                type: HTTP_PROXY
+                uri: https://jsonplaceholder.typicode.com/posts
+                httpMethod: POST
+                responses:
+                  default:
+                    statusCode: 200
+                  passthroughBehaviour: when_no_match
     Metadata:
       SamResourceId: ApiGatewayBasics
