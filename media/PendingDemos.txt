@@ -7,7 +7,7 @@ Incluir diferentes formas de definir los recursos.
 VALIDACION QUERY STRING Y HEADERS CFN (listo)
 CREAR API QUE INCLUYE TODOS LOS TIPOS DE INTEGRACION, INCLUYENDO PROXY Y NO PROXY CFN (proceso)
     -Lambda proxy y no proxy (falta poner mapping en no proxy)
-    -
+    -Mock (listo)
     -
     -
     -

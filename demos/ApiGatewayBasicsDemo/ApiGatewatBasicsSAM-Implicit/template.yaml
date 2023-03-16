@@ -109,4 +109,42 @@ Resources:
                   Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${calculatorProxy.Arn}/invocations
                 httpMethod: POST
               x-amazon-apigateway-request-validator: headerAndStringParams
+          /mockIntegration:
+              post:
+                consumes:
+                - "application/json"
+                produces:
+                - "application/json"
+                responses:
+                  "200":
+                    description: "200 response"
+                  "400":
+                    description: "400 response"
+                x-amazon-apigateway-integration:
+                  responses:
+                    "4\\d{2}":
+                      statusCode: "400"
+                      responseTemplates:
+                        application/json: "#set($body = $context.requestOverride.path.body)\r\
+                          \n{\r\n    \"statusCode\": 400,\r\n    \"message\": \"The invoked\
+                          \ method is not supported on the API resource.\",\r\n    \"metadata\"\
+                          \ {\r\n        \"httpMethod\":$context.httpMethod,\r\n        \"body\"\
+                          :$body,\r\n        \"custom\" : $input.params()\r\n        }\r\n}"
+                    default:
+                      statusCode: "200"
+                      responseTemplates:
+                        application/json: "#set($body = $context.requestOverride.path.body)\r\
+                          \n{\r\n    \"statusCode\": 200,\r\n    \"message\": \"Go ahead without\
+                          \ me\",\r\n    \"metadata\" {\r\n        \"httpMethod\":$context.httpMethod,\r\
+                          \n        \"body\":$body,\r\n        \"custom\" : $input.params()\r\
+                          \n    }\r\n}"
+                  requestTemplates:
+                    application/json: "#set($context.requestOverride.path.body = $input.body)\r\
+                      \n{\r\n  #if( $input.params('scope') == \"internal\" )\r\n    \"statusCode\"\
+                      : 200,\r\n  #else\r\n    \"statusCode\": 400,\r\n  #end\r\n}"
+                  passthroughBehavior: "when_no_templates"
+                  type: "mock"
+
+
+
 
