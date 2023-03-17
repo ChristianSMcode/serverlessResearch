@@ -26,3 +26,9 @@ nested stacks could be usefull to structure the deployment of a full infrastruct
 COMPRAR DOMINIO EN GODADDY Y PASARLO A ROUTE 53 LUEGO ASSIGNARLO A LA API COMO CUSTOM DOMAIN
 Incluir investigacion personalizada (mas actualizada leyendo documentacion)
 Incluir diferentes formas de definir los recursos (API con CFN solo)
+
+Creacion de bucket para SAM obligatorio antes de creacion CFN (el bucket es automatico sino)
+Endpoint type? edge regional?
+Local testing con dos apis? solo funciona con una?
+Puede una sola funcion ser usada en varias apis? si se puede usar pero el codigo, en el template se debe definir
+como dos recursos differentes a no ser que se use AWS::Serverless::Lambda envez de function?

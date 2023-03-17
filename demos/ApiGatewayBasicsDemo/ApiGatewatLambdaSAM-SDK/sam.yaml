@@ -1,0 +1,108 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: 'ApiGatewatLambdaSAM-SDK
+
+  Sample SAM Template for ApiGatewatLambdaSAM-SDK
+
+  '
+Globals:
+  Function:
+    Timeout: 3
+    MemorySize: 128
+Resources:
+  helloWorldInitial:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: s3://ressolve-research-gateway-sdk-demo/81725e5ae8b6d04f05d91c993761d6fd
+      Handler: helloWorld.handler
+      Runtime: nodejs16.x
+      Architectures:
+      - x86_64
+      Events:
+        HelloWorld:
+          Type: Api
+          Properties:
+            Path: /helloWorldInitial
+            Method: get
+            RestApiId:
+              Ref: ApiInitial
+    Metadata:
+      SamResourceId: helloWorldInitial
+  helloWorldMain:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: s3://ressolve-research-gateway-sdk-demo/81725e5ae8b6d04f05d91c993761d6fd
+      Handler: helloWorld.handler
+      Runtime: nodejs16.x
+      Architectures:
+      - x86_64
+      Events:
+        HelloWorld:
+          Type: Api
+          Properties:
+            Path: /helloWorldMain
+            Method: get
+            RestApiId:
+              Ref: ApiMain
+    Metadata:
+      SamResourceId: helloWorldMain
+  ApiInitial:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: testing
+      Name: ApiInitial
+      DefinitionBody:
+        swagger: '2.0'
+        info:
+          title: ApiInitial-title
+          version: '1'
+        basePath: /ApiInitial
+        schemes:
+        - https
+        paths:
+          /helloWorldInitial:
+            get:
+              consumes:
+              - application/json
+              produces:
+              - application/json
+              responses:
+                '200':
+                  description: ok
+              x-amazon-apigateway-integration:
+                type: aws_proxy
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${helloWorldInitial.Arn}/invocations
+                httpMethod: POST
+    Metadata:
+      SamResourceId: ApiInitial
+  ApiMain:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: testing
+      Name: ApiMain
+      DefinitionBody:
+        swagger: '2.0'
+        info:
+          title: ApiMain-title
+          version: '1'
+        basePath: /ApiMain
+        schemes:
+        - https
+        paths:
+          /helloWorldMain:
+            get:
+              consumes:
+              - application/json
+              produces:
+              - application/json
+              responses:
+                '200':
+                  description: ok
+              x-amazon-apigateway-integration:
+                type: aws_proxy
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${helloWorldMain.Arn}/invocations
+                httpMethod: POST
+    Metadata:
+      SamResourceId: ApiMain
