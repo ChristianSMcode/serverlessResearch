@@ -270,20 +270,32 @@ Resources:
                   integration.request.path.file: method.request.querystring.file
                   integration.request.path.bucket: method.request.querystring.bucket
                 passthroughBehaviour: when_no_match
-          /awsIntegration2/{Bucket}:
-            put:
+          /awsIntegration2:
+            post:
+              produces:
+              - application/json
+              parameters:
+              - name: Bucket
+                in: query
+                required: true
+                type: string
               responses:
                 '200':
-                  description: ok
+                  description: 200 response
+                '500':
+                  description: 500 response
+              x-amazon-apigateway-request-validator: headerAndStringParams
               x-amazon-apigateway-integration:
                 type: aws
-                passthroughBehavior: when_no_match
+                requestParameters:
+                  integration.request.path.Bucket: method.request.querystring.Bucket
+                passthroughBehavior: when_no_templates
                 credentials:
                   Fn::GetAtt:
                   - s3Role
                   - Arn
                 uri:
-                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:s3:action/CreateBucket
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:{Bucket}.s3:action/CreateBucket
                 httpMethod: PUT
                 responses:
                   default:

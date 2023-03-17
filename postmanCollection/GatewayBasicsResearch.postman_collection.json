@@ -287,6 +287,47 @@
 			"response": []
 		},
 		{
+			"name": "awsIntegration2AWS",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "<CreateBucketConfiguration xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\">\r\n   <LocationConstraint>us-west-2</LocationConstraint>\r\n</CreateBucketConfiguration>",
+					"options": {
+						"raw": {
+							"language": "xml"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://hf7t5lyn7d.execute-api.us-west-2.amazonaws.com/TestingGateway/awsIntegration2?Bucket=test-bucket-int-action-type",
+					"protocol": "https",
+					"host": [
+						"hf7t5lyn7d",
+						"execute-api",
+						"us-west-2",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"TestingGateway",
+						"awsIntegration2"
+					],
+					"query": [
+						{
+							"key": "Bucket",
+							"value": "test-bucket-int-action-type"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "awsDynamoIntegration",
 			"request": {
 				"method": "POST",

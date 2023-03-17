@@ -4,9 +4,10 @@ Mock integration (listo)
 http, http_proxy integration (listo)
 
 Include a basic example with python.
+AWS service (proceso) xml request s3
 CREAR API QUE INCLUYE TODOS LOS TIPOS DE INTEGRACION, INCLUYENDO PROXY Y NO PROXY CFN (proceso)
     -Lambda proxy y no proxy (falta poner mapping en no proxy y body validate en proxy)
-    -AWS service (proceso)
+
 body validation with models CFN (pendiente)
 DEMO CON CORS CFN
 Incluir Api keys y usage plans functions (creado en endpoints y en CFN)
