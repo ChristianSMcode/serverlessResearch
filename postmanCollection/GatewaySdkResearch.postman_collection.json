@@ -1,0 +1,55 @@
+{
+	"info": {
+		"_postman_id": "d125be9e-fe90-4f53-9e5c-cf3a9964a786",
+		"name": "GatewaySdkResearch",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "helloWorldInitialApi",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://8lj97zpet5.execute-api.us-west-2.amazonaws.com/testing/helloWorldInitial",
+					"protocol": "https",
+					"host": [
+						"8lj97zpet5",
+						"execute-api",
+						"us-west-2",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"testing",
+						"helloWorldInitial"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "helloWorldMainApi",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://zd61ui9f2i.execute-api.us-west-2.amazonaws.com/testing/helloWorldMain",
+					"protocol": "https",
+					"host": [
+						"zd61ui9f2i",
+						"execute-api",
+						"us-west-2",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"testing",
+						"helloWorldMain"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
