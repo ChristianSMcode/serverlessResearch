@@ -48,11 +48,62 @@ Resources:
             Method: POST
             RestApiId: !Ref ApiGatewayBasics
   
+  s3Role:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: apigateway.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AmazonS3FullAccess
+
+  dynamoDB:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: apigateway.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess
+
+  dynamoTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: cars
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+      AttributeDefinitions:
+        - AttributeName: ID
+          AttributeType: S
+      KeySchema:
+        - AttributeName: ID
+          KeyType: HASH
+
+  apiLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Join
+        - '-'
+        - - !Ref ApiGatewayBasics
+          - access-logs
+
   ApiGatewayBasics:
     Type: AWS::Serverless::Api
     Properties:
       Name: ApiGatewayBasics
       StageName: TestingGateway
+      AccessLogSetting:
+        DestinationArn: !GetAtt apiLogGroup.Arn
+        Format: $context.extendedRequestId $context.identity.sourceIp $context.identity.caller $context.identity.user [$context.requestTime] "$context.httpMethod $context.resourcePath $context.protocol" $context.status $context.responseLength $context.requestId
       DefinitionBody:
         swagger: "2.0"
         info:
@@ -177,7 +228,82 @@ Resources:
                   default:
                     statusCode: 200
                   passthroughBehaviour: "when_no_match"
-
+          
+          /awsIntegration:
+            get:
+              parameters:
+                - name: bucket
+                  in: query
+                  required: false
+                  type: string
+                - name: file
+                  in: query
+                  required: false
+                  type: string
+              consumes:
+              - application/json
+              produces:
+              - application/json
+              responses:
+                '200':
+                  description: ok
+              x-amazon-apigateway-integration:
+                type: AWS
+                credentials: !GetAtt s3Role.Arn
+                uri:
+                   Fn::Sub: arn:aws:apigateway:${AWS::Region}:s3:path/{bucket}/{file}
+                httpMethod: GET
+                responses:
+                    default:
+                      statusCode: 200
+                requestParameters:
+                  integration.request.path.file: "method.request.querystring.file"
+                  integration.request.path.bucket: "method.request.querystring.bucket"
+                passthroughBehaviour: "when_no_match"
+          
+          /awsIntegration2:
+            post:
+              produces:
+                - application/json
+              parameters:
+                - name: Bucket
+                  in: query
+                  required: true
+                  type: string
+              responses:
+                '200':
+                  description: 200 response
+                '500':
+                  description: 500 response
+              x-amazon-apigateway-request-validator: headerAndStringParams
+              x-amazon-apigateway-integration:
+                type: "aws"
+                requestParameters:
+                  integration.request.path.Bucket: method.request.querystring.Bucket
+                passthroughBehavior: "when_no_templates"
+                credentials: !GetAtt s3Role.Arn
+                uri:
+                   Fn::Sub: "arn:aws:apigateway:${AWS::Region}:{Bucket}.s3:action/CreateBucket"
+                httpMethod: PUT
+                responses:
+                  default:
+                    statusCode: 200
+          
+          /dynamoIntegration:
+              post:
+                responses:
+                  "200":
+                    description: "200 response"
+                x-amazon-apigateway-integration:
+                  credentials: !GetAtt dynamoDB.Arn
+                  httpMethod: "POST"
+                  uri: 
+                    Fn::Sub: "arn:aws:apigateway:${AWS::Region}:dynamodb:action/PutItem"
+                  responses:
+                    default:
+                      statusCode: "200"
+                  passthroughBehavior: "when_no_match"
+                  type: "aws"
 
 
 

@@ -249,6 +249,115 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "awsIntegrationAWS",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://hf7t5lyn7d.execute-api.us-west-2.amazonaws.com/TestingGateway/awsIntegration?bucket=plsdsdsdgsd&file=test1.txt",
+					"protocol": "https",
+					"host": [
+						"hf7t5lyn7d",
+						"execute-api",
+						"us-west-2",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"TestingGateway",
+						"awsIntegration"
+					],
+					"query": [
+						{
+							"key": "bucket",
+							"value": "plsdsdsdgsd"
+						},
+						{
+							"key": "file",
+							"value": "test1.txt"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "awsIntegration2AWS",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "<CreateBucketConfiguration xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\">\r\n   <LocationConstraint>us-west-2</LocationConstraint>\r\n</CreateBucketConfiguration>",
+					"options": {
+						"raw": {
+							"language": "xml"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://hf7t5lyn7d.execute-api.us-west-2.amazonaws.com/TestingGateway/awsIntegration2?Bucket=test-bucket-int-action-type",
+					"protocol": "https",
+					"host": [
+						"hf7t5lyn7d",
+						"execute-api",
+						"us-west-2",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"TestingGateway",
+						"awsIntegration2"
+					],
+					"query": [
+						{
+							"key": "Bucket",
+							"value": "test-bucket-int-action-type"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "awsDynamoIntegration",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"TableName\": \"cars\",\r\n    \"Item\": {\r\n        \"ID\": {\r\n            \"S\": \"3\"\r\n        },\r\n        \"name\": {\r\n            \"S\": \"Christian\"\r\n        }\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://hf7t5lyn7d.execute-api.us-west-2.amazonaws.com/TestingGateway/dynamoIntegration",
+					"protocol": "https",
+					"host": [
+						"hf7t5lyn7d",
+						"execute-api",
+						"us-west-2",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"TestingGateway",
+						"dynamoIntegration"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }
