@@ -31,7 +31,24 @@ Resources:
             #RequestParameters:
             #  - method.request.header.Header-Test
             #  - method.request.querystring.test
-                    
+
+  pythonHW:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      Description: Testing
+      CodeUri: pythonHW/
+      Handler: pythonHW.lambda_handler
+      Runtime: python3.8
+      Architectures:
+      - x86_64
+      Events:
+        ApiEvent:
+          Type: Api 
+          Properties:
+            Path: /pythonHW
+            Method: GET
+            RestApiId: !Ref ApiGatewayBasics
+                 
   calculatorProxy:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
@@ -304,6 +321,21 @@ Resources:
                       statusCode: "200"
                   passthroughBehavior: "when_no_match"
                   type: "aws"
-
+          
+          /pythonHW:
+            get:
+              consumes:
+              - application/json
+              produces:
+              - application/json
+              responses:
+                '200':
+                  description: ok
+              x-amazon-apigateway-integration:
+                type: aws
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${pythonHW.Arn}/invocations
+                httpMethod: POST
+          
 
 
