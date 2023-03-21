@@ -32,7 +32,13 @@
 			"name": "helloWorldMainApi",
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "071enP5aqF89RDlNXa2N23nYjr5zdEXv8tx8H5sb",
+						"type": "default"
+					}
+				],
 				"url": {
 					"raw": "https://zd61ui9f2i.execute-api.us-west-2.amazonaws.com/testing/helloWorldMain",
 					"protocol": "https",
@@ -46,6 +52,77 @@
 					"path": [
 						"testing",
 						"helloWorldMain"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "createAssignKeyInitialAWS",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\":\"TestKeyCreation\",\r\n    \"description\":\"TestKeyCreation\",\r\n    \"keyType\": \"API_KEY\",\r\n    \"usagePlanId\": \"fiboqh\",\r\n    \"enabled\":true\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://8lj97zpet5.execute-api.us-west-2.amazonaws.com/testing/createAssignKey",
+					"protocol": "https",
+					"host": [
+						"8lj97zpet5",
+						"execute-api",
+						"us-west-2",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"testing",
+						"createAssignKey"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "writeSQSmessageMainAWS",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "071enP5aqF89RDlNXa2N23nYjr5zdEXv8tx8H5sb",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"message\":\"Hola desde apigateway\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://zd61ui9f2i.execute-api.us-west-2.amazonaws.com/testing/sqs/writeSQSmessage",
+					"protocol": "https",
+					"host": [
+						"zd61ui9f2i",
+						"execute-api",
+						"us-west-2",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"testing",
+						"sqs",
+						"writeSQSmessage"
 					]
 				}
 			},

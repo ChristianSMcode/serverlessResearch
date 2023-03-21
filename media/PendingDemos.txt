@@ -1,15 +1,16 @@
-Agregar loggin a la API(listo)
+Agregar logs a la API(listo)
 VALIDACION QUERY STRING Y HEADERS CFN (listo)
 Mock integration (listo)
 http, http_proxy integration (listo)
 AWS service (Listo) 
+Incluir Api keys y usage plans functions (listo)
 
 Include a basic example with python (pendiente)
 body validation with models CFN (body validate en proxy-primera ruta que hice) (pendiente)
 -Lambda proxy y no proxy (falta poner mapping en no proxy)
 
 DEMO CON CORS CFN
-Incluir Api keys y usage plans functions (creado en endpoints y en CFN)
+
 
 Gateway responses(proceso)
 post deployment (cache,stage throttling and per method throttling,tags,SSL certificate,add CW role)CFN
@@ -29,6 +30,3 @@ Incluir diferentes formas de definir los recursos (API con CFN solo)
 
 Creacion de bucket para SAM obligatorio antes de creacion CFN (el bucket es automatico sino)
 Endpoint type? edge regional?
-Local testing con dos apis? solo funciona con una?
-Puede una sola funcion ser usada en varias apis? si se puede usar pero el codigo, en el template se debe definir
-como dos recursos differentes a no ser que se use AWS::Serverless::Lambda envez de function?
