@@ -12,6 +12,7 @@ Globals:
     MemorySize: 128
 
 Resources:
+
   helloWorldInitial:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
@@ -78,36 +79,6 @@ Resources:
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
 
-  helloWorldMain:
-    Type: AWS::Serverless::Function 
-    Properties:
-      CodeUri: functions/helloWorld/
-      Handler: helloWorld.handler
-      Runtime: nodejs16.x
-      Architectures:
-      - x86_64
-      Events:
-        HelloWorld:
-          Type: Api 
-          Properties:
-            Path: /helloWorldMain
-            Method: get
-            RestApiId: !Ref ApiMain
- 
-  DefaultUsagePlan:
-    Type: AWS::ApiGateway::UsagePlan
-    Properties:
-      ApiStages:
-        - ApiId: !Ref ApiMain
-          Stage: !Ref ApiMain.Stage
-      UsagePlanName: DefaultUsagePlan
-      Quota:
-        Limit: 1000
-        Period: MONTH
-      Throttle:
-        BurstLimit: 200
-        RateLimit: 100
-
   ApiInitial:
     Type: AWS::Serverless::Api
     Properties:
@@ -152,6 +123,90 @@ Resources:
                     Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${createAssignKey.Arn}/invocations
                   httpMethod: POST
 
+#-------------------------------------------------------------------------------------
+
+  helloWorldMain:
+    Type: AWS::Serverless::Function 
+    Properties:
+      CodeUri: functions/helloWorld/
+      Handler: helloWorld.handler
+      Runtime: nodejs16.x
+      Architectures:
+      - x86_64
+      Events:
+        HelloWorld:
+          Type: Api 
+          Properties:
+            Path: /helloWorldMain
+            Method: get
+            RestApiId: !Ref ApiMain
+ 
+  writeToSQS:
+    Type: AWS::Serverless::Function
+    Properties:
+      Environment:
+        Variables:
+          WRITE_QUEUE_URL: !GetAtt SQSBacicQueue.QueueUrl
+      CodeUri: functions/writeToSQS
+      Handler: writeSQSmessage.handler
+      Role: !GetAtt writeSQSrole.Arn
+      Runtime: nodejs16.x
+      Architectures:
+      - x86_64
+      Events:
+        writeInvocation:
+          Type: Api
+          Properties:
+            Path: /sqs/writeSQSmessage
+            Method: POST
+            RestApiId: !Ref ApiMain
+
+  writeSQSrole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Policies:
+        - PolicyName: api-gateway-policy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - sqs:DeleteMessage
+                  - sqs:SendMessage
+                Resource:
+                  - !GetAtt SQSBacicQueue.Arn
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+  
+  DefaultUsagePlan:
+    Type: AWS::ApiGateway::UsagePlan
+    Properties:
+      ApiStages:
+        - ApiId: !Ref ApiMain
+          Stage: !Ref ApiMain.Stage
+      UsagePlanName: DefaultUsagePlan
+      Quota:
+        Limit: 1000
+        Period: MONTH
+      Throttle:
+        BurstLimit: 200
+        RateLimit: 100
+
+  SQSBacicQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: writeMainQueue
+      DelaySeconds: 0
+      VisibilityTimeout: 15
 
   ApiMain:
     Type: AWS::Serverless::Api
@@ -187,5 +242,21 @@ Resources:
                 type: aws_proxy
                 uri:
                   Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${helloWorldMain.Arn}/invocations
+                httpMethod: POST
+          /sqs/writeSQSmessage:
+            post:
+              security:
+              - api_key: []
+              consumes:
+              - application/json
+              produces:
+              - application/json
+              responses:
+                '200':
+                  description: ok
+              x-amazon-apigateway-integration:
+                type: aws_proxy
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${writeToSQS.Arn}/invocations
                 httpMethod: POST
 

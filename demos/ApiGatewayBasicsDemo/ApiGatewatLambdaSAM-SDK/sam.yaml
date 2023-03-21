@@ -84,41 +84,6 @@ Resources:
       - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
     Metadata:
       SamResourceId: addCreateApiKeyFunctionRole
-  helloWorldMain:
-    Type: AWS::Serverless::Function
-    Properties:
-      CodeUri: s3://ressolve-research-gateway-sdk-demo/81725e5ae8b6d04f05d91c993761d6fd
-      Handler: helloWorld.handler
-      Runtime: nodejs16.x
-      Architectures:
-      - x86_64
-      Events:
-        HelloWorld:
-          Type: Api
-          Properties:
-            Path: /helloWorldMain
-            Method: get
-            RestApiId:
-              Ref: ApiMain
-    Metadata:
-      SamResourceId: helloWorldMain
-  DefaultUsagePlan:
-    Type: AWS::ApiGateway::UsagePlan
-    Properties:
-      ApiStages:
-      - ApiId:
-          Ref: ApiMain
-        Stage:
-          Ref: ApiMain.Stage
-      UsagePlanName: DefaultUsagePlan
-      Quota:
-        Limit: 1000
-        Period: MONTH
-      Throttle:
-        BurstLimit: 200
-        RateLimit: 100
-    Metadata:
-      SamResourceId: DefaultUsagePlan
   ApiInitial:
     Type: AWS::Serverless::Api
     Properties:
@@ -163,6 +128,106 @@ Resources:
                 httpMethod: POST
     Metadata:
       SamResourceId: ApiInitial
+  helloWorldMain:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: s3://ressolve-research-gateway-sdk-demo/81725e5ae8b6d04f05d91c993761d6fd
+      Handler: helloWorld.handler
+      Runtime: nodejs16.x
+      Architectures:
+      - x86_64
+      Events:
+        HelloWorld:
+          Type: Api
+          Properties:
+            Path: /helloWorldMain
+            Method: get
+            RestApiId:
+              Ref: ApiMain
+    Metadata:
+      SamResourceId: helloWorldMain
+  writeToSQS:
+    Type: AWS::Serverless::Function
+    Properties:
+      Environment:
+        Variables:
+          WRITE_QUEUE_URL:
+            Fn::GetAtt:
+            - SQSBacicQueue
+            - QueueUrl
+      CodeUri: s3://ressolve-research-gateway-sdk-demo/35769717744e0dc28d8e3e3765a33b84
+      Handler: writeSQSmessage.handler
+      Role:
+        Fn::GetAtt:
+        - writeSQSrole
+        - Arn
+      Runtime: nodejs16.x
+      Architectures:
+      - x86_64
+      Events:
+        writeInvocation:
+          Type: Api
+          Properties:
+            Path: /sqs/writeSQSmessage
+            Method: POST
+            RestApiId:
+              Ref: ApiMain
+    Metadata:
+      SamResourceId: writeToSQS
+  writeSQSrole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service:
+            - lambda.amazonaws.com
+          Action:
+          - sts:AssumeRole
+      Policies:
+      - PolicyName: api-gateway-policy
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+          - Effect: Allow
+            Action:
+            - sqs:DeleteMessage
+            - sqs:SendMessage
+            Resource:
+            - Fn::GetAtt:
+              - SQSBacicQueue
+              - Arn
+      ManagedPolicyArns:
+      - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+    Metadata:
+      SamResourceId: writeSQSrole
+  DefaultUsagePlan:
+    Type: AWS::ApiGateway::UsagePlan
+    Properties:
+      ApiStages:
+      - ApiId:
+          Ref: ApiMain
+        Stage:
+          Ref: ApiMain.Stage
+      UsagePlanName: DefaultUsagePlan
+      Quota:
+        Limit: 1000
+        Period: MONTH
+      Throttle:
+        BurstLimit: 200
+        RateLimit: 100
+    Metadata:
+      SamResourceId: DefaultUsagePlan
+  SQSBacicQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: writeMainQueue
+      DelaySeconds: 0
+      VisibilityTimeout: 15
+    Metadata:
+      SamResourceId: SQSBacicQueue
   ApiMain:
     Type: AWS::Serverless::Api
     Properties:
@@ -197,6 +262,22 @@ Resources:
                 type: aws_proxy
                 uri:
                   Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${helloWorldMain.Arn}/invocations
+                httpMethod: POST
+          /sqs/writeSQSmessage:
+            post:
+              security:
+              - api_key: []
+              consumes:
+              - application/json
+              produces:
+              - application/json
+              responses:
+                '200':
+                  description: ok
+              x-amazon-apigateway-integration:
+                type: aws_proxy
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${writeToSQS.Arn}/invocations
                 httpMethod: POST
     Metadata:
       SamResourceId: ApiMain
