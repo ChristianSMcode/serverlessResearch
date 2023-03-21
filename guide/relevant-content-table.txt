@@ -1,6 +1,8 @@
 Here I will list some interesting/useful topics and in which document you can read about it, therefore think
 of this as a "content table" which only contains the more relevant concepts:
 
+GUIDES-----------------------------------------------------------------------------------------
+
 Async/sync lambda using API Gateway              -- 1-Lambda basics guide         page(3)
 Proxy and non-proxy integration                  -- 1-Lambda basics guide         page(5)
 Lambda limitations                               -- 1-Lambda basics guide         page(6)
@@ -22,3 +24,5 @@ API keys/Usage plans                             -- 2-Api gateway basics guide  
 SaaS Marketplace/Usage plans                     -- 2-Api gateway basics guide    page(17)
 
 Cold Start lambda                                -- 4-Api gateway deep dive   
+
+DEMOS-----------------------------------------------------------------------------------------

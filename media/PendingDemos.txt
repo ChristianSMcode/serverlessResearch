@@ -8,7 +8,8 @@ Incluir Api keys y usage plans functions (listo)
 Include a basic example with python (pendiente)
 body validation with models CFN (body validate en proxy-primera ruta que hice) (pendiente)
 -Lambda proxy y no proxy (falta poner mapping en no proxy)
-
+-Usar modelos en lugar de templates
+-Actualizar tabla contenidos importantes(incluid links) y en reference-links file
 DEMO CON CORS CFN
 
 
