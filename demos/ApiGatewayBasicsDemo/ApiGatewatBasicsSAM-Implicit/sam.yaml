@@ -29,6 +29,25 @@ Resources:
               Ref: ApiGatewayBasics
     Metadata:
       SamResourceId: calculatorFunctionNonProxy
+  pythonHW:
+    Type: AWS::Serverless::Function
+    Properties:
+      Description: Testing
+      CodeUri: s3://ressolve-research-gateway-basics-demo/5ec8ed18680da88326e474f30a1aa9a8
+      Handler: pythonHW.lambda_handler
+      Runtime: python3.8
+      Architectures:
+      - x86_64
+      Events:
+        ApiEvent:
+          Type: Api
+          Properties:
+            Path: /pythonHW
+            Method: POST
+            RestApiId:
+              Ref: ApiGatewayBasics
+    Metadata:
+      SamResourceId: pythonHW
   calculatorProxy:
     Type: AWS::Serverless::Function
     Properties:
@@ -318,5 +337,19 @@ Resources:
                     statusCode: '200'
                 passthroughBehavior: when_no_match
                 type: aws
+          /pythonHW:
+            post:
+              consumes:
+              - application/json
+              produces:
+              - application/json
+              responses:
+                '200':
+                  description: ok
+              x-amazon-apigateway-integration:
+                type: aws_proxy
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${pythonHW.Arn}/invocations
+                httpMethod: POST
     Metadata:
       SamResourceId: ApiGatewayBasics

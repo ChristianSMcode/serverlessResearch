@@ -358,6 +358,65 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "pythonHWLocal",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\":\"Lucas\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://hf7t5lyn7d.execute-api.us-west-2.amazonaws.com/TestingGateway/pythonHW",
+					"protocol": "https",
+					"host": [
+						"hf7t5lyn7d",
+						"execute-api",
+						"us-west-2",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"TestingGateway",
+						"pythonHW"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "pythonHWAWS",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\":\"Pedro\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}/pythonHW",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"pythonHW"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }
