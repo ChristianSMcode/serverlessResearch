@@ -46,7 +46,7 @@ Resources:
           Type: Api 
           Properties:
             Path: /pythonHW
-            Method: GET
+            Method: POST
             RestApiId: !Ref ApiGatewayBasics
                  
   calculatorProxy:
@@ -323,7 +323,7 @@ Resources:
                   type: "aws"
           
           /pythonHW:
-            get:
+            post:
               consumes:
               - application/json
               produces:
@@ -332,7 +332,7 @@ Resources:
                 '200':
                   description: ok
               x-amazon-apigateway-integration:
-                type: aws
+                type: aws_proxy
                 uri:
                   Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${pythonHW.Arn}/invocations
                 httpMethod: POST

@@ -95,3 +95,6 @@ https://json-schema.org/
 
 Cors:
 https://docs.aws.amazon.com/apigateway/latest/developerguide/how-to-cors.html
+
+SAM complementary python guide:
+https://medium.com/@devops_83824/developing-serverless-applications-on-aws-using-aws-serverless-application-model-sam-cdcf3bda59bd

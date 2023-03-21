@@ -5,8 +5,8 @@ http, http_proxy integration (listo)
 AWS service (Listo) 
 Incluir Api keys y usage plans functions (listo)
 -Actualizar tabla contenidos importantes(incluir links) y en reference-links file (listo)
+Include a basic example with python (Listo)
 
-Include a basic example with python (pendiente)
 body validation with models CFN (body validate en proxy-primera ruta que hice) (pendiente)
 -Lambda proxy y no proxy (falta poner mapping en no proxy)
 -Usar modelos en lugar de templates
@@ -31,3 +31,4 @@ Incluir diferentes formas de definir los recursos (API con CFN solo)
 
 Creacion de bucket para SAM obligatorio antes de creacion CFN (el bucket es automatico sino)
 Endpoint type? edge regional?
+Incluir python con dependencias/modulos
