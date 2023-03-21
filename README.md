@@ -9,6 +9,8 @@ Where to start
 You should start with the guide folder and follow the order of the files which will the lead you to the demos
 folder, in the postmanCollection folder you can find a json with a collection which was used to test the demos.The media folder can be ignored since that is just a file containing some media files I used to complement the guide files.In the references folder you can find a lot of interesting links to different sections of AWS documentation aswell as some personal notes/projects that are not very well structured but can definetly be helfull.
 
+In the guide folder you can also find all the links I went through the research in the file reference-links.txt and also if you want to go to a specific topic it may exist in the relevant-content-table.txt file (Not all topics can be found in this file since that file is only to point to the most releveanl topics, for specific features or less relevant topics go through the whole guides documents)
+
 IMPORTANT CONCEPT:
 ================================
 When working with Infrastructure as code is important to know about the DRIFT concept which is when changes are made over predefined infrastructure within the code, in those cases CFN wont be able to keep track of the changes and could cause frustraiting errors.

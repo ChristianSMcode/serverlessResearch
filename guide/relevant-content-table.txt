@@ -1,24 +1,61 @@
 Here I will list some interesting/useful topics and in which document you can read about it, therefore think
-of this as a "content table" which only contains the more relevant concepts:
+of this as a "content table" which only contains the more relevant concepts for extra content go through the whole
+guides and docs:
 
-Async/sync lambda using API Gateway              -- 1-Lambda basics guide         page(3)
-Proxy and non-proxy integration                  -- 1-Lambda basics guide         page(5)
-Lambda limitations                               -- 1-Lambda basics guide         page(6)
+GUIDES-----------------------------------------------------------------------------------------
 
-API types (VPC)                                  -- 2-Api gateway basics guide    page(1-2)
+Async/sync lambda using API Gateway              -- 1-Lambda basics guide         page(3)         https://aws.amazon.com/es/premiumsupport/knowledge-center/api-gateway-invoke-lambda/#:~:text=You%20can%20configure%20the%20Lambda,then%20choose%20your%20REST%20API
+Proxy and non-proxy integration                  -- 1-Lambda basics guide         page(5)         ----  
+Lambda limitations                               -- 1-Lambda basics guide         page(6)         https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html   
+                                                                                                  https://aws.amazon.com/es/lambda/pricing/ 
+API types (VPC)                                  -- 2-Api gateway basics guide    page(1-2)       https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-vs-rest.html
+                                                                                                  https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-websocket-api.html4
+
 Proxy and non-proxy integration                  -- 2-Api gateway basics guide    page(3)
-Integration Types                                -- 2-Api gateway basics guide    page(2-4)
-CORS  and CORS headers                           -- 2-Api gateway basics guide    page(4-5,7-9)
+Integration Types                                -- 2-Api gateway basics guide    page(2-4)       https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-api-integration-types.html
+CORS  and CORS headers                           -- 2-Api gateway basics guide    page(4-5,7-9)   test-cors.org
+                                                                                                  https://docs.aws.amazon.com/apigateway/latest/developerguide/how-to-cors.html
 Request Validators                               -- 2-Api gateway basics guide    page(5-6)
-Mapping/transformations                          -- 2-Api gateway basics guide    page(6-7)
-MODELS**                                         -- 2-Api gateway basics guide    page(9-11)
+Mapping/transformations                          -- 2-Api gateway basics guide    page(6-7)       https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-mapping-template-reference.html
+                                                                                                  https://velocity.apache.org/
+MODELS**                                         -- 2-Api gateway basics guide    page(9-11)      https://json-schema.org/                                                                                                
 Gateway responses                                -- 2-Api gateway basics guide    page(11-12)
-Cache                                            -- 2-Api gateway basics guide    page(12)
+Cache                                            -- 2-Api gateway basics guide    page(12)        https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-caching.html
 Throttling                                       -- 2-Api gateway basics guide    page(13)
 SSL certificate                                  -- 2-Api gateway basics guide    page(13)
 Logging                                          -- 2-Api gateway basics guide    page(13-14)
 SDK Generation                                   -- 2-Api gateway basics guide    page(15)
+SwaggerApi definition                            -- 2-Api gateway basics guide    page(15)        https://swagger.io/specification/v2/#:~:text=Swagger%E2%84%A2%20is%20a%20project,generate%20clients%20in%20various%20languages
+                                                                                                  https://swagger.io/specification/
+                                                                                                  https://swagger.io/
 API keys/Usage plans                             -- 2-Api gateway basics guide    page(16-17)
 SaaS Marketplace/Usage plans                     -- 2-Api gateway basics guide    page(17)
 
 Cold Start lambda                                -- 4-Api gateway deep dive   
+
+DEMOS-----------------------------------------------------------------------------------------
+
+Lambda and implicit API       DEMO               -- LambdaBasicsSAM               page(1)
+Request parameters            DEMO               -- LambdaBasicsSAM               page(1)
+
+Explicit API                  DEMO               -- ApiGatewatBasicsSAM-implicit  page(1)
+Swagge Extensions             DEMO               -- ApiGatewatBasicsSAM-implicit  page(1-2)      https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-swagger-extensions.html  
+Local testing conderations    DEMO               -- ApiGatewatBasicsSAM-implicit  page(2)
+Mock integration              DEMO               -- ApiGatewatBasicsSAM-implicit  page(2-3)      https://stackoverflow.com/questions/47918477/aws-api-gateway-use-mock-integration-to-echo-response-body
+Http integration              DEMO               -- ApiGatewatBasicsSAM-implicit  page(3)
+AWS integration               DEMO               -- ApiGatewatBasicsSAM-implicit  page(3-4)      https://docs.aws.amazon.com/apigateway/latest/developerguide/integrating-api-with-aws-services-s3.html
+                                                                                                 https://www.youtube.com/watch?v=dir1HtgbwzY
+                                                                                                 https://serverlessland.com/patterns/apigateway-rest-s3-sam
+                                                                                                 https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_PutItem.html
+                                                                                                 https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-template-resource-type-ref.html
+AWS integration XML/SUBDOMAIN DEMO               -- ApiGatewatBasicsSAM-implicit  page(4-5)      https://docs.aws.amazon.com/AmazonS3/latest/API/API_CreateBucket.html#API_CreateBucket_RequestSyntax
+Enable logging(basics)        DEMO               -- ApiGatewatBasicsSAM-implicit  page(5)        https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-logging.html
+
+ApiKey/UsagePlan              DEMO               -- ApiGatewatLambdaSAM-SDK       page(1-2)
+Gateway-SQS-Lambda int        DEMO               -- ApiGatewatLambdaSAM-SDK       page(2-3)
+
+GENERAL---------------------------------------------------------------------------------------
+
+Local testing                                    -- at the end of each demo file  ----
+Install sam CLI                                  ----                             ----           https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/install-sam-cli.html
+implicit resources                               ----                             ----           https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
