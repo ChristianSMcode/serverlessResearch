@@ -2,28 +2,96 @@ The following links are important to use the SDK of aws with JavaScript:
 In this links you can find documentation about how to use the multiple aws services programatically
 with Node/JavaScript.
 
-V2:
+Udemy Full serverless course:
+https://www.udemy.com/course/aws-lambda-serverless-architecture/
+
+JavaScript SDK V2:
 -https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/
-V3(This has a more clear documentation):
+
+JavaScript SDK V3(This has a more clear documentation):
 -https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/index.html
 
 The following links are related to CloudFormation concepts:
 General:
 -https://docs.aws.amazon.com/cloudformation/index.html
+
 CloudFormation Resources definition documentation and template documentation:
 -https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/Welcome.html
+
 CFN best practices:
 -https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/best-practices.html
 
 The following links are related to AWS services offering CI/CD tools:
+
 Code build:
 -https://docs.aws.amazon.com/codebuild/latest/userguide/build-spec-ref.html
 
 SAM installation guide:
 -https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/install-sam-cli.html
+
 SAM documentation:
 -https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-getting-started.html
+
 Note: within each demo you will find specifics links to other interesting SAM topics like implicit resource
 creation.
+
 To see all the properties you could specify within a SAM resource go to:
 https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-specification-resources-and-properties.html
+
+Lambda:
+
+Pricing:
+https://aws.amazon.com/es/lambda/pricing/
+
+limitations:
+https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html
+
+Async Incokation:
+https://aws.amazon.com/es/premiumsupport/knowledge-center/api-gateway-invoke-lambda/#:~:text=You%20can%20configure%20the%20Lambda,then%20choose%20your%20REST%20API
+
+Context object:
+https://docs.aws.amazon.com/lambda/latest/dg/nodejs-context.html
+
+API gateway:
+
+Http Api vs Rest Api:
+https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-vs-rest.html
+
+websocket api:
+https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-websocket-api.html4
+
+Pricing:
+https://aws.amazon.com/es/api-gateway/pricing/
+
+Swagger Api testing/creation:
+https://swagger.io/
+
+Export an API:
+https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-export-api.html
+
+Swagger 2.0 api definition:
+https://swagger.io/specification/v2/#:~:text=Swagger%E2%84%A2%20is%20a%20project,generate%20clients%20in%20various%20languages
+
+Swagger 3.0/3.1 api definition:
+https://swagger.io/specification/
+
+Caching:
+https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-caching.html
+
+Integration types:
+https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-api-integration-types.html
+
+Mapping templates:
+https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-mapping-template-reference.html
+
+VTL synthax (velocity apache):
+https://velocity.apache.org/
+
+Web to test cors:
+test-cors.org
+
+Json schema:
+https://json-schema.org/
+
+Cors:
+https://docs.aws.amazon.com/apigateway/latest/developerguide/how-to-cors.html
