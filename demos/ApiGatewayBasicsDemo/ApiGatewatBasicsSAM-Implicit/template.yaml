@@ -25,7 +25,7 @@ Resources:
         ApiEvent:
           Type: Api 
           Properties:
-            Path: /calculate3/{operation}
+            Path: /calculate1/{operation}
             Method: POST
             RestApiId: !Ref ApiGatewayBasics
             #RequestParameters:
@@ -33,7 +33,7 @@ Resources:
             #  - method.request.querystring.test
 
   pythonHW:
-    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Type: AWS::Serverless::Function 
     Properties:
       Description: Testing
       CodeUri: pythonHW/
@@ -77,6 +77,19 @@ Resources:
             Action: sts:AssumeRole
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/AmazonS3FullAccess
+
+  lambdaRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: apigateway.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AWSLambda_FullAccess
 
   dynamoDB:
     Type: AWS::IAM::Role
@@ -132,10 +145,38 @@ Resources:
         x-amazon-apigateway-request-validators:
           headerAndStringParams:
             validateRequestBody: false
-            validateRequestParameters: true 
+            validateRequestParameters: true
+          bodyAndHeaderParams:
+            validateRequestBody: true
+            validateRequestParameters: true
+        
+        definitions:
+          ValidateCalculator:
+            type: object
+            required:
+              - operand1
+              - operand2
+            properties:
+              operand1:
+                type: number
+              operand2:
+                type: number
+            title: ValidateCalculator
+        
         paths:
           /calculate1/{operation}:
             post:
+              parameters:
+                - name: operation
+                  in: path
+                  type: string
+                  required: true
+                  default: add
+                - name: ValidateCalculator
+                  required: true
+                  in: body
+                  schema: 
+                    $ref: "#/definitions/ValidateCalculator"
               consumes:
               - application/json
               produces:
@@ -143,11 +184,21 @@ Resources:
               responses:
                 '200':
                   description: ok
+              x-amazon-apigateway-request-validator: bodyAndHeaderParams 
               x-amazon-apigateway-integration:
+                credentials: !GetAtt lambdaRole.Arn
                 type: aws
                 uri:
                   Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${calculatorFunctionNonProxy.Arn}/invocations
                 httpMethod: POST
+                responses:
+                  default:
+                    statusCode: 200
+                requestTemplates:
+                  application/json: "#set($inputRoot = $input.path('$'))\n{\n  \"operation\"\
+                    : \"$input.params('operation')\",\n  \"input\":{\n    \"operand1\" : $inputRoot.operand1,\n\
+                    \    \"operand2\" : $inputRoot.operand2\n    }\n}"
+                passthroughBehavior: "when_no_templates"
           
           /calculate2/{operation}:
             post:
