@@ -103,10 +103,10 @@
 					}
 				},
 				"url": {
-					"raw": "https://68m0ciw6p0.execute-api.us-west-2.amazonaws.com/TestingGateway/calculate/add",
+					"raw": "https://kajp0cosoj.execute-api.us-west-2.amazonaws.com/TestingGateway/calculate1/add",
 					"protocol": "https",
 					"host": [
-						"68m0ciw6p0",
+						"kajp0cosoj",
 						"execute-api",
 						"us-west-2",
 						"amazonaws",
@@ -114,7 +114,7 @@
 					],
 					"path": [
 						"TestingGateway",
-						"calculate",
+						"calculate1",
 						"add"
 					]
 				}
@@ -212,7 +212,7 @@
 				"header": [
 					{
 						"key": "Header-Test",
-						"value": "hederTested",
+						"value": "headerTested",
 						"type": "default"
 					}
 				],
@@ -226,10 +226,10 @@
 					}
 				},
 				"url": {
-					"raw": "https://rb86af6909.execute-api.us-west-2.amazonaws.com/TestingGateway/calculate2/add?test=querytested",
+					"raw": "https://y7bvfp7urb.execute-api.us-west-2.amazonaws.com/TestingGateway/calculate2/add?test=t",
 					"protocol": "https",
 					"host": [
-						"rb86af6909",
+						"y7bvfp7urb",
 						"execute-api",
 						"us-west-2",
 						"amazonaws",
@@ -243,7 +243,7 @@
 					"query": [
 						{
 							"key": "test",
-							"value": "querytested"
+							"value": "t"
 						}
 					]
 				}
@@ -413,6 +413,67 @@
 					],
 					"path": [
 						"pythonHW"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "corsProxyAWS",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://p0361cp3ab.execute-api.us-west-2.amazonaws.com/TestingGateway/corsProxy",
+					"protocol": "https",
+					"host": [
+						"p0361cp3ab",
+						"execute-api",
+						"us-west-2",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"TestingGateway",
+						"corsProxy"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "corsNonProxyAWS",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Header-Test",
+						"value": "testing",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\":\"Christian\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://p0361cp3ab.execute-api.us-west-2.amazonaws.com/TestingGateway/corsNonProxy",
+					"protocol": "https",
+					"host": [
+						"p0361cp3ab",
+						"execute-api",
+						"us-west-2",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"TestingGateway",
+						"corsNonProxy"
 					]
 				}
 			},

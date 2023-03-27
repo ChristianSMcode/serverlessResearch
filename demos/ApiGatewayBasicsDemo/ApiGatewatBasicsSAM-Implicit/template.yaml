@@ -25,15 +25,49 @@ Resources:
         ApiEvent:
           Type: Api 
           Properties:
-            Path: /calculate3/{operation}
+            Path: /calculate1/{operation}
             Method: POST
             RestApiId: !Ref ApiGatewayBasics
             #RequestParameters:
             #  - method.request.header.Header-Test
             #  - method.request.querystring.test
 
+  corsProxyInt:
+    Type: AWS::Serverless::Function
+    Properties:
+      Description: Testing
+      CodeUri: corsProxy/
+      Handler: corsProxy.handler
+      Runtime: nodejs16.x
+      Architectures:
+      - x86_64
+      Events:
+        ApiEvent:
+          Type: Api 
+          Properties:
+            Path: /corsProxy
+            Method: GET
+            RestApiId: !Ref ApiGatewayBasics
+
+  corsNonProxyInt:
+    Type: AWS::Serverless::Function
+    Properties:
+      Description: Testing
+      CodeUri: corsNonProxy/
+      Handler: corsNonProxy.handler
+      Runtime: nodejs16.x
+      Architectures:
+      - x86_64
+      Events:
+        ApiEvent:
+          Type: Api 
+          Properties:
+            Path: /corsNonProxy
+            Method: POST
+            RestApiId: !Ref ApiGatewayBasics
+
   pythonHW:
-    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Type: AWS::Serverless::Function 
     Properties:
       Description: Testing
       CodeUri: pythonHW/
@@ -77,6 +111,19 @@ Resources:
             Action: sts:AssumeRole
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/AmazonS3FullAccess
+
+  lambdaRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: apigateway.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AWSLambda_FullAccess
 
   dynamoDB:
     Type: AWS::IAM::Role
@@ -132,10 +179,37 @@ Resources:
         x-amazon-apigateway-request-validators:
           headerAndStringParams:
             validateRequestBody: false
-            validateRequestParameters: true 
+            validateRequestParameters: true
+          bodyAndHeaderParams:
+            validateRequestBody: true
+            validateRequestParameters: true
+        
+        definitions:
+          ValidateCalculator:
+            type: object
+            required:
+              - operand1
+              - operand2
+            properties:
+              operand1:
+                type: number
+              operand2:
+                type: number
+            title: ValidateCalculator
+        x-amazon-apigateway-gateway-responses:
+          DEFAULT_5XX:
+            responseParameters:
+              gatewayresponse.header.Access-Control-Allow-Methods: "'OPTIONS,POST'"
+              gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+              gatewayresponse.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+          DEFAULT_4XX:
+            responseParameters:
+              gatewayresponse.header.Access-Control-Allow-Methods: "'OPTIONS,POST'"
+              gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+              gatewayresponse.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
         paths:
-          /calculate1/{operation}:
-            post:
+          /corsProxy:
+           get:
               consumes:
               - application/json
               produces:
@@ -143,11 +217,108 @@ Resources:
               responses:
                 '200':
                   description: ok
+                '400':
+                  description: bad
               x-amazon-apigateway-integration:
+                type: aws_proxy
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${corsProxyInt.Arn}/invocations
+                httpMethod: POST
+
+          /corsNonProxy:
+            options:
+              consumes:
+              - "application/json"
+              responses:
+                "200":
+                  description: "200 response"
+                  headers:
+                    Access-Control-Allow-Origin:
+                      type: "string"
+                    Access-Control-Allow-Methods:
+                      type: "string"
+                    Access-Control-Allow-Headers:
+                      type: "string"
+              x-amazon-apigateway-integration:
+                responses:
+                  default:
+                    statusCode: "200"
+                    responseParameters:
+                      method.response.header.Access-Control-Allow-Methods: "'OPTIONS,POST'"
+                      method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,Header-Test'"
+                      method.response.header.Access-Control-Allow-Origin: "'*'"
+                requestTemplates:
+                  application/json: "{\"statusCode\": 200}"
+                passthroughBehavior: "when_no_match"
+                type: "mock"
+            post:
+              parameters:
+                - name: Header-Test
+                  in: header
+                  type: string
+                  required: true
+              responses:
+                '200':
+                  description: "200 response"
+                  headers:
+                    Access-Control-Allow-Origin:
+                      type: string
+                '400':
+                  description: "400 response"
+                  headers:
+                    Access-Control-Allow-Origin:
+                      type: string
+              x-amazon-apigateway-request-validator: headerAndStringParams 
+              x-amazon-apigateway-integration:
+                type: aws
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${corsNonProxyInt.Arn}/invocations
+                httpMethod: POST
+                responses:
+                  "4\\d{2}":
+                    statusCode: 400
+                    responseParameters:
+                      method.response.header.Access-Control-Allow-Origin: "'*'"                    
+                  default:
+                    statusCode: 200
+                    responseParameters:
+                      method.response.header.Access-Control-Allow-Origin: "'*'"
+
+          /calculate1/{operation}:
+            post:
+              parameters:
+                - name: operation
+                  in: path
+                  type: string
+                  required: true
+                  default: add
+                - name: ValidateCalculator
+                  required: true
+                  in: body
+                  schema: 
+                    $ref: "#/definitions/ValidateCalculator"
+              consumes:
+              - application/json
+              produces:
+              - application/json
+              responses:
+                '200':
+                  description: ok
+              x-amazon-apigateway-request-validator: bodyAndHeaderParams 
+              x-amazon-apigateway-integration:
+                credentials: !GetAtt lambdaRole.Arn
                 type: aws
                 uri:
                   Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${calculatorFunctionNonProxy.Arn}/invocations
                 httpMethod: POST
+                responses:
+                  default:
+                    statusCode: 200
+                requestTemplates:
+                  application/json: "#set($inputRoot = $input.path('$'))\n{\n  \"operation\"\
+                    : \"$input.params('operation')\",\n  \"input\":{\n    \"operand1\" : $inputRoot.operand1,\n\
+                    \    \"operand2\" : $inputRoot.operand2\n    }\n}"
+                passthroughBehavior: "when_no_templates"
           
           /calculate2/{operation}:
             post:

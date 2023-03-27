@@ -50,6 +50,9 @@ AWS integration               DEMO               -- ApiGatewatBasicsSAM-implicit
                                                                                                  https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-template-resource-type-ref.html
 AWS integration XML/SUBDOMAIN DEMO               -- ApiGatewatBasicsSAM-implicit  page(4-5)      https://docs.aws.amazon.com/AmazonS3/latest/API/API_CreateBucket.html#API_CreateBucket_RequestSyntax
 Enable logging(basics)        DEMO               -- ApiGatewatBasicsSAM-implicit  page(5)        https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-logging.html
+Python example                DEMO               -- ApiGatewatBasicsSAM-implicit  page(5-6)      https://medium.com/@devops_83824/developing-serverless-applications-on-aws-using-aws-serverless-application-model-sam-cdcf3bda59bd
+Body validation(mappingmodel) DEMO               -- ApiGatewatBasicsSAM-implicit  page(5)
+
 
 ApiKey/UsagePlan              DEMO               -- ApiGatewatLambdaSAM-SDK       page(1-2)
 Gateway-SQS-Lambda int        DEMO               -- ApiGatewatLambdaSAM-SDK       page(2-3)
