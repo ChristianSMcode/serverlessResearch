@@ -29,6 +29,44 @@ Resources:
               Ref: ApiGatewayBasics
     Metadata:
       SamResourceId: calculatorFunctionNonProxy
+  corsProxyInt:
+    Type: AWS::Serverless::Function
+    Properties:
+      Description: Testing
+      CodeUri: s3://ressolve-research-gateway-basics-demo/f24e00e77f2905bac9b15ec0e69a1021
+      Handler: corsProxy.handler
+      Runtime: nodejs16.x
+      Architectures:
+      - x86_64
+      Events:
+        ApiEvent:
+          Type: Api
+          Properties:
+            Path: /corsProxy
+            Method: GET
+            RestApiId:
+              Ref: ApiGatewayBasics
+    Metadata:
+      SamResourceId: corsProxyInt
+  corsNonProxyInt:
+    Type: AWS::Serverless::Function
+    Properties:
+      Description: Testing
+      CodeUri: s3://ressolve-research-gateway-basics-demo/5188ae5c59017f9d0cdaa1e6b74bd6ca
+      Handler: corsNonProxy.handler
+      Runtime: nodejs16.x
+      Architectures:
+      - x86_64
+      Events:
+        ApiEvent:
+          Type: Api
+          Properties:
+            Path: /corsNonProxy
+            Method: POST
+            RestApiId:
+              Ref: ApiGatewayBasics
+    Metadata:
+      SamResourceId: corsNonProxyInt
   pythonHW:
     Type: AWS::Serverless::Function
     Properties:
@@ -51,7 +89,7 @@ Resources:
   calculatorProxy:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: s3://ressolve-research-gateway-basics-demo/e64f4185e5b78357539c02d8e78b9586
+      CodeUri: s3://ressolve-research-gateway-basics-demo/b255b32257a18c74b2c3792073f23f1f
       Handler: calculator.handler
       Runtime: nodejs16.x
       Architectures:
@@ -173,7 +211,92 @@ Resources:
               operand2:
                 type: number
             title: ValidateCalculator
+        x-amazon-apigateway-gateway-responses:
+          DEFAULT_5XX:
+            responseParameters:
+              gatewayresponse.header.Access-Control-Allow-Methods: '''OPTIONS,POST'''
+              gatewayresponse.header.Access-Control-Allow-Origin: '''*'''
+              gatewayresponse.header.Access-Control-Allow-Headers: '''Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'''
+          DEFAULT_4XX:
+            responseParameters:
+              gatewayresponse.header.Access-Control-Allow-Methods: '''OPTIONS,POST'''
+              gatewayresponse.header.Access-Control-Allow-Origin: '''*'''
+              gatewayresponse.header.Access-Control-Allow-Headers: '''Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'''
         paths:
+          /corsProxy:
+            get:
+              consumes:
+              - application/json
+              produces:
+              - application/json
+              responses:
+                '200':
+                  description: ok
+                '400':
+                  description: bad
+              x-amazon-apigateway-integration:
+                type: aws_proxy
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${corsProxyInt.Arn}/invocations
+                httpMethod: POST
+          /corsNonProxy:
+            options:
+              consumes:
+              - application/json
+              responses:
+                '200':
+                  description: 200 response
+                  headers:
+                    Access-Control-Allow-Origin:
+                      type: string
+                    Access-Control-Allow-Methods:
+                      type: string
+                    Access-Control-Allow-Headers:
+                      type: string
+              x-amazon-apigateway-integration:
+                responses:
+                  default:
+                    statusCode: '200'
+                    responseParameters:
+                      method.response.header.Access-Control-Allow-Methods: '''OPTIONS,POST'''
+                      method.response.header.Access-Control-Allow-Headers: '''Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,Header-Test'''
+                      method.response.header.Access-Control-Allow-Origin: '''*'''
+                requestTemplates:
+                  application/json: '{"statusCode": 200}'
+                passthroughBehavior: when_no_match
+                type: mock
+            post:
+              parameters:
+              - name: Header-Test
+                in: header
+                type: string
+                required: true
+              responses:
+                '200':
+                  description: 200 response
+                  headers:
+                    Access-Control-Allow-Origin:
+                      type: string
+                '400':
+                  description: 400 response
+                  headers:
+                    Access-Control-Allow-Origin:
+                      type: string
+              x-amazon-apigateway-request-validator: headerAndStringParams
+              x-amazon-apigateway-integration:
+                type: aws
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${corsNonProxyInt.Arn}/invocations
+                httpMethod: POST
+                responses:
+                  4\d{2}:
+                    statusCode: 400
+                    responseParameters:
+                      method.response.header.Access-Control-Allow-Origin: '''*'''
+                  default:
+                    statusCode: 200
+                    responseParameters:
+                      method.response.header.Access-Control-Allow-Origin: '''*'''
           /calculate1/{operation}:
             post:
               parameters:

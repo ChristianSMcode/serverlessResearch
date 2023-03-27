@@ -6,11 +6,12 @@ AWS service (Listo)
 Incluir Api keys y usage plans functions (listo)
 -Actualizar tabla contenidos importantes(incluir links) y en reference-links file (listo)
 Include a basic example with python (Listo)
-
-body validation with models CFN (body validate en proxy-primera ruta que hice) (pendiente)
--Lambda proxy y no proxy (falta poner mapping en no proxy)
--Usar modelos en lugar de templates
-DEMO CON CORS CFN
+body validation with models CFN (body validate en proxy-primera ruta que hice) (Listo)
+-Lambda proxy y no proxy (falta poner mapping en no proxy)(listo)
+-Usar modelos en lugar de templates (listo)
+Documentar body validation mapping templates cors en lambda proxy y lambda non proxy (listo)
+documentar request cors simple y  non simple (custom request) unico cambio es que lambda retorna acces-control-allow-origin (listo)
+DEMO CON CORS CFN(Listo)
 
 
 Gateway responses(proceso)

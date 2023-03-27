@@ -24,9 +24,7 @@ exports.handler = async (event,context) => {
                 {
                     result:result,
                     headerTest:event.headers['Header-Test'],
-                    queryParam: event.queryStringParameters.test,
-                    event
-                
+                    queryParam: event.queryStringParameters.test                
                 })
         }
                 
