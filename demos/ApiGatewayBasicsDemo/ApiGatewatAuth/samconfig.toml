@@ -18,13 +18,13 @@ lint = true
 
 [default.deploy]
 [default.deploy.parameters]
-capabilities = "CAPABILITY_IAM"
+capabilities = "CAPABILITY_NAMED_IAM"
 confirm_changeset = true
-resolve_s3 = true
+
 
 [default.package]
 [default.package.parameters]
-resolve_s3 = true
+
 
 [default.sync]
 [default.sync.parameters]
