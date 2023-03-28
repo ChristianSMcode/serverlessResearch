@@ -1,0 +1,75 @@
+{
+	"info": {
+		"_postman_id": "5389dc3f-1767-4424-a4c2-302beefb6922",
+		"name": "GatewayOpenAuth",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "helloAuthAWS",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://8mj7qghqk0.execute-api.us-west-2.amazonaws.com/testing/hello",
+					"protocol": "https",
+					"host": [
+						"8mj7qghqk0",
+						"execute-api",
+						"us-west-2",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"testing",
+						"hello"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "helloAuthIAM",
+			"request": {
+				"auth": {
+					"type": "awsv4",
+					"awsv4": [
+						{
+							"key": "accessKey",
+							"value": "AKIAWDSQJN27XWUTXBWM",
+							"type": "string"
+						},
+						{
+							"key": "region",
+							"value": "us-west-2",
+							"type": "string"
+						},
+						{
+							"key": "secretKey",
+							"value": "k7ChqdUykAuUqr1TMVhxavXF7lg80pRJuyZJTkMp",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://8mj7qghqk0.execute-api.us-west-2.amazonaws.com/testing/helloIAM",
+					"protocol": "https",
+					"host": [
+						"8mj7qghqk0",
+						"execute-api",
+						"us-west-2",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"testing",
+						"helloIAM"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
