@@ -12,11 +12,11 @@ Globals:
     MemorySize: 128
 
 Resources:
-  HelloWorldFunction:
+  HelloWorldAuth:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
-      CodeUri: hello-world/
-      Handler: app.lambdaHandler
+      CodeUri: functions/hello-world/
+      Handler: helloWorldAuth.lambdaHandler
       Runtime: nodejs16.x
       Architectures:
       - x86_64
@@ -26,37 +26,100 @@ Resources:
           Properties:
             Path: /hello
             Method: get
+            RestApiId: !Ref ApiAuthOpen
 
-  ApplicationResourceGroup:
-    Type: AWS::ResourceGroups::Group
+  HelloWorldAuthIAM:
+    Type: AWS::Serverless::Function 
     Properties:
-      Name:
-        Fn::Join:
-        - ''
-        - - ApplicationInsights-SAM-
-          - Ref: AWS::StackName
-      ResourceQuery:
-        Type: CLOUDFORMATION_STACK_1_0
-  ApplicationInsightsMonitoring:
-    Type: AWS::ApplicationInsights::Application
+      CodeUri: functions/HelloWorldAuthIAM/
+      Handler: HelloWorldAuthIAM.lambdaHandler
+      Runtime: nodejs16.x
+      Architectures:
+      - x86_64
+      Events:
+        HelloWorld:
+          Type: Api 
+          Properties:
+            Path: /helloIAM
+            Method: get
+            RestApiId: !Ref ApiAuthOpen
+  
+  callerUser:
+    Type: AWS::IAM::User
     Properties:
-      ResourceGroupName:
-        Fn::Join:
-        - ''
-        - - ApplicationInsights-SAM-
-          - Ref: AWS::StackName
-      AutoConfigurationEnabled: 'true'
-    DependsOn: ApplicationResourceGroup
-Outputs:
-  # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
-  # Find out more about other implicit resources you can reference within SAM
-  # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
-  HelloWorldApi:
-    Description: API Gateway endpoint URL for Prod stage for Hello World function
-    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/"
-  HelloWorldFunction:
-    Description: Hello World Lambda Function ARN
-    Value: !GetAtt HelloWorldFunction.Arn
-  HelloWorldFunctionIamRole:
-    Description: Implicit IAM Role created for Hello World function
-    Value: !GetAtt HelloWorldFunctionRole.Arn
+      UserName: callerUser
+
+  callerPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: callerPolicy
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: "Allow"
+            Action:
+              - execute-api:Invoke
+            Resource:
+              - !Sub "arn:aws:execute-api:${AWS::Region}:*:${ApiAuthOpen}/testing/GET/helloIAM"
+      Users:
+        - !Ref callerUser
+  
+  ApiAuthOpen:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: testing
+      Name: ApiAuthOpen
+      #General auth type of the api (can be overwritten at method level)
+      #Auth:
+      #  DefaultAuthorizer: AWS_IAM
+      DefinitionBody:
+        swagger: "2.0"
+        info:
+          title: ApiAuthOpen-title
+          version: '1'
+        basePath: /ApiAuthOpen
+        schemes:
+          - https
+        # The advantage of this is that we could specify which signatures we want to allow
+        #securityDefinitions:
+        #  sigv4:
+        #    type: apiKey
+        #    name: Authorization
+        #    in: header
+        #    x-amazon-apigateway-authtype: awsSigv4
+        paths:
+          /hello:
+            get:
+              consumes:
+              - application/json
+              produces:
+              - application/json
+              responses:
+                '200':
+                  description: ok
+              x-amazon-apigateway-integration:
+                type: aws_proxy
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${HelloWorldAuth.Arn}/invocations
+                httpMethod: POST
+          
+          /helloIAM:
+            get:
+              consumes:
+              - application/json
+              produces:
+              - application/json
+              responses:
+                '200':
+                  description: ok
+              #security:
+              #  - sigv4: []
+              #Most simple way to implement AWS_IAM auth only available with SAM
+              x-amazon-apigateway-auth:
+                type: AWS_IAM
+              x-amazon-apigateway-integration:
+                type: aws_proxy
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${HelloWorldAuthIAM.Arn}/invocations
+                httpMethod: POST
+

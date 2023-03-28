@@ -51,8 +51,15 @@ AWS integration               DEMO               -- ApiGatewatBasicsSAM-implicit
 AWS integration XML/SUBDOMAIN DEMO               -- ApiGatewatBasicsSAM-implicit  page(4-5)      https://docs.aws.amazon.com/AmazonS3/latest/API/API_CreateBucket.html#API_CreateBucket_RequestSyntax
 Enable logging(basics)        DEMO               -- ApiGatewatBasicsSAM-implicit  page(5)        https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-logging.html
 Python example                DEMO               -- ApiGatewatBasicsSAM-implicit  page(5-6)      https://medium.com/@devops_83824/developing-serverless-applications-on-aws-using-aws-serverless-application-model-sam-cdcf3bda59bd
-Body validation(mappingmodel) DEMO               -- ApiGatewatBasicsSAM-implicit  page(5)
-
+Body validation(mappingmodel) DEMO               -- ApiGatewatBasicsSAM-implicit  page(6-7)      https://swagger.io/specification/v2/#parametersDefinitionsObject
+                                                                                                 https://swagger.io/specification/v2/#parameterObject
+                                                                                                 https://swagger.io/specification/v2/#schemaObject
+                                                                                                 https://docs.aws.amazon.com/apigateway/latest/developerguide/models-mappings.html
+Mapping templates             DEMO               -- ApiGatewatBasicsSAM-implicit  page(7)        https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-swagger-extensions-integration-requestTemplates.html
+                                                                                                 https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-mapping-template-reference.html
+CORS                          DEMO               -- ApiGatewatBasicsSAM-implicit  page(7-9)      https://cors-test.codehappy.dev/
+                                                                                                 https://www.youtube.com/watch?v=baQh1X3LN5s
+                                                                                                                                                                                             
 
 ApiKey/UsagePlan              DEMO               -- ApiGatewatLambdaSAM-SDK       page(1-2)
 Gateway-SQS-Lambda int        DEMO               -- ApiGatewatLambdaSAM-SDK       page(2-3)

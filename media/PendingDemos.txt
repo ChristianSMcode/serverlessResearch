@@ -13,6 +13,9 @@ Documentar body validation mapping templates cors en lambda proxy y lambda non p
 documentar request cors simple y  non simple (custom request) unico cambio es que lambda retorna acces-control-allow-origin (listo)
 DEMO CON CORS CFN(Listo)
 
+Incluir auth con cognito lambda autorizer (pendiente)
+Ver video autorizacion api gateway(pendiente)
+Implementar auth con openAuth2.0(pendiente)
 
 Gateway responses(proceso)
 post deployment (cache,stage throttling and per method throttling,tags,SSL certificate,add CW role)CFN
