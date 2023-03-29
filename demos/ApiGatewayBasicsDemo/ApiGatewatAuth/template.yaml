@@ -8,7 +8,7 @@ Description: >
 # More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
   Function:
-    Timeout: 3
+    Timeout: 10
     MemorySize: 128
 
 Resources:
@@ -44,6 +44,64 @@ Resources:
             Method: get
             RestApiId: !Ref ApiAuthOpen
   
+  helloWorldCognito:
+    Type: AWS::Serverless::Function 
+    Properties:
+      CodeUri: functions/helloWorldCognito/
+      Handler: helloWorldCognito.lambdaHandler
+      Runtime: nodejs16.x
+      Architectures:
+      - x86_64
+      Events:
+        HelloWorld:
+          Type: Api 
+          Properties:
+            Path: /helloWorldCognito
+            Method: get
+            RestApiId: !Ref ApiAuthOpen
+
+  createCognitoUser:
+    Type: AWS::Serverless::Function 
+    Properties:
+      CodeUri: functions/createCognitoUser/
+      Handler: createCognitoUser.lambdaHandler
+      Role: !GetAtt cognitoRole.Arn
+      Runtime: nodejs16.x
+      Architectures:
+      - x86_64
+      Events:
+        HelloWorld:
+          Type: Api 
+          Properties:
+            Path: /createCognitoUser
+            Method: post
+            RestApiId: !Ref ApiAuthOpen
+
+  cognitoRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Policies:
+        - PolicyName: api-gateway-policy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - cognito-idp:*
+                Resource:
+                  - !GetAtt cogUser.Arn
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+  
   callerUser:
     Type: AWS::IAM::User
     Properties:
@@ -63,6 +121,40 @@ Resources:
               - !Sub "arn:aws:execute-api:${AWS::Region}:*:${ApiAuthOpen}/testing/GET/helloIAM"
       Users:
         - !Ref callerUser
+  
+  cogUser:
+    Type: AWS::Cognito::UserPool
+    Properties:
+      UserPoolName: authCognito
+      UsernameAttributes: #List of attributes atribute can be used as username when logging in
+        - email 
+      AutoVerifiedAttributes: #This attributes will be verified automatically while signing in
+        - email
+      Policies:
+        PasswordPolicy:
+          MinimumLength: 6
+          RequireLowercase: true
+          RequireNumbers: true
+          RequireSymbols: false
+          RequireUppercase: true
+      Schema:
+        - Name: email
+          Required: true
+          AttributeDataType: String
+          Mutable: true
+        - Name: given_name
+          Required: true
+          AttributeDataType: String
+          Mutable: true
+        - Name: family_name
+          Required: true
+          AttributeDataType: String
+          Mutable: true
+
+  AuthAppClient:
+    Type: AWS::Cognito::UserPoolClient
+    Properties:
+      UserPoolId: !Ref cogUser
   
   ApiAuthOpen:
     Type: AWS::Serverless::Api
@@ -123,3 +215,34 @@ Resources:
                   Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${HelloWorldAuthIAM.Arn}/invocations
                 httpMethod: POST
 
+          /helloWorldCognito:
+            get:
+              consumes:
+              - application/json
+              produces:
+              - application/json
+              responses:
+                '200':
+                  description: ok
+              x-amazon-apigateway-auth:
+                type: COGNITO_USER_POOLS
+              x-amazon-apigateway-integration:
+                type: aws_proxy
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${helloWorldCognito.Arn}/invocations
+                httpMethod: POST
+
+          /createCognitoUser:
+            post:
+              consumes:
+              - application/json
+              produces:
+              - application/json
+              responses:
+                '200':
+                  description: ok
+              x-amazon-apigateway-integration:
+                type: aws_proxy
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${createCognitoUser.Arn}/invocations
+                httpMethod: POST

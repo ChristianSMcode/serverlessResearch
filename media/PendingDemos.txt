@@ -12,10 +12,13 @@ body validation with models CFN (body validate en proxy-primera ruta que hice) (
 Documentar body validation mapping templates cors en lambda proxy y lambda non proxy (listo)
 documentar request cors simple y  non simple (custom request) unico cambio es que lambda retorna acces-control-allow-origin (listo)
 DEMO CON CORS CFN(Listo)
+Incluir auth con IAM(Listo) 
 
-Incluir auth con cognito lambda autorizer (pendiente)
-Ver video autorizacion api gateway(pendiente)
+Incluir auth con cognito(pendiente) 
+lambda autorizer (pendiente)
+Ver video autorizacion api gateway(proceso)
 Implementar auth con openAuth2.0(pendiente)
+Agregar a tabla de contenidos(pendiente)
 
 Gateway responses(proceso)
 post deployment (cache,stage throttling and per method throttling,tags,SSL certificate,add CW role)CFN
@@ -36,3 +39,4 @@ Incluir diferentes formas de definir los recursos (API con CFN solo)
 Creacion de bucket para SAM obligatorio antes de creacion CFN (el bucket es automatico sino)
 Endpoint type? edge regional?
 Incluir python con dependencias/modulos
+Añadir documentacion dieferencia SAM,SERVERLESS FRAMEWORK Y CFN
