@@ -1,0 +1,5 @@
+Crear tabla de contenidos
+Avanzar en app con gpt 4 (Diseño)
+Averiguar como hacer el fine tunning
+Chunks para largos textos
+Usar GPT para crear datasets de entrenamiento para otros modelos
