@@ -8,7 +8,7 @@ Description: >
 # More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
   Function:
-    Timeout: 3
+    Timeout: 10
     MemorySize: 128
 
 Resources:
@@ -44,6 +44,103 @@ Resources:
             Method: get
             RestApiId: !Ref ApiAuthOpen
   
+  helloWorldCognito:
+    Type: AWS::Serverless::Function 
+    Properties:
+      CodeUri: functions/helloWorldCognito/
+      Handler: helloWorldCognito.lambdaHandler
+      Runtime: nodejs16.x
+      Architectures:
+      - x86_64
+      Events:
+        HelloWorld:
+          Type: Api 
+          Properties:
+            Path: /helloWorldCognito
+            Method: get
+            RestApiId: !Ref ApiAuthOpen
+
+  createCognitoUser:
+    Type: AWS::Serverless::Function 
+    Properties:
+      CodeUri: functions/createCognitoUser/
+      Handler: createCognitoUser.lambdaHandler
+      Role: !GetAtt cognitoRole.Arn
+      Runtime: nodejs16.x
+      Architectures:
+      - x86_64
+      Events:
+        HelloWorld:
+          Type: Api 
+          Properties:
+            Path: /createCognitoUser
+            Method: post
+            RestApiId: !Ref ApiAuthOpen
+
+  logInCognito:
+    Type: AWS::Serverless::Function 
+    Properties:
+      CodeUri: functions/logIn/
+      Handler: logIn.lambdaHandler
+      Role: !GetAtt cognitoRole.Arn
+      Runtime: nodejs16.x
+      Architectures:
+      - x86_64
+      Events:
+        HelloWorld:
+          Type: Api 
+          Properties:
+            Path: /logInCognito
+            Method: post
+            RestApiId: !Ref ApiAuthOpen
+  #AUTH0 LOGIC IMPLEMENTATION---------------------------------------------------------------------------
+  auth0CreateUser:
+    Type: AWS::Serverless::Function 
+    Properties:
+      Environment:
+        Variables:
+          DOMAIN: "ressolve.us.auth0.com"
+          CLIENT_ID: "6EZBNCtrEucWtf5xBaMI21jTHfimLfah"
+          CLIENT_SECRET: "pCBvlVIZ7AMigU0DVNaYl9DZQNmpJALx1HxV9K3MLGZilUpLOUdXf0BK8zzfN7Eu"
+          SCOPES: "read:users create:users update:users delete:users"
+      CodeUri: functions/auth0CreateUser/
+      Handler: auth0CreateUser.lambdaHandler
+      Runtime: nodejs16.x
+      Architectures:
+      - x86_64
+      Events:
+        HelloWorld:
+          Type: Api 
+          Properties:
+            Path: /auth0CreateUser
+            Method: post
+            RestApiId: !Ref ApiAuthOpen
+  #AUTH0 LOGIC IMPLEMENTATION---------------------------------------------------------------------------
+  cognitoRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Policies:
+        - PolicyName: api-gateway-policy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - cognito-idp:*
+                Resource:
+                  - !GetAtt cogUser.Arn
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+  
   callerUser:
     Type: AWS::IAM::User
     Properties:
@@ -64,6 +161,40 @@ Resources:
       Users:
         - !Ref callerUser
   
+  cogUser:
+    Type: AWS::Cognito::UserPool
+    Properties:
+      UserPoolName: authCognito
+      UsernameAttributes: #List of attributes atribute can be used as username when logging in
+        - email 
+      AutoVerifiedAttributes: #This attributes will be verified automatically while signing in
+        - email
+      Policies:
+        PasswordPolicy:
+          MinimumLength: 6
+          RequireLowercase: true
+          RequireNumbers: true
+          RequireSymbols: false
+          RequireUppercase: true
+      Schema:
+        - Name: email
+          Required: true
+          AttributeDataType: String
+          Mutable: true
+        - Name: given_name
+          Required: true
+          AttributeDataType: String
+          Mutable: true
+        - Name: family_name
+          Required: true
+          AttributeDataType: String
+          Mutable: true
+
+  AuthAppClient:
+    Type: AWS::Cognito::UserPoolClient
+    Properties:
+      UserPoolId: !Ref cogUser
+  
   ApiAuthOpen:
     Type: AWS::Serverless::Api
     Properties:
@@ -81,12 +212,21 @@ Resources:
         schemes:
           - https
         # The advantage of this is that we could specify which signatures we want to allow
-        #securityDefinitions:
-        #  sigv4:
-        #    type: apiKey
-        #    name: Authorization
-        #    in: header
-        #    x-amazon-apigateway-authtype: awsSigv4
+        securityDefinitions:
+          sigv4:
+            type: apiKey
+            name: Authorization
+            in: header
+            x-amazon-apigateway-authtype: awsSigv4
+          ApiCognitoAuthorizerv2:
+            type: apiKey
+            name: Authorization
+            in: header
+            x-amazon-apigateway-authtype: cognito_user_pools
+            x-amazon-apigateway-authorizer:
+              type: cognito_user_pools
+              providerARNs:
+                - !GetAtt cogUser.Arn
         paths:
           /hello:
             get:
@@ -112,14 +252,76 @@ Resources:
               responses:
                 '200':
                   description: ok
-              #security:
-              #  - sigv4: []
+              security:
+                - sigv4: []
               #Most simple way to implement AWS_IAM auth only available with SAM
-              x-amazon-apigateway-auth:
-                type: AWS_IAM
+              #x-amazon-apigateway-auth:
+              #  type: AWS_IAM
               x-amazon-apigateway-integration:
                 type: aws_proxy
                 uri:
                   Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${HelloWorldAuthIAM.Arn}/invocations
                 httpMethod: POST
 
+          /helloWorldCognito:
+            get:
+              consumes:
+              - application/json
+              produces:
+              - application/json
+              responses:
+                '200':
+                  description: ok
+              security:
+                - ApiCognitoAuthorizerv2: []
+              x-amazon-apigateway-integration:
+                type: aws_proxy
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${helloWorldCognito.Arn}/invocations
+                httpMethod: POST
+
+          /createCognitoUser:
+            post:
+              consumes:
+              - application/json
+              produces:
+              - application/json
+              responses:
+                '200':
+                  description: ok
+              x-amazon-apigateway-integration:
+                type: aws_proxy
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${createCognitoUser.Arn}/invocations
+                httpMethod: POST
+
+          /logInCognito:
+            post:
+              consumes:
+              - application/json
+              produces:
+              - application/json
+              responses:
+                '200':
+                  description: ok
+              x-amazon-apigateway-integration:
+                type: aws_proxy
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${logInCognito.Arn}/invocations
+                httpMethod: POST
+          #AUTH0 LOGIC IMPLEMENTATION---------------------------------------------------------------------------
+          /auth0CreateUser:
+            post:
+              consumes:
+              - application/json
+              produces:
+              - application/json
+              responses:
+                '200':
+                  description: ok
+              x-amazon-apigateway-integration:
+                type: aws_proxy
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${auth0CreateUser.Arn}/invocations
+                httpMethod: POST
+          #AUTH0 LOGIC IMPLEMENTATION---------------------------------------------------------------------------

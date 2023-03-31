@@ -35,18 +35,18 @@
 					"type": "awsv4",
 					"awsv4": [
 						{
+							"key": "secretKey",
+							"value": "g0whlfihUaxcQoPnZj/sgzg/mGJiwrLUbqffuD0a",
+							"type": "string"
+						},
+						{
 							"key": "accessKey",
-							"value": "AKIAWDSQJN27XWUTXBWM",
+							"value": "AKIAWDSQJN2727EVJ2P7",
 							"type": "string"
 						},
 						{
 							"key": "region",
 							"value": "us-west-2",
-							"type": "string"
-						},
-						{
-							"key": "secretKey",
-							"value": "k7ChqdUykAuUqr1TMVhxavXF7lg80pRJuyZJTkMp",
 							"type": "string"
 						}
 					]
@@ -54,10 +54,10 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://8mj7qghqk0.execute-api.us-west-2.amazonaws.com/testing/helloIAM",
+					"raw": "https://ea4fslddvh.execute-api.us-west-2.amazonaws.com/testing/helloIAM",
 					"protocol": "https",
 					"host": [
-						"8mj7qghqk0",
+						"ea4fslddvh",
 						"execute-api",
 						"us-west-2",
 						"amazonaws",
@@ -66,6 +66,142 @@
 					"path": [
 						"testing",
 						"helloIAM"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "helloAuthCognito",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJraWQiOiJvR0JETlwvSlpJcGw2ZzkwcFhLZHpyVFZteXk4RGw1S1g5aGYxdjlsR0d5RT0iLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiIxZjM2MjA1Ni02MGYxLTRkZjAtYjVmOC1jZThjYzZhNGQ3ZDYiLCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAudXMtd2VzdC0yLmFtYXpvbmF3cy5jb21cL3VzLXdlc3QtMl9iRkVzdDVnVlciLCJjb2duaXRvOnVzZXJuYW1lIjoiMWYzNjIwNTYtNjBmMS00ZGYwLWI1ZjgtY2U4Y2M2YTRkN2Q2IiwiZ2l2ZW5fbmFtZSI6IkNocmlzdGlhbiIsIm9yaWdpbl9qdGkiOiI2NmYzZGY2ZS02M2ZjLTQ0OTgtOWE0ZC04NzAzMzQzYTczM2EiLCJhdWQiOiI2aGQ5bGRyZ2lxajA2bDVybmtqZGkzNjhsdSIsImV2ZW50X2lkIjoiODliYjQzYjAtMDk1Yy00OWM1LTkzMDQtMTJlZDNiYjI0ZmI3IiwidG9rZW5fdXNlIjoiaWQiLCJhdXRoX3RpbWUiOjE2ODAyMDQ3MzUsImV4cCI6MTY4MDIwODMzNSwiaWF0IjoxNjgwMjA0NzM1LCJmYW1pbHlfbmFtZSI6IlNpZXJyYSIsImp0aSI6ImJlZGUyMDA3LTYxMjAtNDZkMS04ZjI3LTNhMzJlNmYyMDEyYyIsImVtYWlsIjoiY3JpczkyMHNkbUBob3RtYWlsLmNvbSJ9.WTrozR0_P18s42xY0cpoHX4yEbQCf8xS6jvPjCHNCMWiqtTgHD99HoiOBucKhThPb0OFvy6mem-S2l7F0UPBY_pqaEbaqmKCsM7m96WWGhtw4Uxf92281i0f0KBtYOhTsfPPRnvUumSTtxE_iRi8osdbt5vsuoiCinQb0qhAnJDKlhY9BE11s7CQiFs2bIOsPqrrLqJi_GFVV3gBmZLF6a2qbVmTa2GJapyQkGHk_AkypK4irMRXSncEZIWue0ZwCSsOd_dIirysNi5XWfy6HZDKser7qJ0g91k86e1KpBJZOBB61p0DpUhpGlaie-gK9oMzw0lLdPA_sKwcxbQpYQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJraWQiOiJvR0JETlwvSlpJcGw2ZzkwcFhLZHpyVFZteXk4RGw1S1g5aGYxdjlsR0d5RT0iLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiIxZjM2MjA1Ni02MGYxLTRkZjAtYjVmOC1jZThjYzZhNGQ3ZDYiLCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAudXMtd2VzdC0yLmFtYXpvbmF3cy5jb21cL3VzLXdlc3QtMl9iRkVzdDVnVlciLCJjb2duaXRvOnVzZXJuYW1lIjoiMWYzNjIwNTYtNjBmMS00ZGYwLWI1ZjgtY2U4Y2M2YTRkN2Q2IiwiZ2l2ZW5fbmFtZSI6IkNocmlzdGlhbiIsIm9yaWdpbl9qdGkiOiI2NmYzZGY2ZS02M2ZjLTQ0OTgtOWE0ZC04NzAzMzQzYTczM2EiLCJhdWQiOiI2aGQ5bGRyZ2lxajA2bDVybmtqZGkzNjhsdSIsImV2ZW50X2lkIjoiODliYjQzYjAtMDk1Yy00OWM1LTkzMDQtMTJlZDNiYjI0ZmI3IiwidG9rZW5fdXNlIjoiaWQiLCJhdXRoX3RpbWUiOjE2ODAyMDQ3MzUsImV4cCI6MTY4MDIwODMzNSwiaWF0IjoxNjgwMjA0NzM1LCJmYW1pbHlfbmFtZSI6IlNpZXJyYSIsImp0aSI6ImJlZGUyMDA3LTYxMjAtNDZkMS04ZjI3LTNhMzJlNmYyMDEyYyIsImVtYWlsIjoiY3JpczkyMHNkbUBob3RtYWlsLmNvbSJ9.WTrozR0_P18s42xY0cpoHX4yEbQCf8xS6jvPjCHNCMWiqtTgHD99HoiOBucKhThPb0OFvy6mem-S2l7F0UPBY_pqaEbaqmKCsM7m96WWGhtw4Uxf92281i0f0KBtYOhTsfPPRnvUumSTtxE_iRi8osdbt5vsuoiCinQb0qhAnJDKlhY9BE11s7CQiFs2bIOsPqrrLqJi_GFVV3gBmZLF6a2qbVmTa2GJapyQkGHk_AkypK4irMRXSncEZIWue0ZwCSsOd_dIirysNi5XWfy6HZDKser7qJ0g91k86e1KpBJZOBB61p0DpUhpGlaie-gK9oMzw0lLdPA_sKwcxbQpYQ\",\n            \"RefreshToken\": \"eyJjdHkiOiJKV1QiLCJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiUlNBLU9BRVAifQ.DS7o38t3x1RmbCXaSmt_eagyd2Lml5NBzZm3ub70hJsl1imPQwQ8TnIJJ_Tq6oJdGZTFGD9hvNd19w14_HO9aF02L3xXMhrC2D8gTX-j-3S7xlKWcak8bLeU98S_2wnBLe7VtcGKfv2TRzbjudWSsmn0wZIZ8c8A1WDYRvIrPbrUloUR3hvyJLv6eu5ydbwQfmIYdjN-GxBUxP_CSYuyq_P_yNgTE46Y-xG1YaDoCAb6dSfXXjnZebJB678QQXAd8xSex1Zj8rYPtQgi5oR1_P8XRlNX2GH7g0ipbLZjxf8GJce2NytcuEsGXezuJ_h8ftgFsS03SDpn5ZtfN4yVcQ.XMQKatGjhNI3dQ67.BqvPF6FD0GSKxhz0YoxHxkHsXK8WcfrAYVsRdHicmaUBUU-usL78ZYj4Rk1bG3RtUeTrvq-UI46TQ1ld2gihH8CdwF1JcWkkYPU3lIrcmsCC69MgZiNZeD6wmfLRoEozP4dXtTsYNEXVyKD25nxGHm9fcXHfhCQToTiqwnbYsH_5BrHlx70AxwfenUHQC_Tf-S3ghKcopgoa4JhiJmt4mNodnn4-zBo7BtAkAyW3JaPFEYj3nKeOdrYGFD6vag8IJ6c4Hr4V-uMA-Z4jor_wJTS67YfSBsHXTtNUxeG-da-z_5_-Hi_A9fWgt9lDWyXcijxp5sLrtXWG2KlAoDHBh1vRfDSUoyaZQIs9AxdPL9rht-0UDGvW-dnd3ycNoPDTmRX25n3se16yiDMY1k3-TWB_0pGgU6QgfP9H5moQ5BfYoUYnQh2_Jl8MDEtQUz9J9VTOYlnYeLWO4xcsyJ5zV74AdbLErqTavxl-2eTzLD19UubaY8dGwSBFl2eE-YH8cafhF2Uyqvc0cmjYzVt5uOsY1Hnma2ZOzUKc7Agk2xblIPRMnKKCf6g3NyDH9V91F1y2IyZrKjDQ-2HsieKveR3s-DrCjabeNNiH4_6_C69H4EixefqfEyyeNkfGDISM-nmhXmWeohFTdEHO0fkb_1K6AjVqFKKI_3tlM2KNbJMcMz_sEgvu0qNFBU5pyCqkuT4MvRuw5lZ_ZVaCYNRJlf8m9_XbOyMVah0ZuvdxpRX1ZmENc9PXSPAfBBx743yRQYDfACtB0IE1BSvVxR3E0Je5dyLWYCuoYfP3p-MJbfdasNnny0VFexcZnwMEV2jWKpBLf_ucDILLOqcvQxEgZFoit5UIwI8m06L69klczCCV1KlEvsOdh-XpRfkyaJ9gN_UjklassajvifJrF3X00qbnj2WKTbV-KGsHf1IwtUwkEwIjBpSYWF5Hhl_a7MDvgHClQjdLPYXKRYEGRgeXmQgJa3RyyJj67KnlCkO_pXzcnI14ymCsfTWZzSq4voIX5AUd7JQYWr36Jv82KVlBLB38FLKYQa6ZljSR4tpwzJYJl8_uNyDt5m6xDFBVTcVFXH4smbpfeergDnf-oQ_EJt1QSQZLVBR2XSYCkekl9cro872ci_1bDUCYwQGPWi-_WUdUKmLDHEs2SQDmN0QgwN2JHywWw4EaqWdveJwBVi9tLKFIzrnymEunBhiAtYcSLQ9F0Aya2swfxU7xyAUL04KEy_5MZZV0t87ThOZoN4zcpeKH6cTh3k7mbDCdZ6jHPy9WJWUfDOvYCb2q6qvlY2pWh2N-Pnl1oaLy7ZNqyhDQO2AYYQuWUyIr3hg.nC15IAUPEO4eK5DpbpeHMQ",
+						"type": "default",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "https://ea4fslddvh.execute-api.us-west-2.amazonaws.com/testing/helloWorldCognito",
+					"protocol": "https",
+					"host": [
+						"ea4fslddvh",
+						"execute-api",
+						"us-west-2",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"testing",
+						"helloWorldCognito"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "createCognitoUser",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userPoolId\": \"us-west-2_bFEst5gVW\",\r\n    \"userName\": \"cris920sdm@hotmail.com\",\r\n    \"email\": \"cris920sdm@hotmail.com\",\r\n    \"givenName\":\"Christian\",\r\n    \"familyName\": \"Sierra\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://ea4fslddvh.execute-api.us-west-2.amazonaws.com/testing/createCognitoUser",
+					"protocol": "https",
+					"host": [
+						"ea4fslddvh",
+						"execute-api",
+						"us-west-2",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"testing",
+						"createCognitoUser"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "authCognitoToken",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"client_id\":\"6hd9ldrgiqj06l5rnkjdi368lu\",\r\n  \"username\":\"cris920sdm@hotmail.com\",\r\n  \"password\":\"rvlPBO67..\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://ea4fslddvh.execute-api.us-west-2.amazonaws.com/testing/logInCognito",
+					"protocol": "https",
+					"host": [
+						"ea4fslddvh",
+						"execute-api",
+						"us-west-2",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"testing",
+						"logInCognito"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "auth0CreateUser",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\":\"cris920sdm@hotmail.com\",\r\n    \"password\":\"r1v2l3P4B5O667..\",\r\n    \"connection\":\"Username-Password-Authentication\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://ea4fslddvh.execute-api.us-west-2.amazonaws.com/testing/auth0CreateUser",
+					"protocol": "https",
+					"host": [
+						"ea4fslddvh",
+						"execute-api",
+						"us-west-2",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"testing",
+						"auth0CreateUser"
 					]
 				}
 			},
