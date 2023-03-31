@@ -86,6 +86,52 @@ Resources:
               Ref: ApiAuthOpen
     Metadata:
       SamResourceId: createCognitoUser
+  logInCognito:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: s3://ressolve-research-gateway-openauth-demo/19123a4bd92fa9ea038b500016f3824c
+      Handler: logIn.lambdaHandler
+      Role:
+        Fn::GetAtt:
+        - cognitoRole
+        - Arn
+      Runtime: nodejs16.x
+      Architectures:
+      - x86_64
+      Events:
+        HelloWorld:
+          Type: Api
+          Properties:
+            Path: /logInCognito
+            Method: post
+            RestApiId:
+              Ref: ApiAuthOpen
+    Metadata:
+      SamResourceId: logInCognito
+  auth0CreateUser:
+    Type: AWS::Serverless::Function
+    Properties:
+      Environment:
+        Variables:
+          DOMAIN: ressolve.us.auth0.com
+          CLIENT_ID: 6EZBNCtrEucWtf5xBaMI21jTHfimLfah
+          CLIENT_SECRET: pCBvlVIZ7AMigU0DVNaYl9DZQNmpJALx1HxV9K3MLGZilUpLOUdXf0BK8zzfN7Eu
+          SCOPES: read:users create:users update:users delete:users
+      CodeUri: s3://ressolve-research-gateway-openauth-demo/f06fc7c548aa0550d7b6c665137c0371
+      Handler: auth0CreateUser.lambdaHandler
+      Runtime: nodejs16.x
+      Architectures:
+      - x86_64
+      Events:
+        HelloWorld:
+          Type: Api
+          Properties:
+            Path: /auth0CreateUser
+            Method: post
+            RestApiId:
+              Ref: ApiAuthOpen
+    Metadata:
+      SamResourceId: auth0CreateUser
   cognitoRole:
     Type: AWS::IAM::Role
     Properties:
@@ -186,6 +232,23 @@ Resources:
         basePath: /ApiAuthOpen
         schemes:
         - https
+        securityDefinitions:
+          sigv4:
+            type: apiKey
+            name: Authorization
+            in: header
+            x-amazon-apigateway-authtype: awsSigv4
+          ApiCognitoAuthorizerv2:
+            type: apiKey
+            name: Authorization
+            in: header
+            x-amazon-apigateway-authtype: cognito_user_pools
+            x-amazon-apigateway-authorizer:
+              type: cognito_user_pools
+              providerARNs:
+              - Fn::GetAtt:
+                - cogUser
+                - Arn
         paths:
           /hello:
             get:
@@ -210,8 +273,8 @@ Resources:
               responses:
                 '200':
                   description: ok
-              x-amazon-apigateway-auth:
-                type: AWS_IAM
+              security:
+              - sigv4: []
               x-amazon-apigateway-integration:
                 type: aws_proxy
                 uri:
@@ -226,8 +289,8 @@ Resources:
               responses:
                 '200':
                   description: ok
-              x-amazon-apigateway-auth:
-                type: NONE
+              security:
+              - ApiCognitoAuthorizerv2: []
               x-amazon-apigateway-integration:
                 type: aws_proxy
                 uri:
@@ -246,6 +309,34 @@ Resources:
                 type: aws_proxy
                 uri:
                   Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${createCognitoUser.Arn}/invocations
+                httpMethod: POST
+          /logInCognito:
+            post:
+              consumes:
+              - application/json
+              produces:
+              - application/json
+              responses:
+                '200':
+                  description: ok
+              x-amazon-apigateway-integration:
+                type: aws_proxy
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${logInCognito.Arn}/invocations
+                httpMethod: POST
+          /auth0CreateUser:
+            post:
+              consumes:
+              - application/json
+              produces:
+              - application/json
+              responses:
+                '200':
+                  description: ok
+              x-amazon-apigateway-integration:
+                type: aws_proxy
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${auth0CreateUser.Arn}/invocations
                 httpMethod: POST
     Metadata:
       SamResourceId: ApiAuthOpen
