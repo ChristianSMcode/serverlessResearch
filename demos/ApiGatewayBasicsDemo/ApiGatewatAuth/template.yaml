@@ -93,7 +93,7 @@ Resources:
             Path: /logInCognito
             Method: post
             RestApiId: !Ref ApiAuthOpen
-
+  #AUTH0 LOGIC IMPLEMENTATION---------------------------------------------------------------------------
   auth0CreateUser:
     Type: AWS::Serverless::Function 
     Properties:
@@ -115,7 +115,7 @@ Resources:
             Path: /auth0CreateUser
             Method: post
             RestApiId: !Ref ApiAuthOpen
-
+  #AUTH0 LOGIC IMPLEMENTATION---------------------------------------------------------------------------
   cognitoRole:
     Type: AWS::IAM::Role
     Properties:
@@ -309,7 +309,7 @@ Resources:
                 uri:
                   Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${logInCognito.Arn}/invocations
                 httpMethod: POST
-          
+          #AUTH0 LOGIC IMPLEMENTATION---------------------------------------------------------------------------
           /auth0CreateUser:
             post:
               consumes:
@@ -324,3 +324,4 @@ Resources:
                 uri:
                   Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${auth0CreateUser.Arn}/invocations
                 httpMethod: POST
+          #AUTH0 LOGIC IMPLEMENTATION---------------------------------------------------------------------------
