@@ -206,6 +206,233 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "auth0Authorizer",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "authorizationToken",
+						"value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjNmLWk1YVo5QWFMU2p3cEYzeG5ZRyJ9.eyJpc3MiOiJodHRwczovL3Jlc3NvbHZlLnVzLmF1dGgwLmNvbS8iLCJzdWIiOiI2RVpCTkN0ckV1Y1d0ZjV4QmFNSTIxalRIZmltTGZhaEBjbGllbnRzIiwiYXVkIjoiaHR0cHM6Ly9lYTRmc2xkZHZoLmV4ZWN1dGUtYXBpLnVzLXdlc3QtMi5hbWF6b25hd3MuY29tIiwiaWF0IjoxNjgwMzgwNzkwLCJleHAiOjE2ODA0NjcxOTAsImF6cCI6IjZFWkJOQ3RyRXVjV3RmNXhCYU1JMjFqVEhmaW1MZmFoIiwiZ3R5IjoiY2xpZW50LWNyZWRlbnRpYWxzIn0.CRIi-RXE2RARhAjtZcjj2sacGJ5249j5l0cZn5utyEl8c9FKXp-kG3ZaCi2RAEuWLDg1N6Ipo0_VYXhyqSKINjr4UZe4boS1Xt0ekSbu2w7GNPI_JmV7R2oVOR-3Ey6xohTiXqwVFBOfIdVbXxywG8RhlYyzbfjEjH_GQ78EBq_q8RCCkPYuoL3fksj5jsQ0A_oQZn1H8ovZJxhVYsUjbeY6DtCm2i0XVqOU0_YceKDTW35GRyFXkQkIGmKWJ0xfFH-NQAMqEkk77HV851nNWlVP5X9F0Luj5ilHdMmSNcHCl8wchQIdfYgwFHYrMbe5qU5tgo-pz2G5RuKl-WZKGw",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "https://ea4fslddvh.execute-api.us-west-2.amazonaws.com/testing/helloAuth0",
+					"protocol": "https",
+					"host": [
+						"ea4fslddvh",
+						"execute-api",
+						"us-west-2",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"testing",
+						"helloAuth0"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "auth0Authorizer",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "authorizationToken",
+								"value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjNmLWk1YVo5QWFMU2p3cEYzeG5ZRyJ9.eyJpc3MiOiJodHRwczovL3Jlc3NvbHZlLnVzLmF1dGgwLmNvbS8iLCJzdWIiOiI2RVpCTkN0ckV1Y1d0ZjV4QmFNSTIxalRIZmltTGZhaEBjbGllbnRzIiwiYXVkIjoiaHR0cHM6Ly9lYTRmc2xkZHZoLmV4ZWN1dGUtYXBpLnVzLXdlc3QtMi5hbWF6b25hd3MuY29tIiwiaWF0IjoxNjgwMzgwNzkwLCJleHAiOjE2ODA0NjcxOTAsImF6cCI6IjZFWkJOQ3RyRXVjV3RmNXhCYU1JMjFqVEhmaW1MZmFoIiwiZ3R5IjoiY2xpZW50LWNyZWRlbnRpYWxzIn0.CRIi-RXE2RARhAjtZcjj2sacGJ5249j5l0cZn5utyEl8c9FKXp-kG3ZaCi2RAEuWLDg1N6Ipo0_VYXhyqSKINjr4UZe4boS1Xt0ekSbu2w7GNPI_JmV7R2oVOR-3Ey6xohTiXqwVFBOfIdVbXxywG8RhlYyzbfjEjH_GQ78EBq_q8RCCkPYuoL3fksj5jsQ0A_oQZn1H8ovZJxhVYsUjbeY6DtCm2i0XVqOU0_YceKDTW35GRyFXkQkIGmKWJ0xfFH-NQAMqEkk77HV851nNWlVP5X9F0Luj5ilHdMmSNcHCl8wchQIdfYgwFHYrMbe5qU5tgo-pz2G5RuKl-WZKGw",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "https://ea4fslddvh.execute-api.us-west-2.amazonaws.com/testing/helloAuth0",
+							"protocol": "https",
+							"host": [
+								"ea4fslddvh",
+								"execute-api",
+								"us-west-2",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"testing",
+								"helloAuth0"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "25"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 01 Apr 2023 21:26:15 GMT"
+						},
+						{
+							"key": "x-amzn-RequestId",
+							"value": "499b2b12-8c1a-4b26-9f3d-ca9c36bc45fc"
+						},
+						{
+							"key": "x-amz-apigw-id",
+							"value": "Ct4qnEjzPHcF85g="
+						},
+						{
+							"key": "X-Amzn-Trace-Id",
+							"value": "Root=1-6428a176-07bb729d0335f2657b7c281b;Sampled=0"
+						},
+						{
+							"key": "X-Cache",
+							"value": "Miss from cloudfront"
+						},
+						{
+							"key": "Via",
+							"value": "1.1 a8f7f3cb90de5cb6c11911dc435a2264.cloudfront.net (CloudFront)"
+						},
+						{
+							"key": "X-Amz-Cf-Pop",
+							"value": "BOG50-P1"
+						},
+						{
+							"key": "X-Amz-Cf-Id",
+							"value": "ytl3Q1tWDLf3r88JUzWjt7Ljw02O-VzCfivqgiixuH7qSsNZHk4yrA=="
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"hello world\"\n}"
+				}
+			]
+		},
+		{
+			"name": "auth0AuthUser",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\":\"cris920sdm@hotmail.com\",\r\n    \"password\":\"r1v2l3P4B5O667..\",\r\n    \"connection\":\"Username-Password-Authentication\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://ea4fslddvh.execute-api.us-west-2.amazonaws.com/testing/auth0LogInUser",
+					"protocol": "https",
+					"host": [
+						"ea4fslddvh",
+						"execute-api",
+						"us-west-2",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"testing",
+						"auth0LogInUser"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "auth0AuthUser",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"cris920sdm@hotmail.com\",\r\n    \"password\":\"r1v2l3P4B5O667..\",\r\n    \"connection\":\"Username-Password-Authentication\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://ea4fslddvh.execute-api.us-west-2.amazonaws.com/testing/auth0LogInUser",
+							"protocol": "https",
+							"host": [
+								"ea4fslddvh",
+								"execute-api",
+								"us-west-2",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"testing",
+								"auth0LogInUser"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "1614"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 01 Apr 2023 21:00:33 GMT"
+						},
+						{
+							"key": "x-amzn-RequestId",
+							"value": "3c9a25a8-9390-4838-8e69-cd9f7f90fe92"
+						},
+						{
+							"key": "x-amz-apigw-id",
+							"value": "Ct05kHrovHcFQRw="
+						},
+						{
+							"key": "X-Amzn-Trace-Id",
+							"value": "Root=1-64289b70-19d897ed5a54e8993cdcf9d7;Sampled=0"
+						},
+						{
+							"key": "X-Cache",
+							"value": "Miss from cloudfront"
+						},
+						{
+							"key": "Via",
+							"value": "1.1 d469b242ea9735def0b70af5a09c94c0.cloudfront.net (CloudFront)"
+						},
+						{
+							"key": "X-Amz-Cf-Pop",
+							"value": "BOG50-P1"
+						},
+						{
+							"key": "X-Amz-Cf-Id",
+							"value": "wSpzJnmGYqCwvb5msh7SC_8qHQZAYDNMEHGxuOKwBzj0qZ6MRmjSBA=="
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"access_token\": \"eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIiwiaXNzIjoiaHR0cHM6Ly9yZXNzb2x2ZS51cy5hdXRoMC5jb20vIn0..bIm1jtvzPjVPd-Jj.lINYVi1iPMxnagPcXqJg9weJsUm5h6hKD7-unZDK48drGReaaI6TIWw_Z65Hjy1TAg5QhGDAGlEc55WchqaQjmBdKuYXJNCH3OUKjs0BMdB4wwYEo7pSQqgewRwFr8qCP48S7NkZNBwQRZ-UaMsu8ZsEHtMoPPVuZWZNbV9inlHnQOWX_dXcWQTpns21joE9JZ38-XRxew8IK5009p5qCKh8IT8Gmt9QuHUnLTf7B0LJn_J0njHIK9rfY_eXL9wetysAWlH0aU53mb9qLSt4SDpxoN9t04c3y6WLi_GX7iU0kt6W2ZKCdCcq9mxC2UgHnzhxbV4FF8qZ12oyITCYcm7ZjsHfd3wmEg.buQw5qYM6MwyLok9zYgUOA\",\n    \"id_token\": \"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjNmLWk1YVo5QWFMU2p3cEYzeG5ZRyJ9.eyJuaWNrbmFtZSI6ImNyaXM5MjBzZG0iLCJuYW1lIjoiY3JpczkyMHNkbUBob3RtYWlsLmNvbSIsInBpY3R1cmUiOiJodHRwczovL3MuZ3JhdmF0YXIuY29tL2F2YXRhci85Y2FmYTU2NTZkZjViYTdlOGNkODBmYWNhNzE0MjNmMj9zPTQ4MCZyPXBnJmQ9aHR0cHMlM0ElMkYlMkZjZG4uYXV0aDAuY29tJTJGYXZhdGFycyUyRmNyLnBuZyIsInVwZGF0ZWRfYXQiOiIyMDIzLTA0LTAxVDIxOjAwOjMzLjM3MloiLCJlbWFpbCI6ImNyaXM5MjBzZG1AaG90bWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImlzcyI6Imh0dHBzOi8vcmVzc29sdmUudXMuYXV0aDAuY29tLyIsImF1ZCI6IjZFWkJOQ3RyRXVjV3RmNXhCYU1JMjFqVEhmaW1MZmFoIiwiaWF0IjoxNjgwMzgyODMzLCJleHAiOjE2ODA0MTg4MzMsInN1YiI6ImF1dGgwfDY0Mjc1YmQxYmZiOGZhNDRjYWU0MjVkOSJ9.Cw8wRmz-Faf2iGtIjSEDDr_A3seeIAJXl9HJ0kj_lth4aj6OsFZ9G7UympbbyAOhMgXsfZ0Eh5oMvassQxiSsU3RwxaXW_8woZb5cptOSRNIRynaIFJOZpExbroMgNvo7x-hdM2PzWRcmURjiuoDalI4t4HRo2Gtf62eMaNo9defyZjMQEkB6uqX-sMD4VhVQhqw3bpO9Af7xy3mokVdUeSq8Mtfc0mKkKRBDa-mVxZv6NpFWyAOQlyxPa-f6_B0xyG7GomVBaqsGy58LG1lB_qtExvEa0D31bUCFRCy01mymoLC54nIgABfNyXUd1L3pDRfch-uVshxxC7vDQ6QOw\",\n    \"scope\": \"openid profile email address phone\",\n    \"expires_in\": 86400,\n    \"token_type\": \"Bearer\"\n}"
+				}
+			]
 		}
 	]
 }
