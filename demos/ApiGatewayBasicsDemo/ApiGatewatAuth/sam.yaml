@@ -138,10 +138,11 @@ Resources:
       Environment:
         Variables:
           DOMAIN: ressolve.us.auth0.com
+          AUDIENCE: https://ea4fslddvh.execute-api.us-west-2.amazonaws.com
           CLIENT_ID: 6EZBNCtrEucWtf5xBaMI21jTHfimLfah
           CLIENT_SECRET: pCBvlVIZ7AMigU0DVNaYl9DZQNmpJALx1HxV9K3MLGZilUpLOUdXf0BK8zzfN7Eu
           SCOPES: read:users create:users update:users delete:users
-      CodeUri: s3://ressolve-research-gateway-openauth-demo/9a946c2d999095548b17377ae94ff796
+      CodeUri: s3://ressolve-research-gateway-openauth-demo/d3d43a13ddfc48e8d256a1a91512d836
       Handler: auth0LogInUser.lambdaHandler
       Runtime: nodejs16.x
       Architectures:

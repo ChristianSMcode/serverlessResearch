@@ -20,7 +20,8 @@ exports.lambdaHandler = async (event, context) => {
         let input ={
             username:email,
             password:password,
-            realm:connection
+            realm:connection,
+            audience: process.env.AUDIENCE
         };
 
         let AuthUserResponse = await AuthenticationClient.passwordGrant(input);
