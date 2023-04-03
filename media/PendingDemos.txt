@@ -14,14 +14,13 @@ documentar request cors simple y  non simple (custom request) unico cambio es qu
 DEMO CON CORS CFN(Listo)
 Incluir auth con IAM(Listo) (mod docs)
 Incluir auth con cognito(listo) 
+Incluir documentacion cognito demo(Listo)
+Ver video autorizacion api gateway(Listo)
+Agregar a tabla de contenidos(Listo)
+lambda autorizer (Listo)
 
-Incluir documentacion cognito(pendiente)
 Incluir documentacion auth0 + demo(pendiente)
 
-lambda autorizer (pendiente)
-Ver video autorizacion api gateway(proceso)
-Implementar auth con openAuth2.0(pendiente)
-Agregar a tabla de contenidos(pendiente)
 
 Gateway responses(proceso)
 post deployment (cache,stage throttling and per method throttling,tags,SSL certificate,add CW role)CFN

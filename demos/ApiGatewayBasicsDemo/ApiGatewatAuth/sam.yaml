@@ -132,6 +132,81 @@ Resources:
               Ref: ApiAuthOpen
     Metadata:
       SamResourceId: auth0CreateUser
+  auth0LogInUser:
+    Type: AWS::Serverless::Function
+    Properties:
+      Environment:
+        Variables:
+          DOMAIN: ressolve.us.auth0.com
+          AUDIENCE: https://ea4fslddvh.execute-api.us-west-2.amazonaws.com
+          CLIENT_ID: 6EZBNCtrEucWtf5xBaMI21jTHfimLfah
+          CLIENT_SECRET: pCBvlVIZ7AMigU0DVNaYl9DZQNmpJALx1HxV9K3MLGZilUpLOUdXf0BK8zzfN7Eu
+          SCOPES: read:users create:users update:users delete:users
+      CodeUri: s3://ressolve-research-gateway-openauth-demo/d3d43a13ddfc48e8d256a1a91512d836
+      Handler: auth0LogInUser.lambdaHandler
+      Runtime: nodejs16.x
+      Architectures:
+      - x86_64
+      Events:
+        HelloWorld:
+          Type: Api
+          Properties:
+            Path: /auth0LogInUser
+            Method: post
+            RestApiId:
+              Ref: ApiAuthOpen
+    Metadata:
+      SamResourceId: auth0LogInUser
+  helloAuth0:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: s3://ressolve-research-gateway-openauth-demo/6e4902634676c9a099e86bad0e53c2b3
+      Handler: helloWorldAuth.lambdaHandler
+      Runtime: nodejs16.x
+      Architectures:
+      - x86_64
+      Events:
+        HelloWorld:
+          Type: Api
+          Properties:
+            Path: /helloAuth0
+            Method: get
+            RestApiId:
+              Ref: ApiAuthOpen
+    Metadata:
+      SamResourceId: helloAuth0
+  auth0Authorizer:
+    Type: AWS::Serverless::Function
+    Properties:
+      Environment:
+        Variables:
+          AUDIENCE: https://ea4fslddvh.execute-api.us-west-2.amazonaws.com
+          JWKS_URI: https://ressolve.us.auth0.com/.well-known/jwks.json
+          TOKEN_ISSUER: https://ressolve.us.auth0.com/
+      CodeUri: s3://ressolve-research-gateway-openauth-demo/656d5d7fd2d87da430ae27cb4b135afd
+      Handler: auth0Authorizer.lambdaHandler
+      Runtime: nodejs16.x
+      Architectures:
+      - x86_64
+    Metadata:
+      SamResourceId: auth0Authorizer
+  authAuthorizerRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service:
+            - lambda.amazonaws.com
+            - apigateway.amazonaws.com
+          Action:
+          - sts:AssumeRole
+      ManagedPolicyArns:
+      - arn:aws:iam::aws:policy/service-role/AWSLambdaRole
+    Metadata:
+      SamResourceId: authAuthorizerRole
   cognitoRole:
     Type: AWS::IAM::Role
     Properties:
@@ -249,6 +324,21 @@ Resources:
               - Fn::GetAtt:
                 - cogUser
                 - Arn
+          Auth0AuthorizerCustom:
+            type: apiKey
+            name: authorizationToken
+            in: header
+            x-amazon-apigateway-authtype: custom
+            x-amazon-apigateway-authorizer:
+              type: token
+              authorizerResultTtlInSeconds: 3600
+              authorizerCredentials:
+                Fn::GetAtt:
+                - authAuthorizerRole
+                - Arn
+              identityValidationExpression: ^Bearer [-0-9a-zA-z\.]*$
+              authorizerUri:
+                Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${auth0Authorizer.Arn}/invocations
         paths:
           /hello:
             get:
@@ -337,6 +427,36 @@ Resources:
                 type: aws_proxy
                 uri:
                   Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${auth0CreateUser.Arn}/invocations
+                httpMethod: POST
+          /auth0LogInUser:
+            post:
+              consumes:
+              - application/json
+              produces:
+              - application/json
+              responses:
+                '200':
+                  description: ok
+              x-amazon-apigateway-integration:
+                type: aws_proxy
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${auth0LogInUser.Arn}/invocations
+                httpMethod: POST
+          /helloAuth0:
+            get:
+              consumes:
+              - application/json
+              produces:
+              - application/json
+              responses:
+                '200':
+                  description: ok
+              security:
+              - Auth0AuthorizerCustom: []
+              x-amazon-apigateway-integration:
+                type: aws_proxy
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${helloAuth0.Arn}/invocations
                 httpMethod: POST
     Metadata:
       SamResourceId: ApiAuthOpen

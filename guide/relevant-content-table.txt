@@ -60,10 +60,22 @@ Mapping templates             DEMO               -- ApiGatewatBasicsSAM-implicit
 CORS                          DEMO               -- ApiGatewatBasicsSAM-implicit  page(7-9)      https://cors-test.codehappy.dev/
                                                                                                  https://www.youtube.com/watch?v=baQh1X3LN5s
                                                                                                                                                                                              
-
 ApiKey/UsagePlan              DEMO               -- ApiGatewatLambdaSAM-SDK       page(1-2)
 Gateway-SQS-Lambda int        DEMO               -- ApiGatewatLambdaSAM-SDK       page(2-3)
 
+IAM authorizer                DEMO               -- ApiGatewatAuth                page(1-2)      https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-access-control-iam.html
+                                                                                                 https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-swagger-extensions-authtype.html
+                                                                                                 https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-controlling-access-to-apis-permissions.html
+                                                                                                 https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-specification-api-gateway-extensions.html
+                                                                                                 https://swagger.io/specification/v2/#securityDefinitionsObject
+                                                                                                 https://swagger.io/specification/v2/#securityRequirementObject
+                                                                                                 https://docs.aws.amazon.com/IAM/latest/UserGuide/create-signed-request.html
+                                                                                                 https://datafetcher.com/aws-signature-version-4-calculator
+                                                                                                 https://stackoverflow.com/questions/46251580/when-do-i-need-to-have-capability-named-iam
+                                                                                                 https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-deploy.html
+CognitoAuthorizer             DEMO               -- ApiGatewatAuth                page(2-3)      https://www.youtube.com/watch?v=oFSU6rhFETk
+                                                                                                 https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-vs-rest.html
+Auth0 Init                    DEMO               -- ApiGatewatAuth                page(1,4)
 GENERAL---------------------------------------------------------------------------------------
 
 Local testing                                    -- at the end of each demo file  ----
