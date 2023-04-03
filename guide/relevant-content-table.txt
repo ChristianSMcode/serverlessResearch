@@ -75,7 +75,7 @@ IAM authorizer                DEMO               -- ApiGatewatAuth              
                                                                                                  https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-deploy.html
 CognitoAuthorizer             DEMO               -- ApiGatewatAuth                page(2-3)      https://www.youtube.com/watch?v=oFSU6rhFETk
                                                                                                  https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-vs-rest.html
-Auth0 Init                    DEMO               -- ApiGatewatAuth                page(1,3)
+Auth0 Init                    DEMO               -- ApiGatewatAuth                page(1,4)
 GENERAL---------------------------------------------------------------------------------------
 
 Local testing                                    -- at the end of each demo file  ----
