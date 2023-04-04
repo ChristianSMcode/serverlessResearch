@@ -8,7 +8,7 @@ const getPolicyDocument = (effect, resource) => {
         Statement: [{
             Action: 'execute-api:Invoke', // default action
             Effect: effect,
-            Resource: resource,
+            Resource: '*',
         }]
     };
     return policyDocument;
@@ -18,7 +18,7 @@ const getToken = (params) => {
     if (!params.type || params.type !== 'TOKEN') {
         throw new Error('Expected "event.type" parameter to have value "TOKEN"');
     }
-
+    
     const tokenString = params.authorizationToken;
     if (!tokenString) {
         throw new Error('Expected "event.authorizationToken" parameter to be set');
