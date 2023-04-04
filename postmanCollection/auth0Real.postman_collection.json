@@ -20,7 +20,7 @@
 					}
 				},
 				"url": {
-					"raw": "https://7f7wzet988.execute-api.us-west-2.amazonaws.com/testing/createUser",
+					"raw": "https://7f7wzet988.execute-api.us-west-2.amazonaws.com/testing/users/createUser",
 					"protocol": "https",
 					"host": [
 						"7f7wzet988",
@@ -31,6 +31,7 @@
 					],
 					"path": [
 						"testing",
+						"users",
 						"createUser"
 					]
 				}
@@ -135,7 +136,7 @@
 					}
 				},
 				"url": {
-					"raw": "https://7f7wzet988.execute-api.us-west-2.amazonaws.com/testing/logIn",
+					"raw": "https://7f7wzet988.execute-api.us-west-2.amazonaws.com/testing/users/logIn",
 					"protocol": "https",
 					"host": [
 						"7f7wzet988",
@@ -146,6 +147,7 @@
 					],
 					"path": [
 						"testing",
+						"users",
 						"logIn"
 					]
 				}
@@ -241,13 +243,13 @@
 				"method": "GET",
 				"header": [
 					{
-						"key": "authorizationToken",
-						"value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjNmLWk1YVo5QWFMU2p3cEYzeG5ZRyJ9.eyJpc3MiOiJodHRwczovL3Jlc3NvbHZlLnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2NDI3NWJkMWJmYjhmYTQ0Y2FlNDI1ZDkiLCJhdWQiOiJodHRwczovL2VhNGZzbGRkdmguZXhlY3V0ZS1hcGkudXMtd2VzdC0yLmFtYXpvbmF3cy5jb20iLCJpYXQiOjE2ODA1NzAwMDgsImV4cCI6MTY4MDY1NjQwOCwiYXpwIjoiNkVaQk5DdHJFdWNXdGY1eEJhTUkyMWpUSGZpbUxmYWgiLCJndHkiOiJwYXNzd29yZCJ9.F592tm4-83CcgGkjanQt7I-PcLrhYDXI0RUze3VKtjSdfMpRpZ18Q2ykpF5D_MgyyZ6fhb8WTOYmSoobdpBxTGbs__4M-qKPuaoqC9NryXBjZpI08wejQ9GTstuntCZvu_9z_rt_wFHeMi6IyIVja9J1i4q7I23GYmaGX6BIk5XuJ7IslpQ9V_3N6nLdqWJobsTrIS2h7X5RBEU_5d9Z-fnEChUcQkKnV3CWa3xmndM-6MSaDvoe8CfmfPJmsi9VTmifXXgBZ71rvwKhep0VLCqRP3A4W2mY11XrNnZjJJW4MwOMYJ2SArhxWPK2mZG1vsyL7Sbn7pfbNNsnm-iv3g",
+						"key": "Authorizationtoken",
+						"value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjNmLWk1YVo5QWFMU2p3cEYzeG5ZRyJ9.eyJpc3MiOiJodHRwczovL3Jlc3NvbHZlLnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2NDJjNmFmYTllNmFkMTkxMzEwMDQ5ZGIiLCJhdWQiOiJodHRwczovL2VhNGZzbGRkdmguZXhlY3V0ZS1hcGkudXMtd2VzdC0yLmFtYXpvbmF3cy5jb20iLCJpYXQiOjE2ODA2MzI1NzUsImV4cCI6MTY4MDcxODk3NSwiYXpwIjoiNkVaQk5DdHJFdWNXdGY1eEJhTUkyMWpUSGZpbUxmYWgiLCJndHkiOiJwYXNzd29yZCJ9.ouRhT2UD6uF_td8qiDXeTqVgYtBoEGS2b0AXK3JUT_xpfN0Im-SJefzZNcnT4i9e1Kf7Hg54VTCP6uAM9rZ-6HIPE89U6SCjzwSWknQLNNkxMgBOedA3w-pMBLtTQZ8CZPDJufenFn3Fb8TJBRmPvU28ePYjjDmDBZJMFBRcPwrb9PqoixIgBpCJALnpkjOAkhZr9HrWqBMG6o8YGXBZkGP1I5M3omLUC9stVSma95nfZ4PyCpQ75g2pOg6P1x7yLXWRN2EHOjqlD_jsKgMOr-5rvPgtiphbXJ0-LaSZ-FnLctY92Bo0vAq50U9uI_BM2DnLcNhGld-WU8xjX96h8Q",
 						"type": "default"
 					}
 				],
 				"url": {
-					"raw": "https://7f7wzet988.execute-api.us-west-2.amazonaws.com/testing/auth0",
+					"raw": "https://7f7wzet988.execute-api.us-west-2.amazonaws.com/testing/actions/auth0",
 					"protocol": "https",
 					"host": [
 						"7f7wzet988",
@@ -258,11 +260,198 @@
 					],
 					"path": [
 						"testing",
+						"actions",
 						"auth0"
 					]
 				}
 			},
-			"response": []
+			"response": [
+				{
+					"name": "auth0",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "authorizationToken",
+								"value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjNmLWk1YVo5QWFMU2p3cEYzeG5ZRyJ9.eyJpc3MiOiJodHRwczovL3Jlc3NvbHZlLnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2NDJjNGNjM2MxNTZlODg4M2VjYmJiYjUiLCJhdWQiOiJodHRwczovL2VhNGZzbGRkdmguZXhlY3V0ZS1hcGkudXMtd2VzdC0yLmFtYXpvbmF3cy5jb20iLCJpYXQiOjE2ODA2MjQ5MzYsImV4cCI6MTY4MDcxMTMzNiwiYXpwIjoiNkVaQk5DdHJFdWNXdGY1eEJhTUkyMWpUSGZpbUxmYWgiLCJndHkiOiJwYXNzd29yZCJ9.pmAUDKtmruvjjzeaoYTWvV5rJLcmba6SMoMir6sQvJb9f-NQfIiTddLn15ObUovuK5M33K4BHc6y6uOL6DIBVsCBs-7oZYbQ0ydz4RLgXi0eCJJlZknF_VpnXdiAwBHD5TGslrZBG41jLtotThlyGdemBzZI915XdaTcWZcaUdJ5wFnSwCcqnRu7ILPRVr3aj0SaoRFDrMkpCH81nWea-aRuiieGbv1xYqnM9E6Q45fRRzMH6oA9KsIjC-I6FjcDQKp3-J5sgaEtCFPfbjTw3ZcU7V4tTbhzgmEHdiw7UDIWUEqMJYi1ZHUreq9UC3460i8WRsjepps_Bj0ivlMgGg",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "https://7f7wzet988.execute-api.us-west-2.amazonaws.com/testing/actions/auth0",
+							"protocol": "https",
+							"host": [
+								"7f7wzet988",
+								"execute-api",
+								"us-west-2",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"testing",
+								"actions",
+								"auth0"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "25"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 04 Apr 2023 16:15:54 GMT"
+						},
+						{
+							"key": "x-amzn-RequestId",
+							"value": "ab2d5410-399a-41ce-830a-d6bdcff02509"
+						},
+						{
+							"key": "x-amz-apigw-id",
+							"value": "C3EBAFD-vHcFVYw="
+						},
+						{
+							"key": "X-Amzn-Trace-Id",
+							"value": "Root=1-642c4d39-0ae44bec15863772581f9e9b;Sampled=0"
+						},
+						{
+							"key": "X-Cache",
+							"value": "Miss from cloudfront"
+						},
+						{
+							"key": "Via",
+							"value": "1.1 2ac572dac717d962219277124f03b11c.cloudfront.net (CloudFront)"
+						},
+						{
+							"key": "X-Amz-Cf-Pop",
+							"value": "BOG50-P2"
+						},
+						{
+							"key": "X-Amz-Cf-Id",
+							"value": "h8HTUS6FW057wfKn-NJdsrzPN3WHTSd4prSjo_r53-QFe-BroIRhNw=="
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"hello world\"\n}"
+				}
+			]
+		},
+		{
+			"name": "deleteUser",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorizationtoken",
+						"value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjNmLWk1YVo5QWFMU2p3cEYzeG5ZRyJ9.eyJpc3MiOiJodHRwczovL3Jlc3NvbHZlLnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2NDJjNmIyOTY2OThmMjRjZjBiOTc5ZWQiLCJhdWQiOiJodHRwczovL2VhNGZzbGRkdmguZXhlY3V0ZS1hcGkudXMtd2VzdC0yLmFtYXpvbmF3cy5jb20iLCJpYXQiOjE2ODA2MzI2MzIsImV4cCI6MTY4MDcxOTAzMiwiYXpwIjoiNkVaQk5DdHJFdWNXdGY1eEJhTUkyMWpUSGZpbUxmYWgiLCJndHkiOiJwYXNzd29yZCJ9.DmuD-nhHGGGaLjYd8Kl-p-WZI_qN04NTpMvimrKm--BvN7JkrAEn_7B0Dmgdps6tYV2BhTgH1eMNLec1NYXTVh22hmFRTPq2G4F0mf6fVHXfGqX1tCNcTuy2mzR0LcYZT3NaMMbscXiN0w7FVGI-A2aO70lH33KvD_opTUqu6rg1Qa3bX6oIrM_kdCzmVch0yEPds3YOWPTglQaj1OS9WZ1zbUuifhRhX4Bh8pL7xcoIvRnPRyXzdL_cR2hE-7TjCVOvzoSK987iKCiOtAqTvjJHr6w3a21dNeqxbGTIRrgj2oraZ0Nug4CRDk8Xry6e6LLiPXbwcKoXArjC3c3UCw",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\":\"cris920sdm@hotmail.com\",\r\n    \"connectionId\":\"con_q0RVtc9utzmomCoo\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://7f7wzet988.execute-api.us-west-2.amazonaws.com/testing/users/deleteUser",
+					"protocol": "https",
+					"host": [
+						"7f7wzet988",
+						"execute-api",
+						"us-west-2",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"testing",
+						"users",
+						"deleteUser"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "deleteUser",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "authorizationToken",
+								"value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjNmLWk1YVo5QWFMU2p3cEYzeG5ZRyJ9.eyJpc3MiOiJodHRwczovL3Jlc3NvbHZlLnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2NDJjNWY4YTY2OThmMjRjZjBiOTc3OGUiLCJhdWQiOiJodHRwczovL2VhNGZzbGRkdmguZXhlY3V0ZS1hcGkudXMtd2VzdC0yLmFtYXpvbmF3cy5jb20iLCJpYXQiOjE2ODA2Mjk4NTEsImV4cCI6MTY4MDcxNjI1MSwiYXpwIjoiNkVaQk5DdHJFdWNXdGY1eEJhTUkyMWpUSGZpbUxmYWgiLCJndHkiOiJwYXNzd29yZCJ9.N4-DDWZEPzNwMsxvhDCJ0syqjDiT1iex2JxnSOgdUbDMIiefVXcyiJPRi34TEW2fJXtzl366_HYAX8-FIvXjlINYj4iFNVlCpKNS1mnGar33HVM_Mm7DKjBIMykLgsvt3mB4_q4I0V2C4vOo0Y9qauxxYy4JZjXamPNQQSuYle6K4hsWLEe5fLn8p-jfw0RxLN7ndiDLMUm2mIOEQshlSp0GWfsBtox9DYIrVowwPz7MAYys2WxcUAn3eUHpM0GDNNfzSdgERa6HnEmxxEa2ZYjDA1OjwzihfVAs3A8zmXxYTm7nKFz9edlOWi1T1b3mhGZe7oBD0wIRTc779ByZpQ",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"cris920sdm@hotmail.com\",\r\n    \"connectionId\":\"con_q0RVtc9utzmomCoo\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://7f7wzet988.execute-api.us-west-2.amazonaws.com/testing/users/deleteUser",
+							"protocol": "https",
+							"host": [
+								"7f7wzet988",
+								"execute-api",
+								"us-west-2",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"testing",
+								"users",
+								"deleteUser"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Server",
+							"value": "Werkzeug/2.2.3 Python/3.8.8"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 04 Apr 2023 17:46:47 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "27"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						}
+					],
+					"cookie": [],
+					"body": "\"User deleted successfully\""
+				}
+			]
 		}
 	]
 }
