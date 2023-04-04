@@ -1,0 +1,268 @@
+{
+	"info": {
+		"_postman_id": "2c1c2ce5-eb63-4f9b-8195-99bb4a33a766",
+		"name": "auth0Real",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "createUser",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\":\"cris920sdm@hotmail.com\",\r\n    \"password\":\"r1v2l3P4B5O667..\",\r\n    \"connection\":\"Username-Password-Authentication\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://7f7wzet988.execute-api.us-west-2.amazonaws.com/testing/createUser",
+					"protocol": "https",
+					"host": [
+						"7f7wzet988",
+						"execute-api",
+						"us-west-2",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"testing",
+						"createUser"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "createUser",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"cris920sdm@hotmail.com\",\r\n    \"password\":\"r1v2l3P4B5O667..\",\r\n    \"connection\":\"Username-Password-Authentication\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://7f7wzet988.execute-api.us-west-2.amazonaws.com/testing/createUser",
+							"protocol": "https",
+							"host": [
+								"7f7wzet988",
+								"execute-api",
+								"us-west-2",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"testing",
+								"createUser"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "26"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 04 Apr 2023 00:58:35 GMT"
+						},
+						{
+							"key": "x-amzn-RequestId",
+							"value": "94ec35e1-be0d-4c27-8959-73cb667739f4"
+						},
+						{
+							"key": "x-amz-apigw-id",
+							"value": "C09pEEgevHcF3zg="
+						},
+						{
+							"key": "X-Amzn-Trace-Id",
+							"value": "Root=1-642b7639-290c549478dd62fd6ec803b1;Sampled=0"
+						},
+						{
+							"key": "X-Cache",
+							"value": "Error from cloudfront"
+						},
+						{
+							"key": "Via",
+							"value": "1.1 04bb2ec726102507ca2516afbb66d43c.cloudfront.net (CloudFront)"
+						},
+						{
+							"key": "X-Amz-Cf-Pop",
+							"value": "BOG50-P2"
+						},
+						{
+							"key": "X-Amz-Cf-Id",
+							"value": "qd1kDYicsOxPjp0J1H7hlLpnTDHH8zTVfhbMdRf0i27C82-FYQ5rPQ=="
+						}
+					],
+					"cookie": [],
+					"body": "\"The user already exists.\""
+				}
+			]
+		},
+		{
+			"name": "logIn",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\":\"cris920sdm@hotmail.com\",\r\n    \"password\":\"r1v2l3P4B5O667..\",\r\n    \"connection\":\"Username-Password-Authentication\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://7f7wzet988.execute-api.us-west-2.amazonaws.com/testing/logIn",
+					"protocol": "https",
+					"host": [
+						"7f7wzet988",
+						"execute-api",
+						"us-west-2",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"testing",
+						"logIn"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "logIn",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"cris920sdm@hotmail.com\",\r\n    \"password\":\"r1v2l3P4B5O667..\",\r\n    \"connection\":\"Username-Password-Authentication\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://7f7wzet988.execute-api.us-west-2.amazonaws.com/testing/logIn",
+							"protocol": "https",
+							"host": [
+								"7f7wzet988",
+								"execute-api",
+								"us-west-2",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"testing",
+								"logIn"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "792"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 04 Apr 2023 01:00:09 GMT"
+						},
+						{
+							"key": "x-amzn-RequestId",
+							"value": "ee45491b-267c-41eb-b214-15b4cd3f05d3"
+						},
+						{
+							"key": "x-amz-apigw-id",
+							"value": "C093uE7WPHcFjzg="
+						},
+						{
+							"key": "X-Amzn-Trace-Id",
+							"value": "Root=1-642b7697-4982371c29e9f7980e911dca;Sampled=0"
+						},
+						{
+							"key": "X-Cache",
+							"value": "Miss from cloudfront"
+						},
+						{
+							"key": "Via",
+							"value": "1.1 04bb2ec726102507ca2516afbb66d43c.cloudfront.net (CloudFront)"
+						},
+						{
+							"key": "X-Amz-Cf-Pop",
+							"value": "BOG50-P2"
+						},
+						{
+							"key": "X-Amz-Cf-Id",
+							"value": "doQi29vPutUgFab02cneqTYEZR7ZSRJwMa2yZl8mqI1L9ML2cP41_A=="
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"access_token\": \"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjNmLWk1YVo5QWFMU2p3cEYzeG5ZRyJ9.eyJpc3MiOiJodHRwczovL3Jlc3NvbHZlLnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2NDI3NWJkMWJmYjhmYTQ0Y2FlNDI1ZDkiLCJhdWQiOiJodHRwczovL2VhNGZzbGRkdmguZXhlY3V0ZS1hcGkudXMtd2VzdC0yLmFtYXpvbmF3cy5jb20iLCJpYXQiOjE2ODA1NzAwMDgsImV4cCI6MTY4MDY1NjQwOCwiYXpwIjoiNkVaQk5DdHJFdWNXdGY1eEJhTUkyMWpUSGZpbUxmYWgiLCJndHkiOiJwYXNzd29yZCJ9.F592tm4-83CcgGkjanQt7I-PcLrhYDXI0RUze3VKtjSdfMpRpZ18Q2ykpF5D_MgyyZ6fhb8WTOYmSoobdpBxTGbs__4M-qKPuaoqC9NryXBjZpI08wejQ9GTstuntCZvu_9z_rt_wFHeMi6IyIVja9J1i4q7I23GYmaGX6BIk5XuJ7IslpQ9V_3N6nLdqWJobsTrIS2h7X5RBEU_5d9Z-fnEChUcQkKnV3CWa3xmndM-6MSaDvoe8CfmfPJmsi9VTmifXXgBZ71rvwKhep0VLCqRP3A4W2mY11XrNnZjJJW4MwOMYJ2SArhxWPK2mZG1vsyL7Sbn7pfbNNsnm-iv3g\",\n    \"expires_in\": 86400,\n    \"token_type\": \"Bearer\"\n}"
+				}
+			]
+		},
+		{
+			"name": "auth0",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "authorizationToken",
+						"value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjNmLWk1YVo5QWFMU2p3cEYzeG5ZRyJ9.eyJpc3MiOiJodHRwczovL3Jlc3NvbHZlLnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2NDI3NWJkMWJmYjhmYTQ0Y2FlNDI1ZDkiLCJhdWQiOiJodHRwczovL2VhNGZzbGRkdmguZXhlY3V0ZS1hcGkudXMtd2VzdC0yLmFtYXpvbmF3cy5jb20iLCJpYXQiOjE2ODA1NzAwMDgsImV4cCI6MTY4MDY1NjQwOCwiYXpwIjoiNkVaQk5DdHJFdWNXdGY1eEJhTUkyMWpUSGZpbUxmYWgiLCJndHkiOiJwYXNzd29yZCJ9.F592tm4-83CcgGkjanQt7I-PcLrhYDXI0RUze3VKtjSdfMpRpZ18Q2ykpF5D_MgyyZ6fhb8WTOYmSoobdpBxTGbs__4M-qKPuaoqC9NryXBjZpI08wejQ9GTstuntCZvu_9z_rt_wFHeMi6IyIVja9J1i4q7I23GYmaGX6BIk5XuJ7IslpQ9V_3N6nLdqWJobsTrIS2h7X5RBEU_5d9Z-fnEChUcQkKnV3CWa3xmndM-6MSaDvoe8CfmfPJmsi9VTmifXXgBZ71rvwKhep0VLCqRP3A4W2mY11XrNnZjJJW4MwOMYJ2SArhxWPK2mZG1vsyL7Sbn7pfbNNsnm-iv3g",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "https://7f7wzet988.execute-api.us-west-2.amazonaws.com/testing/auth0",
+					"protocol": "https",
+					"host": [
+						"7f7wzet988",
+						"execute-api",
+						"us-west-2",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"testing",
+						"auth0"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

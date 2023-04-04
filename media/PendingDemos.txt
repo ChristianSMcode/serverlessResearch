@@ -19,6 +19,7 @@ Ver video autorizacion api gateway(Listo)
 Agregar a tabla de contenidos(Listo)
 lambda autorizer (Listo)
 
+cambiar rutas para ser subcontenidas (/usersClient/... y /userManagement/...)
 Incluir documentacion auth0 + demo(pendiente)
 
 

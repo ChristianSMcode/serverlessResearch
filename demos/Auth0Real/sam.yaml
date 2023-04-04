@@ -1,0 +1,187 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: 'Auth0Real
+
+  Sample SAM Template for Auth0Real
+
+  '
+Globals:
+  Function:
+    Timeout: 3
+    MemorySize: 128
+Resources:
+  createUser:
+    Type: AWS::Serverless::Function
+    Properties:
+      Environment:
+        Variables:
+          DOMAIN: ressolve.us.auth0.com
+          CLIENT_ID: 6EZBNCtrEucWtf5xBaMI21jTHfimLfah
+          CLIENT_SECRET: pCBvlVIZ7AMigU0DVNaYl9DZQNmpJALx1HxV9K3MLGZilUpLOUdXf0BK8zzfN7Eu
+          SCOPES: read:users create:users update:users delete:users
+      CodeUri: s3://ressolve-research-gateway-auth0real/ec291ff22aa0eb11c00cf1a910be59d7
+      Handler: createUser.lambdaHandler
+      Runtime: nodejs16.x
+      Architectures:
+      - x86_64
+      Events:
+        RestApiEvent:
+          Type: Api
+          Properties:
+            Path: /createUser
+            Method: post
+            RestApiId:
+              Ref: Auth0Test
+    Metadata:
+      SamResourceId: createUser
+  logIn:
+    Type: AWS::Serverless::Function
+    Properties:
+      Environment:
+        Variables:
+          DOMAIN: ressolve.us.auth0.com
+          AUDIENCE: https://ea4fslddvh.execute-api.us-west-2.amazonaws.com
+          CLIENT_ID: 6EZBNCtrEucWtf5xBaMI21jTHfimLfah
+          CLIENT_SECRET: pCBvlVIZ7AMigU0DVNaYl9DZQNmpJALx1HxV9K3MLGZilUpLOUdXf0BK8zzfN7Eu
+          SCOPES: read:users create:users update:users delete:users
+      CodeUri: s3://ressolve-research-gateway-auth0real/3dbcdebfff1f5f4cf7445a19a708a84a
+      Handler: logIn.lambdaHandler
+      Runtime: nodejs16.x
+      Architectures:
+      - x86_64
+      Events:
+        RestApiEvent:
+          Type: Api
+          Properties:
+            Path: /logIn
+            Method: post
+            RestApiId:
+              Ref: Auth0Test
+    Metadata:
+      SamResourceId: logIn
+  auth0:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: s3://ressolve-research-gateway-auth0real/11b97b02742ecc8a59cbdcde07c7e730
+      Handler: auth0.lambdaHandler
+      Runtime: nodejs16.x
+      Architectures:
+      - x86_64
+      Events:
+        RestApiEvent:
+          Type: Api
+          Properties:
+            Path: /auth0
+            Method: get
+            RestApiId:
+              Ref: Auth0Test
+    Metadata:
+      SamResourceId: auth0
+  authAuthorizer:
+    Type: AWS::Serverless::Function
+    Properties:
+      Environment:
+        Variables:
+          AUDIENCE: https://ea4fslddvh.execute-api.us-west-2.amazonaws.com
+          JWKS_URI: https://ressolve.us.auth0.com/.well-known/jwks.json
+          TOKEN_ISSUER: https://ressolve.us.auth0.com/
+      CodeUri: s3://ressolve-research-gateway-auth0real/3f36aca01191c45812d1b0b314a8de1c
+      Handler: authAuthorizer.lambdaHandler
+      Runtime: nodejs16.x
+      Architectures:
+      - x86_64
+    Metadata:
+      SamResourceId: authAuthorizer
+  AuthorizerRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service:
+            - lambda.amazonaws.com
+            - apigateway.amazonaws.com
+          Action:
+          - sts:AssumeRole
+      ManagedPolicyArns:
+      - arn:aws:iam::aws:policy/service-role/AWSLambdaRole
+    Metadata:
+      SamResourceId: AuthorizerRole
+  Auth0Test:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: testing
+      Name: Auth0Test
+      DefinitionBody:
+        swagger: '2.0'
+        info:
+          title: Auth0Test-title
+          version: '1'
+        basePath: /Auth0Test
+        schemes:
+        - https
+        securityDefinitions:
+          Auth0AuthorizerCustom:
+            type: apiKey
+            name: authorizationToken
+            in: header
+            x-amazon-apigateway-authtype: custom
+            x-amazon-apigateway-authorizer:
+              type: token
+              authorizerResultTtlInSeconds: 3600
+              authorizerCredentials:
+                Fn::GetAtt:
+                - AuthorizerRole
+                - Arn
+              identityValidationExpression: ^Bearer [-0-9a-zA-z\.]*$
+              authorizerUri:
+                Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${authAuthorizer.Arn}/invocations
+        paths:
+          /createUser:
+            post:
+              consumes:
+              - application/json
+              produces:
+              - application/json
+              responses:
+                '200':
+                  description: ok
+              x-amazon-apigateway-integration:
+                type: aws_proxy
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${createUser.Arn}/invocations
+                httpMethod: POST
+          /logIn:
+            post:
+              consumes:
+              - application/json
+              produces:
+              - application/json
+              responses:
+                '200':
+                  description: ok
+              x-amazon-apigateway-integration:
+                type: aws_proxy
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${logIn.Arn}/invocations
+                httpMethod: POST
+          /auth0:
+            get:
+              consumes:
+              - application/json
+              produces:
+              - application/json
+              responses:
+                '200':
+                  description: ok
+              security:
+              - Auth0AuthorizerCustom: []
+              x-amazon-apigateway-integration:
+                type: aws_proxy
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${auth0.Arn}/invocations
+                httpMethod: POST
+    Metadata:
+      SamResourceId: Auth0Test
