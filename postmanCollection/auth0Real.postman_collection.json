@@ -122,13 +122,142 @@
 			]
 		},
 		{
+			"name": "createRootUser",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorizationtoken",
+						"value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjNmLWk1YVo5QWFMU2p3cEYzeG5ZRyJ9.eyJpc3MiOiJodHRwczovL3Jlc3NvbHZlLnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2NDI3NTlmODNkNTAzNDVkM2RlZTM0ZTQiLCJhdWQiOiJodHRwczovL2VhNGZzbGRkdmguZXhlY3V0ZS1hcGkudXMtd2VzdC0yLmFtYXpvbmF3cy5jb20iLCJpYXQiOjE2ODA2NDk5OTYsImV4cCI6MTY4MDczNjM5NiwiYXpwIjoiNkVaQk5DdHJFdWNXdGY1eEJhTUkyMWpUSGZpbUxmYWgiLCJndHkiOiJwYXNzd29yZCJ9.OOWQU7ble4NFTTOPxYNSvDHMeEkIOJCTxZJ9NAgyJ1W0rgmBceP7BusV6CS9Zg8QTf_QjHrF4Xb19OQeS0flVRg6-uzWXaj-aC4S5mIfVJcEd9ehiDSzUHNttZml-IhuVHeXjVe14nRDfSnDADgFppajvLM1LQeBLK4k_-OAOXqfyY_w9qiJTMAyTK2fdRGpAbmYyJG5AL2pJaCibfzWT3YveqCqNh1q1V0YldHVKqjPvSd-WHnwWhi9W0rvgyKvp86anKZGl0XBNKMNyOqbIMKJd4v2LF_IoiF7cBoXt-4_lV5hfElHCKSTSMGgLCO1oZKpAH2fQlrhkD5csApekQ",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\":\"cris920sdm@hotmail.com\",\r\n    \"password\":\"r1v2l3P4B5O667..\",\r\n    \"connection\":\"Username-Password-Authentication\",\r\n    \"organizationName\":\"organization-ressolve\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://7f7wzet988.execute-api.us-west-2.amazonaws.com/testing/users/createRootUser",
+					"protocol": "https",
+					"host": [
+						"7f7wzet988",
+						"execute-api",
+						"us-west-2",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"testing",
+						"users",
+						"createRootUser"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "createRootUser",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorizationtoken",
+								"value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjNmLWk1YVo5QWFMU2p3cEYzeG5ZRyJ9.eyJpc3MiOiJodHRwczovL3Jlc3NvbHZlLnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2NDI3NTlmODNkNTAzNDVkM2RlZTM0ZTQiLCJhdWQiOiJodHRwczovL2VhNGZzbGRkdmguZXhlY3V0ZS1hcGkudXMtd2VzdC0yLmFtYXpvbmF3cy5jb20iLCJpYXQiOjE2ODA2NDk5OTYsImV4cCI6MTY4MDczNjM5NiwiYXpwIjoiNkVaQk5DdHJFdWNXdGY1eEJhTUkyMWpUSGZpbUxmYWgiLCJndHkiOiJwYXNzd29yZCJ9.OOWQU7ble4NFTTOPxYNSvDHMeEkIOJCTxZJ9NAgyJ1W0rgmBceP7BusV6CS9Zg8QTf_QjHrF4Xb19OQeS0flVRg6-uzWXaj-aC4S5mIfVJcEd9ehiDSzUHNttZml-IhuVHeXjVe14nRDfSnDADgFppajvLM1LQeBLK4k_-OAOXqfyY_w9qiJTMAyTK2fdRGpAbmYyJG5AL2pJaCibfzWT3YveqCqNh1q1V0YldHVKqjPvSd-WHnwWhi9W0rvgyKvp86anKZGl0XBNKMNyOqbIMKJd4v2LF_IoiF7cBoXt-4_lV5hfElHCKSTSMGgLCO1oZKpAH2fQlrhkD5csApekQ",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"cris920sdm@hotmail.com\",\r\n    \"password\":\"r1v2l3P4B5O667..\",\r\n    \"connection\":\"Username-Password-Authentication\",\r\n    \"organizationName\":\"organization-ressolve\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://7f7wzet988.execute-api.us-west-2.amazonaws.com/testing/users/createRootUser",
+							"protocol": "https",
+							"host": [
+								"7f7wzet988",
+								"execute-api",
+								"us-west-2",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"testing",
+								"users",
+								"createRootUser"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "111"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 04 Apr 2023 23:18:42 GMT"
+						},
+						{
+							"key": "x-amzn-RequestId",
+							"value": "67fc03f6-18dc-4bb1-a110-c03df5e3e3eb"
+						},
+						{
+							"key": "x-amz-apigw-id",
+							"value": "C4B8nHXVvHcF9HA="
+						},
+						{
+							"key": "X-Amzn-Trace-Id",
+							"value": "Root=1-642cb050-1a6eaa5808c208562a2b233a;Sampled=0;lineage=7969d5e4:0|97152b57:0"
+						},
+						{
+							"key": "X-Cache",
+							"value": "Miss from cloudfront"
+						},
+						{
+							"key": "Via",
+							"value": "1.1 99c5e7f74f5882cd14f81bffeb3770f8.cloudfront.net (CloudFront)"
+						},
+						{
+							"key": "X-Amz-Cf-Pop",
+							"value": "BOG50-P2"
+						},
+						{
+							"key": "X-Amz-Cf-Id",
+							"value": "OhRhbvSSvKxgMuw1L3XCQCDh2ual3DiP1xU-tlxvoqbT7AVDkLm1xQ=="
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"user\": \"User cris920sdm@hotmail.com created.\",\n    \"organization\": \"Organization org_eC0hKpXoWjDqKAds created (id)\"\n}"
+				}
+			]
+		},
+		{
 			"name": "logIn",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"email\":\"cris920sdm@hotmail.com\",\r\n    \"password\":\"r1v2l3P4B5O667..\",\r\n    \"connection\":\"Username-Password-Authentication\"\r\n}",
+					"raw": "{\r\n    \"email\":\"david.sierra@ressolve.ai\",\r\n    \"password\":\"r1v2l3P4B5O667..\",\r\n    \"connection\":\"Username-Password-Authentication\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -244,7 +373,7 @@
 				"header": [
 					{
 						"key": "Authorizationtoken",
-						"value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjNmLWk1YVo5QWFMU2p3cEYzeG5ZRyJ9.eyJpc3MiOiJodHRwczovL3Jlc3NvbHZlLnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2NDJjNmFmYTllNmFkMTkxMzEwMDQ5ZGIiLCJhdWQiOiJodHRwczovL2VhNGZzbGRkdmguZXhlY3V0ZS1hcGkudXMtd2VzdC0yLmFtYXpvbmF3cy5jb20iLCJpYXQiOjE2ODA2MzI1NzUsImV4cCI6MTY4MDcxODk3NSwiYXpwIjoiNkVaQk5DdHJFdWNXdGY1eEJhTUkyMWpUSGZpbUxmYWgiLCJndHkiOiJwYXNzd29yZCJ9.ouRhT2UD6uF_td8qiDXeTqVgYtBoEGS2b0AXK3JUT_xpfN0Im-SJefzZNcnT4i9e1Kf7Hg54VTCP6uAM9rZ-6HIPE89U6SCjzwSWknQLNNkxMgBOedA3w-pMBLtTQZ8CZPDJufenFn3Fb8TJBRmPvU28ePYjjDmDBZJMFBRcPwrb9PqoixIgBpCJALnpkjOAkhZr9HrWqBMG6o8YGXBZkGP1I5M3omLUC9stVSma95nfZ4PyCpQ75g2pOg6P1x7yLXWRN2EHOjqlD_jsKgMOr-5rvPgtiphbXJ0-LaSZ-FnLctY92Bo0vAq50U9uI_BM2DnLcNhGld-WU8xjX96h8Q",
+						"value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjNmLWk1YVo5QWFMU2p3cEYzeG5ZRyJ9.eyJpc3MiOiJodHRwczovL3Jlc3NvbHZlLnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2NDI3NTlmODNkNTAzNDVkM2RlZTM0ZTQiLCJhdWQiOiJodHRwczovL2VhNGZzbGRkdmguZXhlY3V0ZS1hcGkudXMtd2VzdC0yLmFtYXpvbmF3cy5jb20iLCJpYXQiOjE2ODA2NTAxNjIsImV4cCI6MTY4MDczNjU2MiwiYXpwIjoiNkVaQk5DdHJFdWNXdGY1eEJhTUkyMWpUSGZpbUxmYWgiLCJndHkiOiJwYXNzd29yZCJ9.PuVBfBSXuoyyfeOMIhUKf_Q0LDknAtanqEXc4sMu_Saia7d2oFE-PmfGhjirADwvU0JiPC4_d-gpexkfvGo_RK2gERuKOsCX4rhLu1KSA8bLk6pQcvnU_VOKwRKtqN9DRoQn-g3NqWQ30QKjAjaA6iVirQpBSu3b36GVwKBVRiUfjQWLmLq9YQ_8a93zGJ2TVnKYpXwtHtU700tzgRKkNNB93quzw_nnA9TaQFOjG_TxTbqxJE_U76eIe5iEjDlub7i_rZ9hRgBQh3zpYsRBSHQ4r7nPJNbFjKloNtFs1RjzUx9gdTQUbrI-B3pNWYNCnjDgzPvLczGzAXGc3uu56g",
 						"type": "default"
 					}
 				],

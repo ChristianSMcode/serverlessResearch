@@ -8,7 +8,7 @@ const getPolicyDocument = (effect, resource) => {
         Statement: [{
             Action: 'execute-api:Invoke', // default action
             Effect: effect,
-            Resource: resource,
+            Resource: '*',
         }]
     };
     return policyDocument;

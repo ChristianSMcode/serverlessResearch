@@ -7,7 +7,7 @@ Description: 'Auth0Real
   '
 Globals:
   Function:
-    Timeout: 10
+    Timeout: 30
     MemorySize: 128
 Resources:
   createUser:
@@ -34,6 +34,30 @@ Resources:
               Ref: Auth0Test
     Metadata:
       SamResourceId: createUser
+  createRootUser:
+    Type: AWS::Serverless::Function
+    Properties:
+      Environment:
+        Variables:
+          DOMAIN: ressolve.us.auth0.com
+          CLIENT_ID: 6EZBNCtrEucWtf5xBaMI21jTHfimLfah
+          CLIENT_SECRET: pCBvlVIZ7AMigU0DVNaYl9DZQNmpJALx1HxV9K3MLGZilUpLOUdXf0BK8zzfN7Eu
+          SCOPES: read:users create:users update:users delete:users
+      CodeUri: s3://ressolve-research-gateway-auth0real/4df6a3695ec88d9d8466c0fc19aa39a3
+      Handler: createRootUser.lambdaHandler
+      Runtime: nodejs16.x
+      Architectures:
+      - x86_64
+      Events:
+        RestApiEvent:
+          Type: Api
+          Properties:
+            Path: /users/createRootUser
+            Method: post
+            RestApiId:
+              Ref: Auth0Test
+    Metadata:
+      SamResourceId: createRootUser
   deleteUser:
     Type: AWS::Serverless::Function
     Properties:
@@ -109,7 +133,7 @@ Resources:
           AUDIENCE: https://ea4fslddvh.execute-api.us-west-2.amazonaws.com
           JWKS_URI: https://ressolve.us.auth0.com/.well-known/jwks.json
           TOKEN_ISSUER: https://ressolve.us.auth0.com/
-      CodeUri: s3://ressolve-research-gateway-auth0real/351a4e3b1942542bcd6dd753a8f4a0fb
+      CodeUri: s3://ressolve-research-gateway-auth0real/22e8ef9face85bfea2818648df0a9a12
       Handler: authAuthorizer.lambdaHandler
       Runtime: nodejs16.x
       Architectures:
@@ -147,22 +171,7 @@ Resources:
         schemes:
         - https
         securityDefinitions:
-          Auth0AuthorizerCustomGetHello:
-            type: apiKey
-            name: Authorizationtoken
-            in: header
-            x-amazon-apigateway-authtype: custom
-            x-amazon-apigateway-authorizer:
-              type: token
-              authorizerResultTtlInSeconds: 3600
-              authorizerCredentials:
-                Fn::GetAtt:
-                - AuthorizerRole
-                - Arn
-              identityValidationExpression: ^Bearer [-0-9a-zA-z\.]*$
-              authorizerUri:
-                Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${authAuthorizer.Arn}/invocations
-          Auth0AuthorizerCustomDeleteUser:
+          Auth0Authorizer:
             type: apiKey
             name: Authorizationtoken
             in: header
@@ -192,6 +201,22 @@ Resources:
                 uri:
                   Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${createUser.Arn}/invocations
                 httpMethod: POST
+          /users/createRootUser:
+            post:
+              consumes:
+              - application/json
+              produces:
+              - application/json
+              responses:
+                '200':
+                  description: ok
+              security:
+              - Auth0Authorizer: []
+              x-amazon-apigateway-integration:
+                type: aws_proxy
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${createRootUser.Arn}/invocations
+                httpMethod: POST
           /users/deleteUser:
             post:
               consumes:
@@ -202,7 +227,7 @@ Resources:
                 '200':
                   description: ok
               security:
-              - Auth0AuthorizerCustomGetHello: []
+              - Auth0Authorizer: []
               x-amazon-apigateway-integration:
                 type: aws_proxy
                 uri:
@@ -232,7 +257,7 @@ Resources:
                 '200':
                   description: ok
               security:
-              - Auth0AuthorizerCustomDeleteUser: []
+              - Auth0Authorizer: []
               x-amazon-apigateway-integration:
                 type: aws_proxy
                 uri:
