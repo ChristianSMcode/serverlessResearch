@@ -8,7 +8,7 @@ exports.lambdaHandler  = async (event, context) => {
   }
   catch (err) {
       console.log(err.message);
-      return context.fail("Unauthorized");
+      return context.fail(err.message);
   }
   return data;
 };
