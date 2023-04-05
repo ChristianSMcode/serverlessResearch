@@ -12,7 +12,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"email\":\"cris920sdm@hotmail.com\",\r\n    \"password\":\"r1v2l3P4B5O667..\",\r\n    \"connection\":\"Username-Password-Authentication\"\r\n}",
+					"raw": "{\r\n    \"email\":\"cris920sdm@hotmail.com\",\r\n    \"password\":\"r1v2l3P4B5O667..\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -44,7 +44,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\":\"cris920sdm@hotmail.com\",\r\n    \"password\":\"r1v2l3P4B5O667..\",\r\n    \"connection\":\"Username-Password-Authentication\"\r\n}",
+							"raw": "{\r\n    \"email\":\"cris920sdm@hotmail.com\",\r\n    \"password\":\"r1v2l3P4B5O667..\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -52,7 +52,7 @@
 							}
 						},
 						"url": {
-							"raw": "https://7f7wzet988.execute-api.us-west-2.amazonaws.com/testing/createUser",
+							"raw": "https://7f7wzet988.execute-api.us-west-2.amazonaws.com/testing/users/createUser",
 							"protocol": "https",
 							"host": [
 								"7f7wzet988",
@@ -63,12 +63,13 @@
 							],
 							"path": [
 								"testing",
+								"users",
 								"createUser"
 							]
 						}
 					},
-					"status": "Bad Request",
-					"code": 400,
+					"status": "OK",
+					"code": 200,
 					"_postman_previewlanguage": "json",
 					"header": [
 						{
@@ -77,7 +78,7 @@
 						},
 						{
 							"key": "Content-Length",
-							"value": "26"
+							"value": "119"
 						},
 						{
 							"key": "Connection",
@@ -85,27 +86,27 @@
 						},
 						{
 							"key": "Date",
-							"value": "Tue, 04 Apr 2023 00:58:35 GMT"
+							"value": "Wed, 05 Apr 2023 23:31:29 GMT"
 						},
 						{
 							"key": "x-amzn-RequestId",
-							"value": "94ec35e1-be0d-4c27-8959-73cb667739f4"
+							"value": "a1625f02-e614-4c8e-80ff-137b128275d2"
 						},
 						{
 							"key": "x-amz-apigw-id",
-							"value": "C09pEEgevHcF3zg="
+							"value": "C7WweF-KPHcFnMQ="
 						},
 						{
 							"key": "X-Amzn-Trace-Id",
-							"value": "Root=1-642b7639-290c549478dd62fd6ec803b1;Sampled=0"
+							"value": "Root=1-642e04cf-4b7066ab433fbc2f4a2bfb4b;Sampled=0;lineage=94dd9a8c:0"
 						},
 						{
 							"key": "X-Cache",
-							"value": "Error from cloudfront"
+							"value": "Miss from cloudfront"
 						},
 						{
 							"key": "Via",
-							"value": "1.1 04bb2ec726102507ca2516afbb66d43c.cloudfront.net (CloudFront)"
+							"value": "1.1 6d90b034e8427072f3cb7201739b20b2.cloudfront.net (CloudFront)"
 						},
 						{
 							"key": "X-Amz-Cf-Pop",
@@ -113,11 +114,11 @@
 						},
 						{
 							"key": "X-Amz-Cf-Id",
-							"value": "qd1kDYicsOxPjp0J1H7hlLpnTDHH8zTVfhbMdRf0i27C82-FYQ5rPQ=="
+							"value": "sG7a8AH464hhSPTDis255TUShwcgXfgj7J5x-6EuVdgfV7cYqR_Plw=="
 						}
 					],
 					"cookie": [],
-					"body": "\"The user already exists.\""
+					"body": "{\n    \"message\": \"User with id auth0|642e04d19e6ad19131008d43 was created and added to Ressolve organization successufully.\"\n}"
 				}
 			]
 		},

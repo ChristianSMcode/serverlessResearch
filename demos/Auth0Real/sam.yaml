@@ -16,10 +16,10 @@ Resources:
       Environment:
         Variables:
           DOMAIN: ressolve.us.auth0.com
-          CLIENT_ID: 6EZBNCtrEucWtf5xBaMI21jTHfimLfah
-          CLIENT_SECRET: pCBvlVIZ7AMigU0DVNaYl9DZQNmpJALx1HxV9K3MLGZilUpLOUdXf0BK8zzfN7Eu
-          SCOPES: read:users create:users update:users delete:users
-      CodeUri: s3://ressolve-research-gateway-auth0real/ec291ff22aa0eb11c00cf1a910be59d7
+          CLIENT_ID: wPZkMbglCKYMMX2H8EN1WstSss71nqgP
+          CLIENT_SECRET: AuNrgnLNSv5aDqz75FK6Sax7ebeldTKELDEg3GCpvroQgPScGfLYmzzYjXqTGw46
+          RESSOLVE_ORG: org_eC0hKpXoWjDqKAds
+      CodeUri: s3://ressolve-research-gateway-auth0real/26280cda01561d176cc842d84f6a5b22
       Handler: createUser.lambdaHandler
       Runtime: nodejs16.x
       Architectures:
