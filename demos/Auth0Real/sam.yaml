@@ -40,10 +40,9 @@ Resources:
       Environment:
         Variables:
           DOMAIN: ressolve.us.auth0.com
-          CLIENT_ID: 6EZBNCtrEucWtf5xBaMI21jTHfimLfah
-          CLIENT_SECRET: pCBvlVIZ7AMigU0DVNaYl9DZQNmpJALx1HxV9K3MLGZilUpLOUdXf0BK8zzfN7Eu
-          SCOPES: read:users create:users update:users delete:users
-      CodeUri: s3://ressolve-research-gateway-auth0real/4df6a3695ec88d9d8466c0fc19aa39a3
+          CLIENT_ID: wPZkMbglCKYMMX2H8EN1WstSss71nqgP
+          CLIENT_SECRET: AuNrgnLNSv5aDqz75FK6Sax7ebeldTKELDEg3GCpvroQgPScGfLYmzzYjXqTGw46
+      CodeUri: s3://ressolve-research-gateway-auth0real/f75d2ecfc1442e1584c89944c1ce2204
       Handler: createRootUser.lambdaHandler
       Runtime: nodejs16.x
       Architectures:
@@ -210,8 +209,6 @@ Resources:
               responses:
                 '200':
                   description: ok
-              security:
-              - Auth0Authorizer: []
               x-amazon-apigateway-integration:
                 type: aws_proxy
                 uri:

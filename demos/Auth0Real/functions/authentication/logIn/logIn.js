@@ -15,7 +15,7 @@ exports.lambdaHandler = async (event, context) => {
 
         let email = bodyReq['email'];
         let password = bodyReq['password'];
-        let connection = bodyReq['connection'];
+        let connection = bodyReq['connection']; // I should get this automatically?
 
         let input ={
             username:email,
