@@ -3,9 +3,14 @@ const auth0 = require('auth0');
 const AuthenticationClient = new auth0.AuthenticationClient({
     domain: process.env.DOMAIN,
     clientId: process.env.CLIENT_ID,
-    clientSecret: process.env.CLIENT_SECRET,
-    scope: process.env.SCOPES,
+    clientSecret: process.env.CLIENT_SECRET
 });
+
+const managementClient = new auth0.ManagementClient({
+    domain: process.env.DOMAIN,
+    clientId: process.env.CLIENT_ID,
+    clientSecret: process.env.CLIENT_SECRET
+})
 
 
 exports.lambdaHandler = async (event, context) => {
@@ -15,7 +20,9 @@ exports.lambdaHandler = async (event, context) => {
 
         let email = bodyReq['email'];
         let password = bodyReq['password'];
-        let connection = bodyReq['connection']; // I should get this automatically?
+
+        let getUserConnection = await managementClient.getUsersByEmail(email);
+        let connection = getUserConnection[0].identities[0].connection;
 
         let input ={
             username:email,

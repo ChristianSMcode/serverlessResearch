@@ -87,11 +87,10 @@ Resources:
       Environment:
         Variables:
           DOMAIN: ressolve.us.auth0.com
-          AUDIENCE: https://ea4fslddvh.execute-api.us-west-2.amazonaws.com
-          CLIENT_ID: 6EZBNCtrEucWtf5xBaMI21jTHfimLfah
-          CLIENT_SECRET: pCBvlVIZ7AMigU0DVNaYl9DZQNmpJALx1HxV9K3MLGZilUpLOUdXf0BK8zzfN7Eu
-          SCOPES: read:users create:users update:users delete:users
-      CodeUri: s3://ressolve-research-gateway-auth0real/3dbcdebfff1f5f4cf7445a19a708a84a
+          CLIENT_ID: wPZkMbglCKYMMX2H8EN1WstSss71nqgP
+          CLIENT_SECRET: AuNrgnLNSv5aDqz75FK6Sax7ebeldTKELDEg3GCpvroQgPScGfLYmzzYjXqTGw46
+          AUDIENCE: https://ressolveTestApi.com
+      CodeUri: s3://ressolve-research-gateway-auth0real/3342264c41e7d6465b2ab55c5e2e0a9d
       Handler: logIn.lambdaHandler
       Runtime: nodejs16.x
       Architectures:
