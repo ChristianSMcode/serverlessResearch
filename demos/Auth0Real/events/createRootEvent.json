@@ -1,5 +1,5 @@
 {
-    "body": "{\"email\": \"cris920sdm@hotmail.com\",\"connection\": \"Username-Password-Authentication\",\"password\": \"r1v2l3P4B5O667..\",\"organizationName\": \"organization-ressolve\"}",
+    "body": "{\"email\": \"cris920sdm@hotmail.com\",\"password\": \"r1v2l3P4B5O667..\",\"organizationName\": \"organization-ressolve\"}",
     "resource": "/{proxy+}",
     "path": "/path/to/resource",
     "httpMethod": "POST",

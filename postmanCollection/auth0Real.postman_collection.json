@@ -12,7 +12,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"email\":\"cris920sdm@hotmail.com\",\r\n    \"password\":\"r1v2l3P4B5O667..\",\r\n    \"connection\":\"Username-Password-Authentication\"\r\n}",
+					"raw": "{\r\n    \"email\":\"cris920sdm@hotmail.com\",\r\n    \"password\":\"r1v2l3P4B5O667..\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -44,7 +44,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\":\"cris920sdm@hotmail.com\",\r\n    \"password\":\"r1v2l3P4B5O667..\",\r\n    \"connection\":\"Username-Password-Authentication\"\r\n}",
+							"raw": "{\r\n    \"email\":\"cris920sdm@hotmail.com\",\r\n    \"password\":\"r1v2l3P4B5O667..\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -52,7 +52,7 @@
 							}
 						},
 						"url": {
-							"raw": "https://7f7wzet988.execute-api.us-west-2.amazonaws.com/testing/createUser",
+							"raw": "https://7f7wzet988.execute-api.us-west-2.amazonaws.com/testing/users/createUser",
 							"protocol": "https",
 							"host": [
 								"7f7wzet988",
@@ -63,12 +63,13 @@
 							],
 							"path": [
 								"testing",
+								"users",
 								"createUser"
 							]
 						}
 					},
-					"status": "Bad Request",
-					"code": 400,
+					"status": "OK",
+					"code": 200,
 					"_postman_previewlanguage": "json",
 					"header": [
 						{
@@ -77,7 +78,7 @@
 						},
 						{
 							"key": "Content-Length",
-							"value": "26"
+							"value": "119"
 						},
 						{
 							"key": "Connection",
@@ -85,27 +86,27 @@
 						},
 						{
 							"key": "Date",
-							"value": "Tue, 04 Apr 2023 00:58:35 GMT"
+							"value": "Wed, 05 Apr 2023 23:31:29 GMT"
 						},
 						{
 							"key": "x-amzn-RequestId",
-							"value": "94ec35e1-be0d-4c27-8959-73cb667739f4"
+							"value": "a1625f02-e614-4c8e-80ff-137b128275d2"
 						},
 						{
 							"key": "x-amz-apigw-id",
-							"value": "C09pEEgevHcF3zg="
+							"value": "C7WweF-KPHcFnMQ="
 						},
 						{
 							"key": "X-Amzn-Trace-Id",
-							"value": "Root=1-642b7639-290c549478dd62fd6ec803b1;Sampled=0"
+							"value": "Root=1-642e04cf-4b7066ab433fbc2f4a2bfb4b;Sampled=0;lineage=94dd9a8c:0"
 						},
 						{
 							"key": "X-Cache",
-							"value": "Error from cloudfront"
+							"value": "Miss from cloudfront"
 						},
 						{
 							"key": "Via",
-							"value": "1.1 04bb2ec726102507ca2516afbb66d43c.cloudfront.net (CloudFront)"
+							"value": "1.1 6d90b034e8427072f3cb7201739b20b2.cloudfront.net (CloudFront)"
 						},
 						{
 							"key": "X-Amz-Cf-Pop",
@@ -113,11 +114,11 @@
 						},
 						{
 							"key": "X-Amz-Cf-Id",
-							"value": "qd1kDYicsOxPjp0J1H7hlLpnTDHH8zTVfhbMdRf0i27C82-FYQ5rPQ=="
+							"value": "sG7a8AH464hhSPTDis255TUShwcgXfgj7J5x-6EuVdgfV7cYqR_Plw=="
 						}
 					],
 					"cookie": [],
-					"body": "\"The user already exists.\""
+					"body": "{\n    \"message\": \"User with id auth0|642e04d19e6ad19131008d43 was created and added to Ressolve organization successufully.\"\n}"
 				}
 			]
 		},
@@ -125,16 +126,10 @@
 			"name": "createRootUser",
 			"request": {
 				"method": "POST",
-				"header": [
-					{
-						"key": "Authorizationtoken",
-						"value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjNmLWk1YVo5QWFMU2p3cEYzeG5ZRyJ9.eyJpc3MiOiJodHRwczovL3Jlc3NvbHZlLnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2NDI3NTlmODNkNTAzNDVkM2RlZTM0ZTQiLCJhdWQiOiJodHRwczovL2VhNGZzbGRkdmguZXhlY3V0ZS1hcGkudXMtd2VzdC0yLmFtYXpvbmF3cy5jb20iLCJpYXQiOjE2ODA2NDk5OTYsImV4cCI6MTY4MDczNjM5NiwiYXpwIjoiNkVaQk5DdHJFdWNXdGY1eEJhTUkyMWpUSGZpbUxmYWgiLCJndHkiOiJwYXNzd29yZCJ9.OOWQU7ble4NFTTOPxYNSvDHMeEkIOJCTxZJ9NAgyJ1W0rgmBceP7BusV6CS9Zg8QTf_QjHrF4Xb19OQeS0flVRg6-uzWXaj-aC4S5mIfVJcEd9ehiDSzUHNttZml-IhuVHeXjVe14nRDfSnDADgFppajvLM1LQeBLK4k_-OAOXqfyY_w9qiJTMAyTK2fdRGpAbmYyJG5AL2pJaCibfzWT3YveqCqNh1q1V0YldHVKqjPvSd-WHnwWhi9W0rvgyKvp86anKZGl0XBNKMNyOqbIMKJd4v2LF_IoiF7cBoXt-4_lV5hfElHCKSTSMGgLCO1oZKpAH2fQlrhkD5csApekQ",
-						"type": "default"
-					}
-				],
+				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"email\":\"cris920sdm@hotmail.com\",\r\n    \"password\":\"r1v2l3P4B5O667..\",\r\n    \"connection\":\"Username-Password-Authentication\",\r\n    \"organizationName\":\"organization-ressolve\"\r\n}",
+					"raw": "{\r\n    \"email\":\"david.sierra@gmail.com\",\r\n    \"password\":\"r1v2l3P4B5O667..\",\r\n    \"organizationName\":\"organization-telespacev2\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -163,16 +158,10 @@
 					"name": "createRootUser",
 					"originalRequest": {
 						"method": "POST",
-						"header": [
-							{
-								"key": "Authorizationtoken",
-								"value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjNmLWk1YVo5QWFMU2p3cEYzeG5ZRyJ9.eyJpc3MiOiJodHRwczovL3Jlc3NvbHZlLnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2NDI3NTlmODNkNTAzNDVkM2RlZTM0ZTQiLCJhdWQiOiJodHRwczovL2VhNGZzbGRkdmguZXhlY3V0ZS1hcGkudXMtd2VzdC0yLmFtYXpvbmF3cy5jb20iLCJpYXQiOjE2ODA2NDk5OTYsImV4cCI6MTY4MDczNjM5NiwiYXpwIjoiNkVaQk5DdHJFdWNXdGY1eEJhTUkyMWpUSGZpbUxmYWgiLCJndHkiOiJwYXNzd29yZCJ9.OOWQU7ble4NFTTOPxYNSvDHMeEkIOJCTxZJ9NAgyJ1W0rgmBceP7BusV6CS9Zg8QTf_QjHrF4Xb19OQeS0flVRg6-uzWXaj-aC4S5mIfVJcEd9ehiDSzUHNttZml-IhuVHeXjVe14nRDfSnDADgFppajvLM1LQeBLK4k_-OAOXqfyY_w9qiJTMAyTK2fdRGpAbmYyJG5AL2pJaCibfzWT3YveqCqNh1q1V0YldHVKqjPvSd-WHnwWhi9W0rvgyKvp86anKZGl0XBNKMNyOqbIMKJd4v2LF_IoiF7cBoXt-4_lV5hfElHCKSTSMGgLCO1oZKpAH2fQlrhkD5csApekQ",
-								"type": "default"
-							}
-						],
+						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\":\"cris920sdm@hotmail.com\",\r\n    \"password\":\"r1v2l3P4B5O667..\",\r\n    \"connection\":\"Username-Password-Authentication\",\r\n    \"organizationName\":\"organization-ressolve\"\r\n}",
+							"raw": "{\r\n    \"email\":\"david.sierra@gmail.com\",\r\n    \"password\":\"r1v2l3P4B5O667..\",\r\n    \"organizationName\":\"organization-telespacev2\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -206,7 +195,7 @@
 						},
 						{
 							"key": "Content-Length",
-							"value": "111"
+							"value": "198"
 						},
 						{
 							"key": "Connection",
@@ -214,19 +203,19 @@
 						},
 						{
 							"key": "Date",
-							"value": "Tue, 04 Apr 2023 23:18:42 GMT"
+							"value": "Mon, 10 Apr 2023 15:34:11 GMT"
 						},
 						{
 							"key": "x-amzn-RequestId",
-							"value": "67fc03f6-18dc-4bb1-a110-c03df5e3e3eb"
+							"value": "0f9c5f1d-e2bd-4292-9c70-d924fb6f6a4d"
 						},
 						{
 							"key": "x-amz-apigw-id",
-							"value": "C4B8nHXVvHcF9HA="
+							"value": "DKvh0FaRvHcF7bg="
 						},
 						{
 							"key": "X-Amzn-Trace-Id",
-							"value": "Root=1-642cb050-1a6eaa5808c208562a2b233a;Sampled=0;lineage=7969d5e4:0|97152b57:0"
+							"value": "Root=1-64342c71-46e84724328821c951f3cb6c;Sampled=0;lineage=97152b57:0"
 						},
 						{
 							"key": "X-Cache",
@@ -234,7 +223,7 @@
 						},
 						{
 							"key": "Via",
-							"value": "1.1 99c5e7f74f5882cd14f81bffeb3770f8.cloudfront.net (CloudFront)"
+							"value": "1.1 8c0bde47bf09c95d1b9da4a65b9fcda0.cloudfront.net (CloudFront)"
 						},
 						{
 							"key": "X-Amz-Cf-Pop",
@@ -242,11 +231,11 @@
 						},
 						{
 							"key": "X-Amz-Cf-Id",
-							"value": "OhRhbvSSvKxgMuw1L3XCQCDh2ual3DiP1xU-tlxvoqbT7AVDkLm1xQ=="
+							"value": "fElSudbZ9tJ02A32G8NEEtyW8SC7fFYYpcDgDzFeARkmsOiNPWub2w=="
 						}
 					],
 					"cookie": [],
-					"body": "{\n    \"user\": \"User cris920sdm@hotmail.com created.\",\n    \"organization\": \"Organization org_eC0hKpXoWjDqKAds created (id)\"\n}"
+					"body": "{\n    \"user\": \"User david.sierra@gmail.com created.\",\n    \"organization\": \"Organization org_GlBWPSGW98Cd1nJ4 created (id)\",\n    \"connection\": \"Default db connection for this organization organization-telespacev2-db\"\n}"
 				}
 			]
 		},
@@ -257,7 +246,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"email\":\"david.sierra@ressolve.ai\",\r\n    \"password\":\"r1v2l3P4B5O667..\",\r\n    \"connection\":\"Username-Password-Authentication\"\r\n}",
+					"raw": "{\r\n    \"email\":\"david.sierra@gmail.com\",\r\n    \"password\":\"r1v2l3P4B5O667..\"\r\n\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -363,6 +352,89 @@
 					],
 					"cookie": [],
 					"body": "{\n    \"access_token\": \"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjNmLWk1YVo5QWFMU2p3cEYzeG5ZRyJ9.eyJpc3MiOiJodHRwczovL3Jlc3NvbHZlLnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2NDI3NWJkMWJmYjhmYTQ0Y2FlNDI1ZDkiLCJhdWQiOiJodHRwczovL2VhNGZzbGRkdmguZXhlY3V0ZS1hcGkudXMtd2VzdC0yLmFtYXpvbmF3cy5jb20iLCJpYXQiOjE2ODA1NzAwMDgsImV4cCI6MTY4MDY1NjQwOCwiYXpwIjoiNkVaQk5DdHJFdWNXdGY1eEJhTUkyMWpUSGZpbUxmYWgiLCJndHkiOiJwYXNzd29yZCJ9.F592tm4-83CcgGkjanQt7I-PcLrhYDXI0RUze3VKtjSdfMpRpZ18Q2ykpF5D_MgyyZ6fhb8WTOYmSoobdpBxTGbs__4M-qKPuaoqC9NryXBjZpI08wejQ9GTstuntCZvu_9z_rt_wFHeMi6IyIVja9J1i4q7I23GYmaGX6BIk5XuJ7IslpQ9V_3N6nLdqWJobsTrIS2h7X5RBEU_5d9Z-fnEChUcQkKnV3CWa3xmndM-6MSaDvoe8CfmfPJmsi9VTmifXXgBZ71rvwKhep0VLCqRP3A4W2mY11XrNnZjJJW4MwOMYJ2SArhxWPK2mZG1vsyL7Sbn7pfbNNsnm-iv3g\",\n    \"expires_in\": 86400,\n    \"token_type\": \"Bearer\"\n}"
+				},
+				{
+					"name": "logIn",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"david.sierra@gmail.com\",\r\n    \"password\":\"r1v2l3P4B5O667..\"\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://7f7wzet988.execute-api.us-west-2.amazonaws.com/testing/users/logIn",
+							"protocol": "https",
+							"host": [
+								"7f7wzet988",
+								"execute-api",
+								"us-west-2",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"testing",
+								"users",
+								"logIn"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "756"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 10 Apr 2023 16:59:22 GMT"
+						},
+						{
+							"key": "x-amzn-RequestId",
+							"value": "558a05d3-5941-403b-aa09-22d498576a5a"
+						},
+						{
+							"key": "x-amz-apigw-id",
+							"value": "DK8AbFk0PHcFl7w="
+						},
+						{
+							"key": "X-Amzn-Trace-Id",
+							"value": "Root=1-64344068-1149ce327d283a3c3716a703;Sampled=0;lineage=5a77f281:0"
+						},
+						{
+							"key": "X-Cache",
+							"value": "Miss from cloudfront"
+						},
+						{
+							"key": "Via",
+							"value": "1.1 a35750b050dede7d040b12847d4543bc.cloudfront.net (CloudFront)"
+						},
+						{
+							"key": "X-Amz-Cf-Pop",
+							"value": "BOG50-P2"
+						},
+						{
+							"key": "X-Amz-Cf-Id",
+							"value": "TlGBkvOSGkF3YdN0k41ODa8x95iOpQQsWQTJtR0hAtSjp-5vGQyUGg=="
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"access_token\": \"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjNmLWk1YVo5QWFMU2p3cEYzeG5ZRyJ9.eyJpc3MiOiJodHRwczovL3Jlc3NvbHZlLnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2NDM0MmM3M2NhOGM0NmY4OTZhNGQzMWEiLCJhdWQiOiJodHRwczovL3Jlc3NvbHZlVGVzdEFwaS5jb20iLCJpYXQiOjE2ODExNDU5NjIsImV4cCI6MTY4MTIzMjM2MiwiYXpwIjoid1Baa01iZ2xDS1lNTVgySDhFTjFXc3RTc3M3MW5xZ1AiLCJndHkiOiJwYXNzd29yZCJ9.gh21h0UyORrIhIoi5R3LBq1qE8bNJ6OJJgKekfD-qcWm-wssCqjzrv9p1mahoVyQ10PLfArCwQTgCiqyhbNR6AP-k-igexKgKJHzoE_CiRBdzE-GU4ZfCnfz7vpQeX2nBxxhVdg0H_ryCYbNsnwXqZGsOS4CjvAbuoXQwOiBO3A1cx1ycY2M3p6NogJqJYYMD688vNkgG82pQQWbwR1tTKlLA91ymOlYz0d96oDYkmK7KlY-Nie7FG3Eh82OjJhPQ64HaRXEkQDernV6fd-T8g6CbmyWwhUCfxfBnhO6wY1CIiBybxzctzU7GuqoOF7XlJF5hSsy2ggVNGoiK-YJpw\",\n    \"expires_in\": 86400,\n    \"token_type\": \"Bearer\"\n}"
 				}
 			]
 		},
@@ -373,7 +445,7 @@
 				"header": [
 					{
 						"key": "Authorizationtoken",
-						"value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjNmLWk1YVo5QWFMU2p3cEYzeG5ZRyJ9.eyJpc3MiOiJodHRwczovL3Jlc3NvbHZlLnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2NDI3NTlmODNkNTAzNDVkM2RlZTM0ZTQiLCJhdWQiOiJodHRwczovL2VhNGZzbGRkdmguZXhlY3V0ZS1hcGkudXMtd2VzdC0yLmFtYXpvbmF3cy5jb20iLCJpYXQiOjE2ODA2NTAxNjIsImV4cCI6MTY4MDczNjU2MiwiYXpwIjoiNkVaQk5DdHJFdWNXdGY1eEJhTUkyMWpUSGZpbUxmYWgiLCJndHkiOiJwYXNzd29yZCJ9.PuVBfBSXuoyyfeOMIhUKf_Q0LDknAtanqEXc4sMu_Saia7d2oFE-PmfGhjirADwvU0JiPC4_d-gpexkfvGo_RK2gERuKOsCX4rhLu1KSA8bLk6pQcvnU_VOKwRKtqN9DRoQn-g3NqWQ30QKjAjaA6iVirQpBSu3b36GVwKBVRiUfjQWLmLq9YQ_8a93zGJ2TVnKYpXwtHtU700tzgRKkNNB93quzw_nnA9TaQFOjG_TxTbqxJE_U76eIe5iEjDlub7i_rZ9hRgBQh3zpYsRBSHQ4r7nPJNbFjKloNtFs1RjzUx9gdTQUbrI-B3pNWYNCnjDgzPvLczGzAXGc3uu56g",
+						"value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjNmLWk1YVo5QWFMU2p3cEYzeG5ZRyJ9.eyJpc3MiOiJodHRwczovL3Jlc3NvbHZlLnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2NDM0MmM3M2NhOGM0NmY4OTZhNGQzMWEiLCJhdWQiOiJodHRwczovL3Jlc3NvbHZlVGVzdEFwaS5jb20iLCJpYXQiOjE2ODExNDU5NjIsImV4cCI6MTY4MTIzMjM2MiwiYXpwIjoid1Baa01iZ2xDS1lNTVgySDhFTjFXc3RTc3M3MW5xZ1AiLCJndHkiOiJwYXNzd29yZCJ9.gh21h0UyORrIhIoi5R3LBq1qE8bNJ6OJJgKekfD-qcWm-wssCqjzrv9p1mahoVyQ10PLfArCwQTgCiqyhbNR6AP-k-igexKgKJHzoE_CiRBdzE-GU4ZfCnfz7vpQeX2nBxxhVdg0H_ryCYbNsnwXqZGsOS4CjvAbuoXQwOiBO3A1cx1ycY2M3p6NogJqJYYMD688vNkgG82pQQWbwR1tTKlLA91ymOlYz0d96oDYkmK7KlY-Nie7FG3Eh82OjJhPQ64HaRXEkQDernV6fd-T8g6CbmyWwhUCfxfBnhO6wY1CIiBybxzctzU7GuqoOF7XlJF5hSsy2ggVNGoiK-YJpw",
 						"type": "default"
 					}
 				],

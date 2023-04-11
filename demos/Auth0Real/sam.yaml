@@ -16,10 +16,10 @@ Resources:
       Environment:
         Variables:
           DOMAIN: ressolve.us.auth0.com
-          CLIENT_ID: 6EZBNCtrEucWtf5xBaMI21jTHfimLfah
-          CLIENT_SECRET: pCBvlVIZ7AMigU0DVNaYl9DZQNmpJALx1HxV9K3MLGZilUpLOUdXf0BK8zzfN7Eu
-          SCOPES: read:users create:users update:users delete:users
-      CodeUri: s3://ressolve-research-gateway-auth0real/ec291ff22aa0eb11c00cf1a910be59d7
+          CLIENT_ID: wPZkMbglCKYMMX2H8EN1WstSss71nqgP
+          CLIENT_SECRET: AuNrgnLNSv5aDqz75FK6Sax7ebeldTKELDEg3GCpvroQgPScGfLYmzzYjXqTGw46
+          RESSOLVE_ORG: org_eC0hKpXoWjDqKAds
+      CodeUri: s3://ressolve-research-gateway-auth0real/26280cda01561d176cc842d84f6a5b22
       Handler: createUser.lambdaHandler
       Runtime: nodejs16.x
       Architectures:
@@ -40,10 +40,9 @@ Resources:
       Environment:
         Variables:
           DOMAIN: ressolve.us.auth0.com
-          CLIENT_ID: 6EZBNCtrEucWtf5xBaMI21jTHfimLfah
-          CLIENT_SECRET: pCBvlVIZ7AMigU0DVNaYl9DZQNmpJALx1HxV9K3MLGZilUpLOUdXf0BK8zzfN7Eu
-          SCOPES: read:users create:users update:users delete:users
-      CodeUri: s3://ressolve-research-gateway-auth0real/4df6a3695ec88d9d8466c0fc19aa39a3
+          CLIENT_ID: wPZkMbglCKYMMX2H8EN1WstSss71nqgP
+          CLIENT_SECRET: AuNrgnLNSv5aDqz75FK6Sax7ebeldTKELDEg3GCpvroQgPScGfLYmzzYjXqTGw46
+      CodeUri: s3://ressolve-research-gateway-auth0real/f75d2ecfc1442e1584c89944c1ce2204
       Handler: createRootUser.lambdaHandler
       Runtime: nodejs16.x
       Architectures:
@@ -88,11 +87,10 @@ Resources:
       Environment:
         Variables:
           DOMAIN: ressolve.us.auth0.com
-          AUDIENCE: https://ea4fslddvh.execute-api.us-west-2.amazonaws.com
-          CLIENT_ID: 6EZBNCtrEucWtf5xBaMI21jTHfimLfah
-          CLIENT_SECRET: pCBvlVIZ7AMigU0DVNaYl9DZQNmpJALx1HxV9K3MLGZilUpLOUdXf0BK8zzfN7Eu
-          SCOPES: read:users create:users update:users delete:users
-      CodeUri: s3://ressolve-research-gateway-auth0real/3dbcdebfff1f5f4cf7445a19a708a84a
+          CLIENT_ID: wPZkMbglCKYMMX2H8EN1WstSss71nqgP
+          CLIENT_SECRET: AuNrgnLNSv5aDqz75FK6Sax7ebeldTKELDEg3GCpvroQgPScGfLYmzzYjXqTGw46
+          AUDIENCE: https://ressolveTestApi.com
+      CodeUri: s3://ressolve-research-gateway-auth0real/d25bad964255e4ec00d97098bd0baea9
       Handler: logIn.lambdaHandler
       Runtime: nodejs16.x
       Architectures:
@@ -110,7 +108,7 @@ Resources:
   auth0:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: s3://ressolve-research-gateway-auth0real/11b97b02742ecc8a59cbdcde07c7e730
+      CodeUri: s3://ressolve-research-gateway-auth0real/3aef7727e9029f2fbcba8d2ed71099b7
       Handler: auth0.lambdaHandler
       Runtime: nodejs16.x
       Architectures:
@@ -130,10 +128,10 @@ Resources:
     Properties:
       Environment:
         Variables:
-          AUDIENCE: https://ea4fslddvh.execute-api.us-west-2.amazonaws.com
+          AUDIENCE: https://ressolveTestApi.com
           JWKS_URI: https://ressolve.us.auth0.com/.well-known/jwks.json
           TOKEN_ISSUER: https://ressolve.us.auth0.com/
-      CodeUri: s3://ressolve-research-gateway-auth0real/22e8ef9face85bfea2818648df0a9a12
+      CodeUri: s3://ressolve-research-gateway-auth0real/908883a26140091694c2dbf101deac89
       Handler: authAuthorizer.lambdaHandler
       Runtime: nodejs16.x
       Architectures:
@@ -157,10 +155,28 @@ Resources:
       - arn:aws:iam::aws:policy/service-role/AWSLambdaRole
     Metadata:
       SamResourceId: AuthorizerRole
+  authApiLogs:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName:
+        Fn::Join:
+        - '-'
+        - - Ref: Auth0Test
+          - auth0-logs
+    Metadata:
+      SamResourceId: authApiLogs
   Auth0Test:
     Type: AWS::Serverless::Api
     Properties:
       StageName: testing
+      AccessLogSetting:
+        DestinationArn:
+          Fn::GetAtt:
+          - authApiLogs
+          - Arn
+        Format: $context.extendedRequestId $context.identity.sourceIp $context.identity.caller
+          $context.identity.user [$context.requestTime] "$context.httpMethod $context.resourcePath
+          $context.protocol" $context.status $context.responseLength $context.requestId
       Name: Auth0Test
       DefinitionBody:
         swagger: '2.0'
@@ -186,6 +202,28 @@ Resources:
               identityValidationExpression: ^Bearer [-0-9a-zA-z\.]*$
               authorizerUri:
                 Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${authAuthorizer.Arn}/invocations
+        x-amazon-apigateway-gateway-responses:
+          UNAUTHORIZED:
+            responseTemplates:
+              application/json: '{"message": "Custom authorizer failed to authenticate"}'
+            responseParameters:
+              gatewayresponse.header.Access-Control-Allow-Methods: '''GET,OPTIONS'''
+              gatewayresponse.header.Access-Control-Allow-Origin: '''*'''
+              gatewayresponse.header.Access-Control-Allow-Headers: '''Content-Type,Authorizationtoken,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'''
+          DEFAULT_4XX:
+            responseTemplates:
+              application/json: '{"message": "400 error"}'
+            responseParameters:
+              gatewayresponse.header.Access-Control-Allow-Methods: '''GET,OPTIONS'''
+              gatewayresponse.header.Access-Control-Allow-Origin: '''*'''
+              gatewayresponse.header.Access-Control-Allow-Headers: '''Content-Type,Authorizationtoken,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'''
+          DEFAULT_5XX:
+            responseTemplates:
+              application/json: '{"message": "500 error"}'
+            responseParameters:
+              gatewayresponse.header.Access-Control-Allow-Methods: '''GET,OPTIONS'''
+              gatewayresponse.header.Access-Control-Allow-Origin: '''*'''
+              gatewayresponse.header.Access-Control-Allow-Headers: '''Content-Type,Authorizationtoken,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'''
         paths:
           /users/createUser:
             post:
@@ -210,8 +248,6 @@ Resources:
               responses:
                 '200':
                   description: ok
-              security:
-              - Auth0Authorizer: []
               x-amazon-apigateway-integration:
                 type: aws_proxy
                 uri:
@@ -234,6 +270,31 @@ Resources:
                   Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${deleteUser.Arn}/invocations
                 httpMethod: POST
           /users/logIn:
+            options:
+              consumes:
+              - application/json
+              responses:
+                '200':
+                  description: 200 response
+                  headers:
+                    Access-Control-Allow-Origin:
+                      type: string
+                    Access-Control-Allow-Methods:
+                      type: string
+                    Access-Control-Allow-Headers:
+                      type: string
+              x-amazon-apigateway-integration:
+                responses:
+                  default:
+                    statusCode: '200'
+                    responseParameters:
+                      method.response.header.Access-Control-Allow-Methods: '''OPTIONS,POST'''
+                      method.response.header.Access-Control-Allow-Headers: '''Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,Header-Test'''
+                      method.response.header.Access-Control-Allow-Origin: '''*'''
+                requestTemplates:
+                  application/json: '{"statusCode": 200}'
+                passthroughBehavior: when_no_match
+                type: mock
             post:
               consumes:
               - application/json
@@ -248,6 +309,31 @@ Resources:
                   Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${logIn.Arn}/invocations
                 httpMethod: POST
           /actions/auth0:
+            options:
+              consumes:
+              - application/json
+              responses:
+                '200':
+                  description: 200 response
+                  headers:
+                    Access-Control-Allow-Origin:
+                      type: string
+                    Access-Control-Allow-Methods:
+                      type: string
+                    Access-Control-Allow-Headers:
+                      type: string
+              x-amazon-apigateway-integration:
+                responses:
+                  default:
+                    statusCode: '200'
+                    responseParameters:
+                      method.response.header.Access-Control-Allow-Methods: '''OPTIONS,POST'''
+                      method.response.header.Access-Control-Allow-Headers: '''Content-Type,Authorizationtoken,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,Header-Test'''
+                      method.response.header.Access-Control-Allow-Origin: '''*'''
+                requestTemplates:
+                  application/json: '{"statusCode": 200}'
+                passthroughBehavior: when_no_match
+                type: mock
             get:
               consumes:
               - application/json
@@ -256,6 +342,10 @@ Resources:
               responses:
                 '200':
                   description: ok
+                '400':
+                  description: errorClient
+                '500':
+                  description: errorServer
               security:
               - Auth0Authorizer: []
               x-amazon-apigateway-integration:

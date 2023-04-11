@@ -16,10 +16,12 @@ Resources:
     Properties:
       Environment:
         Variables:
+        #This is to let api gateway use the AdministratorApp in auth0
+        #Which uses the system API to make auth0 actions in the behalve of API gateway.
           DOMAIN: "ressolve.us.auth0.com"
-          CLIENT_ID: "6EZBNCtrEucWtf5xBaMI21jTHfimLfah"
-          CLIENT_SECRET: "pCBvlVIZ7AMigU0DVNaYl9DZQNmpJALx1HxV9K3MLGZilUpLOUdXf0BK8zzfN7Eu"
-          SCOPES: "read:users create:users update:users delete:users"
+          CLIENT_ID: "wPZkMbglCKYMMX2H8EN1WstSss71nqgP"
+          CLIENT_SECRET: "AuNrgnLNSv5aDqz75FK6Sax7ebeldTKELDEg3GCpvroQgPScGfLYmzzYjXqTGw46"
+          RESSOLVE_ORG: "org_eC0hKpXoWjDqKAds"
       CodeUri: functions/userManagement/createUser
       Handler: createUser.lambdaHandler
       Runtime: nodejs16.x
@@ -39,9 +41,8 @@ Resources:
       Environment:
         Variables:
           DOMAIN: "ressolve.us.auth0.com"
-          CLIENT_ID: "6EZBNCtrEucWtf5xBaMI21jTHfimLfah"
-          CLIENT_SECRET: "pCBvlVIZ7AMigU0DVNaYl9DZQNmpJALx1HxV9K3MLGZilUpLOUdXf0BK8zzfN7Eu"
-          SCOPES: "read:users create:users update:users delete:users"
+          CLIENT_ID: "wPZkMbglCKYMMX2H8EN1WstSss71nqgP"
+          CLIENT_SECRET: "AuNrgnLNSv5aDqz75FK6Sax7ebeldTKELDEg3GCpvroQgPScGfLYmzzYjXqTGw46"
       CodeUri: functions/userManagement/createRootUser
       Handler: createRootUser.lambdaHandler
       Runtime: nodejs16.x
@@ -83,10 +84,9 @@ Resources:
       Environment:
         Variables:
           DOMAIN: "ressolve.us.auth0.com"
-          AUDIENCE: "https://ea4fslddvh.execute-api.us-west-2.amazonaws.com"
-          CLIENT_ID: "6EZBNCtrEucWtf5xBaMI21jTHfimLfah"
-          CLIENT_SECRET: "pCBvlVIZ7AMigU0DVNaYl9DZQNmpJALx1HxV9K3MLGZilUpLOUdXf0BK8zzfN7Eu"
-          SCOPES: "read:users create:users update:users delete:users"
+          CLIENT_ID: "wPZkMbglCKYMMX2H8EN1WstSss71nqgP"
+          CLIENT_SECRET: "AuNrgnLNSv5aDqz75FK6Sax7ebeldTKELDEg3GCpvroQgPScGfLYmzzYjXqTGw46"
+          AUDIENCE: "https://ressolveTestApi.com"
       CodeUri: functions/authentication/logIn/
       Handler: logIn.lambdaHandler
       Runtime: nodejs16.x
@@ -121,7 +121,7 @@ Resources:
     Properties:
       Environment:
         Variables:
-          AUDIENCE: https://ea4fslddvh.execute-api.us-west-2.amazonaws.com
+          AUDIENCE: https://ressolveTestApi.com
           JWKS_URI: "https://ressolve.us.auth0.com/.well-known/jwks.json"
           TOKEN_ISSUER: "https://ressolve.us.auth0.com/"
       CodeUri: functions/authentication/authAuthorizer
@@ -145,11 +145,23 @@ Resources:
               - sts:AssumeRole
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/service-role/AWSLambdaRole
+  # Api definitions and resources
+
+  authApiLogs:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Join
+        - '-'
+        - - !Ref Auth0Test
+          - auth0-logs
 
   Auth0Test:
     Type: AWS::Serverless::Api
     Properties:
       StageName: testing
+      AccessLogSetting:
+        DestinationArn: !GetAtt authApiLogs.Arn
+        Format: $context.extendedRequestId $context.identity.sourceIp $context.identity.caller $context.identity.user [$context.requestTime] "$context.httpMethod $context.resourcePath $context.protocol" $context.status $context.responseLength $context.requestId
       Name: Auth0Test
       DefinitionBody:
         swagger: "2.0"
@@ -174,6 +186,28 @@ Resources:
                   - Arn
               identityValidationExpression: "^Bearer [-0-9a-zA-z\\.]*$"
               authorizerUri: !Sub arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${authAuthorizer.Arn}/invocations
+        x-amazon-apigateway-gateway-responses:
+          UNAUTHORIZED:
+            responseTemplates:
+              application/json: '{"message": "Custom authorizer failed to authenticate"}'
+            responseParameters:
+              gatewayresponse.header.Access-Control-Allow-Methods: "'GET,OPTIONS'"
+              gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+              gatewayresponse.header.Access-Control-Allow-Headers: "'Content-Type,Authorizationtoken,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+          DEFAULT_4XX:
+            responseTemplates:
+              application/json: '{"message": "400 error"}'
+            responseParameters:
+              gatewayresponse.header.Access-Control-Allow-Methods: "'GET,OPTIONS'"
+              gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+              gatewayresponse.header.Access-Control-Allow-Headers: "'Content-Type,Authorizationtoken,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+          DEFAULT_5XX:
+            responseTemplates:
+              application/json: '{"message": "500 error"}'
+            responseParameters:
+              gatewayresponse.header.Access-Control-Allow-Methods: "'GET,OPTIONS'"
+              gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+              gatewayresponse.header.Access-Control-Allow-Headers: "'Content-Type,Authorizationtoken,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
         paths:
           /users/createUser:
             post:
@@ -199,8 +233,6 @@ Resources:
               responses:
                 '200':
                   description: ok
-              security:
-                - Auth0Authorizer: []
               x-amazon-apigateway-integration:
                 type: aws_proxy
                 uri:
@@ -225,6 +257,32 @@ Resources:
                 httpMethod: POST
           
           /users/logIn:
+            options:
+              consumes:
+              - "application/json"
+              responses:
+                "200":
+                  description: "200 response"
+                  headers:
+                    Access-Control-Allow-Origin:
+                      type: "string"
+                    Access-Control-Allow-Methods:
+                      type: "string"
+                    Access-Control-Allow-Headers:
+                      type: "string"
+              x-amazon-apigateway-integration:
+                responses:
+                  default:
+                    statusCode: "200"
+                    responseParameters:
+                      method.response.header.Access-Control-Allow-Methods: "'OPTIONS,POST'"
+                      method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,Header-Test'"
+                      method.response.header.Access-Control-Allow-Origin: "'*'"
+                requestTemplates:
+                  application/json: "{\"statusCode\": 200}"
+                passthroughBehavior: "when_no_match"
+                type: "mock"
+            
             post:
               consumes:
               - application/json
@@ -240,6 +298,32 @@ Resources:
                 httpMethod: POST
           
           /actions/auth0:
+            options:
+                consumes:
+                - "application/json"
+                responses:
+                  "200":
+                    description: "200 response"
+                    headers:
+                      Access-Control-Allow-Origin:
+                        type: "string"
+                      Access-Control-Allow-Methods:
+                        type: "string"
+                      Access-Control-Allow-Headers:
+                        type: "string"
+                x-amazon-apigateway-integration:
+                  responses:
+                    default:
+                      statusCode: "200"
+                      responseParameters:
+                        method.response.header.Access-Control-Allow-Methods: "'OPTIONS,POST'"
+                        method.response.header.Access-Control-Allow-Headers: "'Content-Type,Authorizationtoken,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,Header-Test'"
+                        method.response.header.Access-Control-Allow-Origin: "'*'"
+                  requestTemplates:
+                    application/json: "{\"statusCode\": 200}"
+                  passthroughBehavior: "when_no_match"
+                  type: "mock"
+            
             get:
               consumes:
               - application/json
@@ -248,6 +332,10 @@ Resources:
               responses:
                 '200':
                   description: ok
+                '400':
+                  description: errorClient
+                '500':
+                  description: errorServer
               security:
                 - Auth0Authorizer: []
               x-amazon-apigateway-integration:

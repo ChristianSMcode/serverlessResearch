@@ -4,30 +4,37 @@ const managementClient = new auth0.ManagementClient({
     domain: process.env.DOMAIN,
     clientId: process.env.CLIENT_ID,
     clientSecret: process.env.CLIENT_SECRET,
-    scope: process.env.SCOPES,
 });
 
 
 exports.lambdaHandler = async (event, context) => {
     let response;
     try {
-        const bodyReq = JSON.parse(event.body);
+        const body = JSON.parse(event.body);
 
-        let email = bodyReq['email'];
-        let password = bodyReq['password'];
-        let connection = bodyReq['connection'];
+        let email = body['email']; // Lo manda el usuario
+        let password = body['password']; // Lo manda el usuario
+        let connection = 'resolve-organization-db'
+      
 
         let input ={
             email:email,
             password:password,
-            connection:connection
+            connection:connection,
         };
 
         let createUserResponse = await managementClient.createUser(input);
+
+        await managementClient.organizations.addMembers(
+            {id:process.env.RESSOLVE_ORG},
+            {members:[createUserResponse.user_id]}
+        );
         
         response = {
             'statusCode': 200,
-            'body': JSON.stringify(createUserResponse)
+            'body': JSON.stringify({
+                message:`User with id ${createUserResponse.user_id} was created and added to Ressolve organization successufully.`
+            })
         }
         return response;
     } catch (err) {
