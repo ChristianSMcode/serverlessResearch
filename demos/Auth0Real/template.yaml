@@ -146,10 +146,22 @@ Resources:
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/service-role/AWSLambdaRole
   # Api definitions and resources
+
+  authApiLogs:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Join
+        - '-'
+        - - !Ref Auth0Test
+          - auth0-logs
+
   Auth0Test:
     Type: AWS::Serverless::Api
     Properties:
       StageName: testing
+      AccessLogSetting:
+        DestinationArn: !GetAtt authApiLogs.Arn
+        Format: $context.extendedRequestId $context.identity.sourceIp $context.identity.caller $context.identity.user [$context.requestTime] "$context.httpMethod $context.resourcePath $context.protocol" $context.status $context.responseLength $context.requestId
       Name: Auth0Test
       DefinitionBody:
         swagger: "2.0"

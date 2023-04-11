@@ -131,7 +131,7 @@ Resources:
           AUDIENCE: https://ressolveTestApi.com
           JWKS_URI: https://ressolve.us.auth0.com/.well-known/jwks.json
           TOKEN_ISSUER: https://ressolve.us.auth0.com/
-      CodeUri: s3://ressolve-research-gateway-auth0real/22e8ef9face85bfea2818648df0a9a12
+      CodeUri: s3://ressolve-research-gateway-auth0real/908883a26140091694c2dbf101deac89
       Handler: authAuthorizer.lambdaHandler
       Runtime: nodejs16.x
       Architectures:
@@ -155,10 +155,28 @@ Resources:
       - arn:aws:iam::aws:policy/service-role/AWSLambdaRole
     Metadata:
       SamResourceId: AuthorizerRole
+  authApiLogs:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName:
+        Fn::Join:
+        - '-'
+        - - Ref: Auth0Test
+          - auth0-logs
+    Metadata:
+      SamResourceId: authApiLogs
   Auth0Test:
     Type: AWS::Serverless::Api
     Properties:
       StageName: testing
+      AccessLogSetting:
+        DestinationArn:
+          Fn::GetAtt:
+          - authApiLogs
+          - Arn
+        Format: $context.extendedRequestId $context.identity.sourceIp $context.identity.caller
+          $context.identity.user [$context.requestTime] "$context.httpMethod $context.resourcePath
+          $context.protocol" $context.status $context.responseLength $context.requestId
       Name: Auth0Test
       DefinitionBody:
         swagger: '2.0'

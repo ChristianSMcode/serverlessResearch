@@ -47,11 +47,11 @@ testAction.addEventListener('click',()=>{
     apigClient.actionsAuth0Get(params,body,additionalParams)
     .then( (result) => {
         console.log(result);
-        statusSet.innerHTML = 'Authenticated';
+        statusSet.innerHTML = 'Authenticated: ' + result.data.message;
 
     })
     .catch((err)=>{
         console.log(err);
-        statusSet.innerHTML = 'Error aunthenticating';
+        statusSet.innerHTML = 'Error aunthenticating: ' + err.data.message;
     })
 })

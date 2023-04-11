@@ -7,8 +7,7 @@ exports.lambdaHandler  = async (event, context) => {
     data = await tokenProcessing.authenticate(event);
   }
   catch (err) {
-      console.log(err.message);
-      return context.fail(err.message);
+    throw new Error('Unauthorized')
   }
   return data;
 };
