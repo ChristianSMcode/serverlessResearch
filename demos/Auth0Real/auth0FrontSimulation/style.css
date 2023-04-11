@@ -1,12 +1,13 @@
 .body {
-    background-color: #8741e4;
+    background-color: #f5f5f5;
 
-  }
+}
 
 .logInForm {
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-top: 50px;
 }
 
 .nameInput,
@@ -16,6 +17,8 @@
     border-radius: 4px;
     border: 1px solid gray;
     font-size: 16px;
+    width: 300px;
+    max-width: 100%;
 }
 
 .log {
@@ -31,13 +34,36 @@
     background-color: darkblue;
 }
 
-.resultData {
-    margin-top: 20px;
-    font-size: 20px;
-    text-align: center;
+.createUserForm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 50px;
 }
 
-.testAction {
+.userCreate,
+.passwordCreate {
+    margin-bottom: 10px;
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid gray;
+    font-size: 16px;
+    width: 300px;
+    max-width: 100%;
+}
+
+.createUserForm label {
+    display: inline-block;
+    margin-right: 10px;
+    font-size: 16px;
+}
+
+.userType input {
+    display: inline-block;
+    margin-right: 5px;
+}
+
+.create {
     background-color: green;
     color: white;
     padding: 8px 16px;
@@ -46,8 +72,27 @@
     cursor: pointer;
 }
 
-.testAction:hover {
+.create:hover {
     background-color: darkgreen;
+}
+
+.resultData {
+    margin-top: 20px;
+    font-size: 20px;
+    text-align: center;
+}
+
+.testAction {
+    background-color: purple;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.testAction:hover {
+    background-color: darkpurple;
 }
 
 .status {

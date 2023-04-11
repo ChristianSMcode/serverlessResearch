@@ -13,11 +13,18 @@
         <input type="password" class="passwordInput" placeholder="Password">
         <button class="log">LogAuth0</button>
     </div>
-    <!--<div class="createUserForm">
-        <input type="text">
-        <input type="password">
-        <button>createUser</button>
-    </div> -->
+    <div class="createUserForm">
+        <input type="text" class="userCreate" placeholder="UserEmail">
+        <input type="password" class="passwordCreate" placeholder="Password">
+        <input type="radio" name="userType" value="Individual" class="individualType">
+        <label for="Choice1">Individual</label>
+        <input type="radio" name="userType" value="Company" class="companyType">
+        <label for="Choice2">Company</label>
+        <hr>
+        <input type="text" placeholder="CompanyName" hidden class="companyInput">
+        <hr>
+        <button class="create">createUser</button>
+    </div>
     <p class="resultData"></p>
     <hr>
     <button class="testAction">HelloWorld</button>

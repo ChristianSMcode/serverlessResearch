@@ -34,13 +34,19 @@ exports.lambdaHandler = async (event, context) => {
             'statusCode': 200,
             'body': JSON.stringify({
                 message:`User with id ${createUserResponse.user_id} was created and added to Ressolve organization successufully.`
-            })
+            }),
+            'headers':{
+                'Access-Control-Allow-Origin':'*' 
+            }
         }
         return response;
     } catch (err) {
         response = {
             'statusCode':400,
-            'body':JSON.stringify(err.message)
+            'body':JSON.stringify(err.message),
+            'headers':{
+                'Access-Control-Allow-Origin':'*' 
+            }
         }
         return response;
     }

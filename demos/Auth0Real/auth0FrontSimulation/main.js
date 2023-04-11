@@ -6,6 +6,12 @@ const passwordInput = document.querySelector('.passwordInput');
 const resultData = document.querySelector('.resultData');
 const testAction = document.querySelector('.testAction');
 const statusSet = document.querySelector('.status');
+const createName = document.querySelector('.userCreate');
+const createPassword = document.querySelector('.passwordCreate');
+const createUserButton = document.querySelector('.create');
+const companyRadio = document.querySelector('.companyType');
+const individualRadio = document.querySelector('.individualType');
+const companyInput = document.querySelector('.companyInput')
 //LogUser-Save token
 log.addEventListener('click',()=>{
     let params = {};
@@ -32,7 +38,8 @@ log.addEventListener('click',()=>{
         })
 
 });
-
+//If logged this action will work which is just a hello world in api gateway
+//protected by authorizer
 testAction.addEventListener('click',()=>{
     let acces_token = localStorage.getItem("access_token");
     let params = {};
@@ -54,4 +61,67 @@ testAction.addEventListener('click',()=>{
         console.log(err);
         statusSet.innerHTML = 'Error aunthenticating: ' + err.data.message;
     })
+});
+//Create a user it can be individual(ressolve) or company(custom)
+createUserButton.addEventListener('click',()=>{
+    let userName = createName.value;
+    let password = createPassword.value;
+    let userType = document.querySelector('input[name="userType"]:checked').value;
+
+    //Create individual
+    if(userType == 'Individual'){
+        let body ={
+            "email": userName,
+            "password": password
+        };
+        let params = {};
+        let additionalParams = {
+            headers:{},
+            queryParams:{}
+        };
+        apigClient.usersCreateUserPost(params,body,additionalParams)
+        .then( (result) => {
+            console.log(result)
+            resultData.innerHTML = result.data.message;
+        })
+        .catch((err)=>{
+            console.log(err)
+            resultData.innerHTML = err.data;
+        })
+
+    };
+    //Create company
+    if(userType == 'Company'){
+        let body ={
+            "email": userName,
+            "password": password,
+            "organizationName": companyInput.value
+        };
+        let params = {};
+        let additionalParams = {
+            headers:{},
+            queryParams:{}
+        };
+
+        apigClient.usersCreateRootUserPost(params,body,additionalParams)
+        .then( (result) => {
+            console.log(result)
+            resultData.innerHTML = JSON.stringify(result.data);
+        })
+        .catch((err)=>{
+            console.log(err)
+            resultData.innerHTML = JSON.stringify(err.data);
+        })
+    };
+
+
+});
+//Show new input for company name
+companyRadio.addEventListener('change',()=>{
+    companyInput.removeAttribute('hidden',true)
+    
+})
+//Removes new input for company name
+individualRadio.addEventListener('change',()=>{
+    companyInput.setAttribute('hidden',false)
 })

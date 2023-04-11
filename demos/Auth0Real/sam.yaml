@@ -19,7 +19,7 @@ Resources:
           CLIENT_ID: wPZkMbglCKYMMX2H8EN1WstSss71nqgP
           CLIENT_SECRET: AuNrgnLNSv5aDqz75FK6Sax7ebeldTKELDEg3GCpvroQgPScGfLYmzzYjXqTGw46
           RESSOLVE_ORG: org_eC0hKpXoWjDqKAds
-      CodeUri: s3://ressolve-research-gateway-auth0real/26280cda01561d176cc842d84f6a5b22
+      CodeUri: s3://ressolve-research-gateway-auth0real/1a386c6d9c1448794437dc5ddf0eee30
       Handler: createUser.lambdaHandler
       Runtime: nodejs16.x
       Architectures:
@@ -42,7 +42,7 @@ Resources:
           DOMAIN: ressolve.us.auth0.com
           CLIENT_ID: wPZkMbglCKYMMX2H8EN1WstSss71nqgP
           CLIENT_SECRET: AuNrgnLNSv5aDqz75FK6Sax7ebeldTKELDEg3GCpvroQgPScGfLYmzzYjXqTGw46
-      CodeUri: s3://ressolve-research-gateway-auth0real/f75d2ecfc1442e1584c89944c1ce2204
+      CodeUri: s3://ressolve-research-gateway-auth0real/7d43dfcf570399b3d7759ef739efa837
       Handler: createRootUser.lambdaHandler
       Runtime: nodejs16.x
       Architectures:
@@ -226,6 +226,31 @@ Resources:
               gatewayresponse.header.Access-Control-Allow-Headers: '''Content-Type,Authorizationtoken,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'''
         paths:
           /users/createUser:
+            options:
+              consumes:
+              - application/json
+              responses:
+                '200':
+                  description: 200 response
+                  headers:
+                    Access-Control-Allow-Origin:
+                      type: string
+                    Access-Control-Allow-Methods:
+                      type: string
+                    Access-Control-Allow-Headers:
+                      type: string
+              x-amazon-apigateway-integration:
+                responses:
+                  default:
+                    statusCode: '200'
+                    responseParameters:
+                      method.response.header.Access-Control-Allow-Methods: '''OPTIONS,POST'''
+                      method.response.header.Access-Control-Allow-Headers: '''Content-Type,Authorizationtoken,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,Header-Test'''
+                      method.response.header.Access-Control-Allow-Origin: '''*'''
+                requestTemplates:
+                  application/json: '{"statusCode": 200}'
+                passthroughBehavior: when_no_match
+                type: mock
             post:
               consumes:
               - application/json
@@ -240,6 +265,31 @@ Resources:
                   Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${createUser.Arn}/invocations
                 httpMethod: POST
           /users/createRootUser:
+            options:
+              consumes:
+              - application/json
+              responses:
+                '200':
+                  description: 200 response
+                  headers:
+                    Access-Control-Allow-Origin:
+                      type: string
+                    Access-Control-Allow-Methods:
+                      type: string
+                    Access-Control-Allow-Headers:
+                      type: string
+              x-amazon-apigateway-integration:
+                responses:
+                  default:
+                    statusCode: '200'
+                    responseParameters:
+                      method.response.header.Access-Control-Allow-Methods: '''OPTIONS,POST'''
+                      method.response.header.Access-Control-Allow-Headers: '''Content-Type,Authorizationtoken,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,Header-Test'''
+                      method.response.header.Access-Control-Allow-Origin: '''*'''
+                requestTemplates:
+                  application/json: '{"statusCode": 200}'
+                passthroughBehavior: when_no_match
+                type: mock
             post:
               consumes:
               - application/json
