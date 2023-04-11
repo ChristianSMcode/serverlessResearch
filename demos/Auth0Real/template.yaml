@@ -145,7 +145,7 @@ Resources:
               - sts:AssumeRole
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/service-role/AWSLambdaRole
-
+  # Api definitions and resources
   Auth0Test:
     Type: AWS::Serverless::Api
     Properties:
@@ -174,6 +174,28 @@ Resources:
                   - Arn
               identityValidationExpression: "^Bearer [-0-9a-zA-z\\.]*$"
               authorizerUri: !Sub arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${authAuthorizer.Arn}/invocations
+        x-amazon-apigateway-gateway-responses:
+          UNAUTHORIZED:
+            responseTemplates:
+              application/json: '{"message": "Custom authorizer failed to authenticate"}'
+            responseParameters:
+              gatewayresponse.header.Access-Control-Allow-Methods: "'GET,OPTIONS'"
+              gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+              gatewayresponse.header.Access-Control-Allow-Headers: "'Content-Type,Authorizationtoken,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+          DEFAULT_4XX:
+            responseTemplates:
+              application/json: '{"message": "400 error"}'
+            responseParameters:
+              gatewayresponse.header.Access-Control-Allow-Methods: "'GET,OPTIONS'"
+              gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+              gatewayresponse.header.Access-Control-Allow-Headers: "'Content-Type,Authorizationtoken,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+          DEFAULT_5XX:
+            responseTemplates:
+              application/json: '{"message": "500 error"}'
+            responseParameters:
+              gatewayresponse.header.Access-Control-Allow-Methods: "'GET,OPTIONS'"
+              gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+              gatewayresponse.header.Access-Control-Allow-Headers: "'Content-Type,Authorizationtoken,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
         paths:
           /users/createUser:
             post:
@@ -223,6 +245,32 @@ Resources:
                 httpMethod: POST
           
           /users/logIn:
+            options:
+              consumes:
+              - "application/json"
+              responses:
+                "200":
+                  description: "200 response"
+                  headers:
+                    Access-Control-Allow-Origin:
+                      type: "string"
+                    Access-Control-Allow-Methods:
+                      type: "string"
+                    Access-Control-Allow-Headers:
+                      type: "string"
+              x-amazon-apigateway-integration:
+                responses:
+                  default:
+                    statusCode: "200"
+                    responseParameters:
+                      method.response.header.Access-Control-Allow-Methods: "'OPTIONS,POST'"
+                      method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,Header-Test'"
+                      method.response.header.Access-Control-Allow-Origin: "'*'"
+                requestTemplates:
+                  application/json: "{\"statusCode\": 200}"
+                passthroughBehavior: "when_no_match"
+                type: "mock"
+            
             post:
               consumes:
               - application/json
@@ -238,6 +286,32 @@ Resources:
                 httpMethod: POST
           
           /actions/auth0:
+            options:
+                consumes:
+                - "application/json"
+                responses:
+                  "200":
+                    description: "200 response"
+                    headers:
+                      Access-Control-Allow-Origin:
+                        type: "string"
+                      Access-Control-Allow-Methods:
+                        type: "string"
+                      Access-Control-Allow-Headers:
+                        type: "string"
+                x-amazon-apigateway-integration:
+                  responses:
+                    default:
+                      statusCode: "200"
+                      responseParameters:
+                        method.response.header.Access-Control-Allow-Methods: "'OPTIONS,POST'"
+                        method.response.header.Access-Control-Allow-Headers: "'Content-Type,Authorizationtoken,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,Header-Test'"
+                        method.response.header.Access-Control-Allow-Origin: "'*'"
+                  requestTemplates:
+                    application/json: "{\"statusCode\": 200}"
+                  passthroughBehavior: "when_no_match"
+                  type: "mock"
+            
             get:
               consumes:
               - application/json
@@ -246,6 +320,10 @@ Resources:
               responses:
                 '200':
                   description: ok
+                '400':
+                  description: errorClient
+                '500':
+                  description: errorServer
               security:
                 - Auth0Authorizer: []
               x-amazon-apigateway-integration:
