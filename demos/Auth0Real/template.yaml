@@ -121,7 +121,7 @@ Resources:
     Properties:
       Environment:
         Variables:
-          AUDIENCE: https://ea4fslddvh.execute-api.us-west-2.amazonaws.com
+          AUDIENCE: https://ressolveTestApi.com
           JWKS_URI: "https://ressolve.us.auth0.com/.well-known/jwks.json"
           TOKEN_ISSUER: "https://ressolve.us.auth0.com/"
       CodeUri: functions/authentication/authAuthorizer

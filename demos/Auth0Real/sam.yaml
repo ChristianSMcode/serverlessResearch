@@ -90,7 +90,7 @@ Resources:
           CLIENT_ID: wPZkMbglCKYMMX2H8EN1WstSss71nqgP
           CLIENT_SECRET: AuNrgnLNSv5aDqz75FK6Sax7ebeldTKELDEg3GCpvroQgPScGfLYmzzYjXqTGw46
           AUDIENCE: https://ressolveTestApi.com
-      CodeUri: s3://ressolve-research-gateway-auth0real/3342264c41e7d6465b2ab55c5e2e0a9d
+      CodeUri: s3://ressolve-research-gateway-auth0real/d25bad964255e4ec00d97098bd0baea9
       Handler: logIn.lambdaHandler
       Runtime: nodejs16.x
       Architectures:
@@ -128,7 +128,7 @@ Resources:
     Properties:
       Environment:
         Variables:
-          AUDIENCE: https://ea4fslddvh.execute-api.us-west-2.amazonaws.com
+          AUDIENCE: https://ressolveTestApi.com
           JWKS_URI: https://ressolve.us.auth0.com/.well-known/jwks.json
           TOKEN_ISSUER: https://ressolve.us.auth0.com/
       CodeUri: s3://ressolve-research-gateway-auth0real/22e8ef9face85bfea2818648df0a9a12
