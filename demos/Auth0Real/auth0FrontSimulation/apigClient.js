@@ -263,6 +263,42 @@ apigClientFactory.newClient = function (config) {
     };
     
     
+    apigClient.usersListUsersPost = function (params, body, additionalParams) {
+        if(additionalParams === undefined) { additionalParams = {}; }
+        
+        apiGateway.core.utils.assertParametersDefined(params, [], ['body']);
+        
+        var usersListUsersPostRequest = {
+            verb: 'post'.toUpperCase(),
+            path: pathComponent + uritemplate('/users/listUsers').expand(apiGateway.core.utils.parseParametersToObject(params, [])),
+            headers: apiGateway.core.utils.parseParametersToObject(params, []),
+            queryParams: apiGateway.core.utils.parseParametersToObject(params, []),
+            body: body
+        };
+        
+        
+        return apiGatewayClient.makeRequest(usersListUsersPostRequest, authType, additionalParams, config.apiKey);
+    };
+    
+    
+    apigClient.usersListUsersOptions = function (params, body, additionalParams) {
+        if(additionalParams === undefined) { additionalParams = {}; }
+        
+        apiGateway.core.utils.assertParametersDefined(params, [], ['body']);
+        
+        var usersListUsersOptionsRequest = {
+            verb: 'options'.toUpperCase(),
+            path: pathComponent + uritemplate('/users/listUsers').expand(apiGateway.core.utils.parseParametersToObject(params, [])),
+            headers: apiGateway.core.utils.parseParametersToObject(params, []),
+            queryParams: apiGateway.core.utils.parseParametersToObject(params, []),
+            body: body
+        };
+        
+        
+        return apiGatewayClient.makeRequest(usersListUsersOptionsRequest, authType, additionalParams, config.apiKey);
+    };
+    
+    
     apigClient.usersLogInPost = function (params, body, additionalParams) {
         if(additionalParams === undefined) { additionalParams = {}; }
         

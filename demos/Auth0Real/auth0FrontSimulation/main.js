@@ -14,6 +14,7 @@ const companyInput = document.querySelector('.companyInput');
 const deleteUser = document.querySelector('.deleteUser');
 const changePass = document.querySelector('.changePass');
 const rPassEmail = document.querySelector('.rPass');
+const listUsers = document.querySelector('.listUsers');
 //LogUser-Save token
 log.addEventListener('click',()=>{
     let params = {};
@@ -211,4 +212,65 @@ rPassEmail.addEventListener('click',()=>{
         console.log(err)
         resultData.innerHTML = JSON.stringify(err.data);
     })
+})
+//List users
+listUsers.addEventListener('click',()=>{
+    let email = localStorage.getItem('user_email');
+    let acces_token = localStorage.getItem("access_token");
+
+    let params = {};
+    let additionalParams = {
+        headers:{
+            'Authorizationtoken':'Bearer ' + acces_token
+        },
+    }
+
+    let body ={
+        "email":email,
+    };
+
+    apigClient.usersListUsersPost(params,body,additionalParams)
+    .then( (result) => {
+        resultData.innerHTML = 'Users fetched';
+        const cardContainer = document.getElementById("card-container");
+        cardContainer.innerHTML = "";
+        for(let i = 0; i < result.data.length;i++){
+            let user = result.data[i];
+            
+  
+            const card = document.createElement("div");
+            card.className = "card";
+            card.style.width = "18rem";
+            
+            const cardBody = document.createElement("div");
+            cardBody.className = "card-body";
+            
+            const cardTitle = document.createElement("h5");
+            cardTitle.className = "card-title";
+            cardTitle.textContent = user.email;
+            
+            const cardText = document.createElement("p");
+            cardText.className = "card-text";
+            cardText.textContent = user.user_id;
+            
+            const cardButton = document.createElement("a");
+            cardButton.className = "btn btn-primary";
+            cardButton.href = "#";
+            cardButton.textContent = "ModifyUserDetails";
+            
+            cardBody.appendChild(cardTitle);
+            cardBody.appendChild(cardText);
+            cardBody.appendChild(cardButton);
+            
+            card.appendChild(cardBody);
+            
+            cardContainer.appendChild(card);
+        }
+        window.location.href = "#card-container"
+    })
+    .catch((err)=>{
+        console.log(err)
+        resultData.innerHTML = JSON.stringify(err.data);
+    })
+
 })
