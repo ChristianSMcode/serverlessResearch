@@ -1,5 +1,4 @@
 const apigClient = apigClientFactory.newClient();
-
 const log = document.querySelector('.log');
 const nameInput = document.querySelector('.nameInput');
 const passwordInput = document.querySelector('.passwordInput');
@@ -11,7 +10,9 @@ const createPassword = document.querySelector('.passwordCreate');
 const createUserButton = document.querySelector('.create');
 const companyRadio = document.querySelector('.companyType');
 const individualRadio = document.querySelector('.individualType');
-const companyInput = document.querySelector('.companyInput')
+const companyInput = document.querySelector('.companyInput');
+const deleteUser = document.querySelector('.deleteUser');
+const changePass = document.querySelector('.changePass')
 //LogUser-Save token
 log.addEventListener('click',()=>{
     let params = {};
@@ -28,12 +29,15 @@ log.addEventListener('click',()=>{
     apigClient.usersLogInPost(params,body,additionalParams)
         .then( (result) => {
             console.log(result)
-            let access_token = result.data.access_token
-            resultData.innerHTML = access_token.slice(0,10) + '...'
+            let access_token = result.data.AuthUserResponse.access_token;
+            let userId = result.data.userId;
+            resultData.innerHTML = access_token.slice(0,10) + '...';
             localStorage.setItem("access_token",access_token)
+            localStorage.setItem("user_id",userId);
+            localStorage.setItem('user_email',nameInput.value)
         })
         .catch((err)=>{
-            resultData.innerHTML = JSON.stringify(result.data)
+            resultData.innerHTML = JSON.stringify(err.data)
             console.log(err)
         })
 
@@ -120,8 +124,66 @@ createUserButton.addEventListener('click',()=>{
 companyRadio.addEventListener('change',()=>{
     companyInput.removeAttribute('hidden',true)
     
-})
+});
 //Removes new input for company name
 individualRadio.addEventListener('change',()=>{
     companyInput.setAttribute('hidden',false)
+});
+
+//Delete loged user
+deleteUser.addEventListener('click',()=>{
+    let access_token = localStorage.getItem("access_token");
+    let userEmail = localStorage.getItem('user_email')
+
+    let params = {};
+    let additionalParams = {
+        headers:{
+            'Authorizationtoken':'Bearer ' + access_token
+        },
+        queryParams:{}
+    } 
+
+    let body ={
+        "email":userEmail
+    }
+   
+    apigClient.usersDeleteUserPost(params,body,additionalParams)
+    .then( (result) => {
+        console.log(result)
+        resultData.innerHTML = JSON.stringify(result.data);
+    })
+    .catch((err)=>{
+        console.log(err)
+        resultData.innerHTML = JSON.stringify(err.data);
+    })
+});
+//change password withoud sending Email
+changePass.addEventListener('click',()=>{
+    let newPassword = window.prompt('Insert new password:')
+    let access_token = localStorage.getItem("access_token");
+    let userEmail = localStorage.getItem('user_email')
+
+    let params = {};
+    let additionalParams = {
+        headers:{
+            'Authorizationtoken':'Bearer ' + access_token
+        },
+        queryParams:{}
+    } 
+
+    let body ={
+        "email":userEmail,
+        "new_password":newPassword
+    };
+    
+    
+    apigClient.usersChangePasswordPost(params,body,additionalParams)
+    .then( (result) => {
+        console.log(result)
+        resultData.innerHTML = JSON.stringify(result.data);
+    })
+    .catch((err)=>{
+        console.log(err)
+        resultData.innerHTML = JSON.stringify(err.data);
+    })
 })

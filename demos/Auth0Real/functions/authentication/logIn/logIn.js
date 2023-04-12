@@ -1,4 +1,5 @@
 const auth0 = require('auth0');
+const jwt = require('jsonwebtoken');
 
 const AuthenticationClient = new auth0.AuthenticationClient({
     domain: process.env.DOMAIN,
@@ -32,10 +33,10 @@ exports.lambdaHandler = async (event, context) => {
         };
 
         let AuthUserResponse = await AuthenticationClient.passwordGrant(input);
-        
+        let {sub} = jwt.decode(AuthUserResponse.access_token);
         response = {
             'statusCode': 200,
-            'body': JSON.stringify(AuthUserResponse),
+            'body': JSON.stringify({AuthUserResponse,userId:sub}),
             'headers':{
             'Access-Control-Allow-Origin':'*' 
             }
@@ -44,7 +45,10 @@ exports.lambdaHandler = async (event, context) => {
     } catch (err) {
         response = {
             'statusCode':400,
-            'body':JSON.stringify(err.message)
+            'body':JSON.stringify(err.message),
+            'headers':{
+                'Access-Control-Allow-Origin':'*' 
+                }
         }
         return response;
     }

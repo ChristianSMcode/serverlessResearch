@@ -82,7 +82,7 @@
     text-align: center;
 }
 
-.testAction {
+.testAction,.deleteUser,.changePass {
     background-color: purple;
     color: white;
     padding: 8px 16px;

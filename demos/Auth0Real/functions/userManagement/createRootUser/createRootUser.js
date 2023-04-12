@@ -11,7 +11,10 @@ const createUser = async (email,password,connection) =>{
         let input ={
             email:email,
             password:password,
-            connection:connection
+            connection:connection,
+            user_metadata:{
+                userType:'COMPANY'
+            }
         };
         let response = await managementClient.createUser(input);
         return response;
