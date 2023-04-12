@@ -21,16 +21,25 @@
     max-width: 100%;
 }
 
-.log {
+.log, 
+.rPass {
     background-color: blue;
     color: white;
     padding: 8px 16px;
     border-radius: 4px;
     font-size: 16px;
     cursor: pointer;
+    min-width: 200px;
+}
+.rPass{
+    margin-top: 10px;
+}
+.userTypeDiv{
+    display: flex;
 }
 
-.log:hover {
+.log:hover,
+.rPass:hover {
     background-color: darkblue;
 }
 

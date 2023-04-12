@@ -12,14 +12,18 @@
         <input type="text" class="nameInput" placeholder="Email">
         <input type="password" class="passwordInput" placeholder="Password">
         <button class="log">LogAuth0</button>
+        <button class="rPass">ResetPassword</button>
     </div>
     <div class="createUserForm">
         <input type="text" class="userCreate" placeholder="UserEmail">
         <input type="password" class="passwordCreate" placeholder="Password">
-        <input type="radio" name="userType" value="Individual" class="individualType">
-        <label for="Choice1">Individual</label>
-        <input type="radio" name="userType" value="Company" class="companyType">
-        <label for="Choice2">Company</label>
+        <div class="userTypeDiv">
+            <input type="radio" name="userType" value="Individual" class="individualType" checked>
+            <label for="Choice1">Individual</label>
+            <input type="radio" name="userType" value="Company" class="companyType">
+            <label for="Choice2">Company</label>
+        </div>
+
         <hr>
         <input type="text" placeholder="CompanyName" hidden class="companyInput">
         <hr>

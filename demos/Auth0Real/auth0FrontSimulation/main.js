@@ -12,7 +12,8 @@ const companyRadio = document.querySelector('.companyType');
 const individualRadio = document.querySelector('.individualType');
 const companyInput = document.querySelector('.companyInput');
 const deleteUser = document.querySelector('.deleteUser');
-const changePass = document.querySelector('.changePass')
+const changePass = document.querySelector('.changePass');
+const rPassEmail = document.querySelector('.rPass');
 //LogUser-Save token
 log.addEventListener('click',()=>{
     let params = {};
@@ -178,6 +179,30 @@ changePass.addEventListener('click',()=>{
     
     
     apigClient.usersChangePasswordPost(params,body,additionalParams)
+    .then( (result) => {
+        console.log(result)
+        resultData.innerHTML = JSON.stringify(result.data);
+    })
+    .catch((err)=>{
+        console.log(err)
+        resultData.innerHTML = JSON.stringify(err.data);
+    })
+});
+// Send email pass reset
+rPassEmail.addEventListener('click',()=>{
+    let email = window.prompt('Insert your email:');
+
+    let params = {};
+    let additionalParams = {
+        headers:{},
+        queryParams:{}
+    };
+
+    let body ={
+        "email":email,
+    };
+
+    apigClient.usersResetPasswordPost(params,body,additionalParams)
     .then( (result) => {
         console.log(result)
         resultData.innerHTML = JSON.stringify(result.data);

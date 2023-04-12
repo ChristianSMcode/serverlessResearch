@@ -298,6 +298,42 @@ apigClientFactory.newClient = function (config) {
         return apiGatewayClient.makeRequest(usersLogInOptionsRequest, authType, additionalParams, config.apiKey);
     };
     
+    
+    apigClient.usersResetPasswordPost = function (params, body, additionalParams) {
+        if(additionalParams === undefined) { additionalParams = {}; }
+        
+        apiGateway.core.utils.assertParametersDefined(params, [], ['body']);
+        
+        var usersResetPasswordPostRequest = {
+            verb: 'post'.toUpperCase(),
+            path: pathComponent + uritemplate('/users/resetPassword').expand(apiGateway.core.utils.parseParametersToObject(params, [])),
+            headers: apiGateway.core.utils.parseParametersToObject(params, []),
+            queryParams: apiGateway.core.utils.parseParametersToObject(params, []),
+            body: body
+        };
+        
+        
+        return apiGatewayClient.makeRequest(usersResetPasswordPostRequest, authType, additionalParams, config.apiKey);
+    };
+    
+    
+    apigClient.usersResetPasswordOptions = function (params, body, additionalParams) {
+        if(additionalParams === undefined) { additionalParams = {}; }
+        
+        apiGateway.core.utils.assertParametersDefined(params, [], ['body']);
+        
+        var usersResetPasswordOptionsRequest = {
+            verb: 'options'.toUpperCase(),
+            path: pathComponent + uritemplate('/users/resetPassword').expand(apiGateway.core.utils.parseParametersToObject(params, [])),
+            headers: apiGateway.core.utils.parseParametersToObject(params, []),
+            queryParams: apiGateway.core.utils.parseParametersToObject(params, []),
+            body: body
+        };
+        
+        
+        return apiGatewayClient.makeRequest(usersResetPasswordOptionsRequest, authType, additionalParams, config.apiKey);
+    };
+    
 
     return apigClient;
 };
