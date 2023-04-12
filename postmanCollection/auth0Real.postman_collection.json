@@ -907,6 +907,139 @@
 					"body": "{\n    \"message\": \"Change password email sent to cris920sdm@hotmail.com\"\n}"
 				}
 			]
+		},
+		{
+			"name": "listUsers",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorizationtoken",
+						"value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjNmLWk1YVo5QWFMU2p3cEYzeG5ZRyJ9.eyJpc3MiOiJodHRwczovL3Jlc3NvbHZlLnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2NDM1ZGNlZWI3YWRkMTVhODliNDM5YzEiLCJhdWQiOiJodHRwczovL3Jlc3NvbHZlVGVzdEFwaS5jb20iLCJpYXQiOjE2ODEzMzc5NDcsImV4cCI6MTY4MTQyNDM0NywiYXpwIjoid1Baa01iZ2xDS1lNTVgySDhFTjFXc3RTc3M3MW5xZ1AiLCJndHkiOiJwYXNzd29yZCJ9.gqQqHwBe4o0QwmU9Q4quHBVCIlBiZKBhzYrZ4ak4Q0_pXF-VURK5RyHK9UOPR_Nx06NxdQeLTsGQRNIpqCZ9VOQ6teUP_OqKRyg8Tf8cM0gcafNrfEKV0KvFH1tnFZTCFK0H8KJ3lXUDkDwGaASyXilW_9knyfpElwYLB0ssc_15OWusQxP-dhEtZ2Xbjp5pyBAQhB3nLehqT1xD_j4CiwIIcoONWy4lvPPMlRe3uYPDgjZkMf3xSJMN53ftxU2CC3zs_ufxdc7AXh4SkuqkGPxH2zqvmZRO4uNhKAb1pAqzcpL0CYuYZHs8HgWY2JiOMrN-AShqvbagzLPxysLDDA",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"email\":\"claro@gmail.com\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://7f7wzet988.execute-api.us-west-2.amazonaws.com/testing/users/listUsers",
+					"protocol": "https",
+					"host": [
+						"7f7wzet988",
+						"execute-api",
+						"us-west-2",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"testing",
+						"users",
+						"listUsers"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "listUsers",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorizationtoken",
+								"value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjNmLWk1YVo5QWFMU2p3cEYzeG5ZRyJ9.eyJpc3MiOiJodHRwczovL3Jlc3NvbHZlLnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2NDM1ZGNlZWI3YWRkMTVhODliNDM5YzEiLCJhdWQiOiJodHRwczovL3Jlc3NvbHZlVGVzdEFwaS5jb20iLCJpYXQiOjE2ODEzMzc5NDcsImV4cCI6MTY4MTQyNDM0NywiYXpwIjoid1Baa01iZ2xDS1lNTVgySDhFTjFXc3RTc3M3MW5xZ1AiLCJndHkiOiJwYXNzd29yZCJ9.gqQqHwBe4o0QwmU9Q4quHBVCIlBiZKBhzYrZ4ak4Q0_pXF-VURK5RyHK9UOPR_Nx06NxdQeLTsGQRNIpqCZ9VOQ6teUP_OqKRyg8Tf8cM0gcafNrfEKV0KvFH1tnFZTCFK0H8KJ3lXUDkDwGaASyXilW_9knyfpElwYLB0ssc_15OWusQxP-dhEtZ2Xbjp5pyBAQhB3nLehqT1xD_j4CiwIIcoONWy4lvPPMlRe3uYPDgjZkMf3xSJMN53ftxU2CC3zs_ufxdc7AXh4SkuqkGPxH2zqvmZRO4uNhKAb1pAqzcpL0CYuYZHs8HgWY2JiOMrN-AShqvbagzLPxysLDDA",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"email\":\"claro@gmail.com\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://7f7wzet988.execute-api.us-west-2.amazonaws.com/testing/users/listUsers",
+							"protocol": "https",
+							"host": [
+								"7f7wzet988",
+								"execute-api",
+								"us-west-2",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"testing",
+								"users",
+								"listUsers"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "232"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 12 Apr 2023 22:24:51 GMT"
+						},
+						{
+							"key": "x-amzn-RequestId",
+							"value": "31652375-419b-4085-a5cc-1ad1bc20b5b6"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "x-amz-apigw-id",
+							"value": "DSRj8FxlPHcFr8w="
+						},
+						{
+							"key": "X-Amzn-Trace-Id",
+							"value": "Root=1-64372fb2-5b2f985b349c57fd533a8bf1;Sampled=0;lineage=95f4a8a2:0"
+						},
+						{
+							"key": "X-Cache",
+							"value": "Miss from cloudfront"
+						},
+						{
+							"key": "Via",
+							"value": "1.1 a77a2ce326cffbef8b6e9afdf61f55e0.cloudfront.net (CloudFront)"
+						},
+						{
+							"key": "X-Amz-Cf-Pop",
+							"value": "BOG50-P2"
+						},
+						{
+							"key": "X-Amz-Cf-Id",
+							"value": "NBDQamtA_BOjr_c2EJyg6e28_qqhDXm0YOTioJ3-_2kQ3PKhT4_ADA=="
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"user_id\": \"auth0|6435dceeb7add15a89b439c1\",\n        \"email\": \"claro@gmail.com\",\n        \"picture\": \"https://s.gravatar.com/avatar/ed1f64aaff7928f9c3ae5318710d5c96?s=480&r=pg&d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Fcl.png\",\n        \"name\": \"claro@gmail.com\"\n    }\n]"
+				}
+			]
 		}
 	]
 }
