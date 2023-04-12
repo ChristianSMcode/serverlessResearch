@@ -12,15 +12,31 @@
         <input type="text" class="nameInput" placeholder="Email">
         <input type="password" class="passwordInput" placeholder="Password">
         <button class="log">LogAuth0</button>
+        <button class="rPass">ResetPassword</button>
     </div>
-    <!--<div class="createUserForm">
-        <input type="text">
-        <input type="password">
-        <button>createUser</button>
-    </div> -->
+    <div class="createUserForm">
+        <input type="text" class="userCreate" placeholder="UserEmail">
+        <input type="password" class="passwordCreate" placeholder="Password">
+        <div class="userTypeDiv">
+            <input type="radio" name="userType" value="Individual" class="individualType" checked>
+            <label for="Choice1">Individual</label>
+            <input type="radio" name="userType" value="Company" class="companyType">
+            <label for="Choice2">Company</label>
+        </div>
+
+        <hr>
+        <input type="text" placeholder="CompanyName" hidden class="companyInput">
+        <hr>
+        <button class="create">createUser</button>
+    </div>
     <p class="resultData"></p>
     <hr>
     <button class="testAction">HelloWorld</button>
+    <button class="deleteUser">DeleteUser</button>
+    <button class="changePass">ChangePassword</button>
+    <div>
+        <h3>Logged User info:</h1>
+    </div>
     <p class="status"></p>
 </body>
 <script type="text/javascript" src="lib/axios/dist/axios.standalone.js"></script>

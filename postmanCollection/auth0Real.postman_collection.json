@@ -445,7 +445,7 @@
 				"header": [
 					{
 						"key": "Authorizationtoken",
-						"value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjNmLWk1YVo5QWFMU2p3cEYzeG5ZRyJ9.eyJpc3MiOiJodHRwczovL3Jlc3NvbHZlLnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2NDM0MmM3M2NhOGM0NmY4OTZhNGQzMWEiLCJhdWQiOiJodHRwczovL3Jlc3NvbHZlVGVzdEFwaS5jb20iLCJpYXQiOjE2ODExNDU5NjIsImV4cCI6MTY4MTIzMjM2MiwiYXpwIjoid1Baa01iZ2xDS1lNTVgySDhFTjFXc3RTc3M3MW5xZ1AiLCJndHkiOiJwYXNzd29yZCJ9.gh21h0UyORrIhIoi5R3LBq1qE8bNJ6OJJgKekfD-qcWm-wssCqjzrv9p1mahoVyQ10PLfArCwQTgCiqyhbNR6AP-k-igexKgKJHzoE_CiRBdzE-GU4ZfCnfz7vpQeX2nBxxhVdg0H_ryCYbNsnwXqZGsOS4CjvAbuoXQwOiBO3A1cx1ycY2M3p6NogJqJYYMD688vNkgG82pQQWbwR1tTKlLA91ymOlYz0d96oDYkmK7KlY-Nie7FG3Eh82OjJhPQ64HaRXEkQDernV6fd-T8g6CbmyWwhUCfxfBnhO6wY1CIiBybxzctzU7GuqoOF7XlJF5hSsy2ggVNGoiK-YJpw",
+						"value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjNmLWk1YVo5QWFMU2p3cEYzeG5ZRyJ9.eyJpc3MiOiJodHRwczovL3Jlc3NvbHZlLnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2NDM0MmM3M2NhOGM0NmY4OTZhNGQzMWEiLCJhdWQiOiJodHRwczovL3Jlc3NvbHZlVGVzdEFwaS5jb20iLCJpYXQiOjE2ODExNjk1MTYsImV4cCI6MTY4MTI1NTkxNiwiYXpwIjoid1Baa01iZ2xDS1lNTVgySDhFTjFXc3RTc3M3MW5xZ1AiLCJndHkiOiJwYXNzd29yZCJ9.OzNSj7TKMWKZzuYZYomhPSVAQIuSLNS_9dR38FoIb_OVn3BGwLiEvuW_tJA-bdTrofT-qK82j433asrlXKOydK_C3OuvwvWFCu-h4GL2g1WeICGRHtvFQXh-RBfMTPZ6w3hG2tVGNob9h7bIOJp-lBLy9mZJMplKMjmDD4VPa16ZJV5YoGgl3ADJ40Zs65UScFJG8CHxkWhazQ_IojUbOHW_lq9ZU1jN3koN47iuQFL6SSjchmoTiIdtYXAup3WbKeuHgeiTtKs9ah7yecwokjv3OHsYcaabIlaRUU2fLYfe9iPGvqpHCzMX-KFpXyGL74-tqwVP2S48QSofttCC9A",
 						"type": "default"
 					}
 				],
@@ -562,7 +562,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"email\":\"cris920sdm@hotmail.com\",\r\n    \"connectionId\":\"con_q0RVtc9utzmomCoo\"\r\n}",
+					"raw": "{\r\n    \"email\":\"cris920sdm@hotmail.com\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -651,6 +651,139 @@
 					],
 					"cookie": [],
 					"body": "\"User deleted successfully\""
+				}
+			]
+		},
+		{
+			"name": "changePass",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorizationtoken",
+						"value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjNmLWk1YVo5QWFMU2p3cEYzeG5ZRyJ9.eyJpc3MiOiJodHRwczovL3Jlc3NvbHZlLnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2NDJlMDRkMTllNmFkMTkxMzEwMDhkNDMiLCJhdWQiOiJodHRwczovL3Jlc3NvbHZlVGVzdEFwaS5jb20iLCJpYXQiOjE2ODEzMjAzMzYsImV4cCI6MTY4MTQwNjczNiwiYXpwIjoid1Baa01iZ2xDS1lNTVgySDhFTjFXc3RTc3M3MW5xZ1AiLCJndHkiOiJwYXNzd29yZCJ9.TeEPoEB77fS_jT8MSCmsuAHxZOwLLdFxIec4GrVrGrQyGvmtHbgJynkF7qEu5Xnb4-NDfDbbGfbIN9ZNaZHyzhBKKpuzXBMjpw3FY2edW6t8zim30qQtW03IwPl_o-AY2et5-Vdp7bH-K31xYMjIjMBUslCdNNzA0-DZXPPnx1iBVzJwf8QW_K25nfMuU-ckz6NFt6PvYsBkbWw9VoUSVY0AwsM6n8qV84-GX2D_oLHl70qW4i9THUoNCptdc0Mbq0zVeKw8OuKWiNZH2yYk0Uqs-OY3LbXSjFSboQI-IJA-E6_qGZ73ZAocEKwUvybRZPkF5XrKwLknZ-Y4YOK8gQ",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\":\"cris920sdm@hotmail.com\",\r\n    \"new_password\":\"rvlPBO67.\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://7f7wzet988.execute-api.us-west-2.amazonaws.com/testing/users/changePassword",
+					"protocol": "https",
+					"host": [
+						"7f7wzet988",
+						"execute-api",
+						"us-west-2",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"testing",
+						"users",
+						"changePassword"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "changePass",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorizationtoken",
+								"value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjNmLWk1YVo5QWFMU2p3cEYzeG5ZRyJ9.eyJpc3MiOiJodHRwczovL3Jlc3NvbHZlLnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2NDJlMDRkMTllNmFkMTkxMzEwMDhkNDMiLCJhdWQiOiJodHRwczovL3Jlc3NvbHZlVGVzdEFwaS5jb20iLCJpYXQiOjE2ODEzMjAzMzYsImV4cCI6MTY4MTQwNjczNiwiYXpwIjoid1Baa01iZ2xDS1lNTVgySDhFTjFXc3RTc3M3MW5xZ1AiLCJndHkiOiJwYXNzd29yZCJ9.TeEPoEB77fS_jT8MSCmsuAHxZOwLLdFxIec4GrVrGrQyGvmtHbgJynkF7qEu5Xnb4-NDfDbbGfbIN9ZNaZHyzhBKKpuzXBMjpw3FY2edW6t8zim30qQtW03IwPl_o-AY2et5-Vdp7bH-K31xYMjIjMBUslCdNNzA0-DZXPPnx1iBVzJwf8QW_K25nfMuU-ckz6NFt6PvYsBkbWw9VoUSVY0AwsM6n8qV84-GX2D_oLHl70qW4i9THUoNCptdc0Mbq0zVeKw8OuKWiNZH2yYk0Uqs-OY3LbXSjFSboQI-IJA-E6_qGZ73ZAocEKwUvybRZPkF5XrKwLknZ-Y4YOK8gQ",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"cris920sdm@hotmail.com\",\r\n    \"new_password\":\"rvlPBO67.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://7f7wzet988.execute-api.us-west-2.amazonaws.com/testing/users/changePassword",
+							"protocol": "https",
+							"host": [
+								"7f7wzet988",
+								"execute-api",
+								"us-west-2",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"testing",
+								"users",
+								"changePassword"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "63"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 12 Apr 2023 17:26:08 GMT"
+						},
+						{
+							"key": "x-amzn-RequestId",
+							"value": "35db11a3-b6b9-4588-bd97-2ccee0765fd5"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "x-amz-apigw-id",
+							"value": "DRlzSESUPHcFzKA="
+						},
+						{
+							"key": "X-Amzn-Trace-Id",
+							"value": "Root=1-6436e9ae-6b7c76695b17e7604bdefa1c;Sampled=0;lineage=7969d5e4:0|cae7b6d2:0"
+						},
+						{
+							"key": "X-Cache",
+							"value": "Miss from cloudfront"
+						},
+						{
+							"key": "Via",
+							"value": "1.1 96cdd2151853f0a63d67e9c60088d534.cloudfront.net (CloudFront)"
+						},
+						{
+							"key": "X-Amz-Cf-Pop",
+							"value": "BOG50-P2"
+						},
+						{
+							"key": "X-Amz-Cf-Id",
+							"value": "hmf6mGfj7myk0YkYIYAZBvZ7J1sInfKm6OOkZpIEpJYB0PrMUUjASA=="
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"Change password direct operation perfomed success\"\n}"
 				}
 			]
 		}

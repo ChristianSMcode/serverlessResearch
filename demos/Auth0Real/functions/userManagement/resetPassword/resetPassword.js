@@ -1,5 +1,11 @@
 const auth0 = require('auth0');
 
+const authenticationClient = new auth0.AuthenticationClient({
+    domain: process.env.DOMAIN,
+    clientId: process.env.CLIENT_ID,
+    clientSecret: process.env.CLIENT_SECRET,
+});
+
 const managementClient = new auth0.ManagementClient({
     domain: process.env.DOMAIN,
     clientId: process.env.CLIENT_ID,
@@ -11,32 +17,23 @@ exports.lambdaHandler = async (event, context) => {
     let response;
     try {
         const body = JSON.parse(event.body);
+        let email = body['email'];
 
-        let email = body['email']; // Lo manda el usuario
-        let password = body['password']; // Lo manda el usuario
-        let connection = 'resolve-organization-db'
-      
+        let userInfo = await managementClient.getUsersByEmail(email);
 
-        let input ={
-            email:email,
-            password:password,
-            connection:connection,
-            user_metadata:{
-                userType:'INDIVIDUAL'
-            }
-        };
-
-        let createUserResponse = await managementClient.createUser(input);
-
-        await managementClient.organizations.addMembers(
-            {id:process.env.RESSOLVE_ORG},
-            {members:[createUserResponse.user_id]}
+        let connection = userInfo[0].identities.find(
+            (identity) => identity.provider === 'auth0'
         );
-        
+
+        await authenticationClient.requestChangePasswordEmail({
+            email:email,
+            connection:connection.connection
+        })
+
         response = {
             'statusCode': 200,
             'body': JSON.stringify({
-                message:`User with id ${createUserResponse.user_id} was created and added to Ressolve organization successufully.`
+                message:`Change password email sent to ${email}`
             }),
             'headers':{
                 'Access-Control-Allow-Origin':'*' 
