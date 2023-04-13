@@ -1040,6 +1040,139 @@
 					"body": "[\n    {\n        \"user_id\": \"auth0|6435dceeb7add15a89b439c1\",\n        \"email\": \"claro@gmail.com\",\n        \"picture\": \"https://s.gravatar.com/avatar/ed1f64aaff7928f9c3ae5318710d5c96?s=480&r=pg&d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Fcl.png\",\n        \"name\": \"claro@gmail.com\"\n    }\n]"
 				}
 			]
+		},
+		{
+			"name": "createUserUnderOrg",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorizationtoken",
+						"value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjNmLWk1YVo5QWFMU2p3cEYzeG5ZRyJ9.eyJpc3MiOiJodHRwczovL3Jlc3NvbHZlLnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2NDM1ZGNlZWI3YWRkMTVhODliNDM5YzEiLCJhdWQiOiJodHRwczovL3Jlc3NvbHZlVGVzdEFwaS5jb20iLCJpYXQiOjE2ODEzOTkyOTYsImV4cCI6MTY4MTQ4NTY5NiwiYXpwIjoid1Baa01iZ2xDS1lNTVgySDhFTjFXc3RTc3M3MW5xZ1AiLCJndHkiOiJwYXNzd29yZCJ9.XB1arDh-CRrViN5RxyvEzrbLcIcE3NPEFYY99jQv2qm1oDvzuLErVSDYVm8K42K_Cp_Rm6pui986i5VOP2xtGO09V-iB3znHcsbtNLV86beXXjcyZRM3wXkXOJCyAuGTT6l1_hXXbOIe3neM0iSafaBhPsKiPGmDt_80orPVf05cYZYuXWSMtjk8_pnZKLDnIdtSc1rjuEh_KPfP-cgI_pCDgeBFrJLzuDJHV3Weu794QNIsYFpZbXQ5AyFnSOfZkpVTblQryRUe4qTpPvokYTuJMxJEsma0q7upvMZqSxnFItJEMgvxQMVY427eiPd4BXh_ZwGwUdPVDKKDnTowUg",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\":\"claro@gmail.com\",\r\n    \"userEmail\":\"clarochilduser@gmail.com\",\r\n    \"userPassword\":\"rvlPBO67.\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://7f7wzet988.execute-api.us-west-2.amazonaws.com/testing/users/createOrgUser",
+					"protocol": "https",
+					"host": [
+						"7f7wzet988",
+						"execute-api",
+						"us-west-2",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"testing",
+						"users",
+						"createOrgUser"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "createUserUnderOrg",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorizationtoken",
+								"value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjNmLWk1YVo5QWFMU2p3cEYzeG5ZRyJ9.eyJpc3MiOiJodHRwczovL3Jlc3NvbHZlLnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2NDM1ZGNlZWI3YWRkMTVhODliNDM5YzEiLCJhdWQiOiJodHRwczovL3Jlc3NvbHZlVGVzdEFwaS5jb20iLCJpYXQiOjE2ODEzOTkyOTYsImV4cCI6MTY4MTQ4NTY5NiwiYXpwIjoid1Baa01iZ2xDS1lNTVgySDhFTjFXc3RTc3M3MW5xZ1AiLCJndHkiOiJwYXNzd29yZCJ9.XB1arDh-CRrViN5RxyvEzrbLcIcE3NPEFYY99jQv2qm1oDvzuLErVSDYVm8K42K_Cp_Rm6pui986i5VOP2xtGO09V-iB3znHcsbtNLV86beXXjcyZRM3wXkXOJCyAuGTT6l1_hXXbOIe3neM0iSafaBhPsKiPGmDt_80orPVf05cYZYuXWSMtjk8_pnZKLDnIdtSc1rjuEh_KPfP-cgI_pCDgeBFrJLzuDJHV3Weu794QNIsYFpZbXQ5AyFnSOfZkpVTblQryRUe4qTpPvokYTuJMxJEsma0q7upvMZqSxnFItJEMgvxQMVY427eiPd4BXh_ZwGwUdPVDKKDnTowUg",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"claro@gmail.com\",\r\n    \"userEmail\":\"clarochilduser@gmail.com\",\r\n    \"userPassword\":\"rvlPBO67.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://7f7wzet988.execute-api.us-west-2.amazonaws.com/testing/users/createOrgUser",
+							"protocol": "https",
+							"host": [
+								"7f7wzet988",
+								"execute-api",
+								"us-west-2",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"testing",
+								"users",
+								"createOrgUser"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "77"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 13 Apr 2023 15:22:09 GMT"
+						},
+						{
+							"key": "x-amzn-RequestId",
+							"value": "e16e1583-5638-4f5a-83b6-80fc4c7cfc94"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "x-amz-apigw-id",
+							"value": "DUmk9Ex-PHcFouQ="
+						},
+						{
+							"key": "X-Amzn-Trace-Id",
+							"value": "Root=1-64381e1f-155081b162a507666c823136;Sampled=0;lineage=9eeeaf42:0"
+						},
+						{
+							"key": "X-Cache",
+							"value": "Miss from cloudfront"
+						},
+						{
+							"key": "Via",
+							"value": "1.1 46bec02ed298be04bfc16ea3a88d9452.cloudfront.net (CloudFront)"
+						},
+						{
+							"key": "X-Amz-Cf-Pop",
+							"value": "BOG50-P2"
+						},
+						{
+							"key": "X-Amz-Cf-Id",
+							"value": "FfPuwSBnng34ez3fT_oqWlO7wfkYKlNJgMcmryefUKz3P1Mw-0VzLQ=="
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"New user created under your organization (org_DiuOBInSaMCZkCC4)\"\n}"
+				}
+			]
 		}
 	]
 }
