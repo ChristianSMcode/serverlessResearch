@@ -15,6 +15,9 @@ const deleteUser = document.querySelector('.deleteUser');
 const changePass = document.querySelector('.changePass');
 const rPassEmail = document.querySelector('.rPass');
 const listUsers = document.querySelector('.listUsers');
+const createOrgUser = document.querySelector('.create-org-user-btn');
+const userCreateOrg = document.querySelector('.userCreateOrg');
+const passwordCreateOrg = document.querySelector('.passwordCreateOrg');
 //LogUser-Save token
 log.addEventListener('click',()=>{
     let params = {};
@@ -273,4 +276,33 @@ listUsers.addEventListener('click',()=>{
         resultData.innerHTML = JSON.stringify(err.data);
     })
 
+})
+//Create org user
+createOrgUser.addEventListener('click',()=>{
+    
+    let emailAdmin = localStorage.getItem('user_email');
+    let acces_token = localStorage.getItem("access_token");
+
+    let params = {};
+    let additionalParams = {
+        headers:{
+            'Authorizationtoken':'Bearer ' + acces_token
+        },
+    }
+
+    let body ={
+        "email":emailAdmin,
+        "userEmail":userCreateOrg.value,
+        "userPassword":passwordCreateOrg.value
+    };
+
+    apigClient.usersCreateOrgUserPost(params,body,additionalParams)
+    .then( (result) => {
+        console.log(result)
+        resultData.innerHTML = JSON.stringify(result.data);
+    })
+    .catch((err)=>{
+        console.log(err)
+        resultData.innerHTML = JSON.stringify(err.data);
+    })
 })
