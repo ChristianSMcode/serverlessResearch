@@ -18,6 +18,11 @@ const listUsers = document.querySelector('.listUsers');
 const createOrgUser = document.querySelector('.create-org-user-btn');
 const userCreateOrg = document.querySelector('.userCreateOrg');
 const passwordCreateOrg = document.querySelector('.passwordCreateOrg');
+const createRole = document.querySelector('.create-role-btn');
+const roleName = document.querySelector('.roleName');
+const addToRole = document.querySelector('.add-to-role-btn');
+const listRP = document.querySelector('.listRP');
+const roleDescription = document.querySelector('.roleDescription')
 //LogUser-Save token
 log.addEventListener('click',()=>{
     let params = {};
@@ -300,6 +305,83 @@ createOrgUser.addEventListener('click',()=>{
     .then( (result) => {
         console.log(result)
         resultData.innerHTML = JSON.stringify(result.data);
+    })
+    .catch((err)=>{
+        console.log(err)
+        resultData.innerHTML = JSON.stringify(err.data);
+    })
+})
+//Create a role
+createRole.addEventListener('click',()=>{
+    let emailAdmin = localStorage.getItem('user_email');
+    let acces_token = localStorage.getItem("access_token");
+
+    let params = {};
+    let additionalParams = {
+        headers:{
+            'Authorizationtoken':'Bearer ' + acces_token
+        },
+    }
+
+    let body ={
+        "email":emailAdmin,
+        "roleName":roleName.value,
+        "description":roleDescription.value
+    };
+
+    apigClient.actionsCreateRolePost(params,body,additionalParams)
+    .then( (result) => {
+        console.log(result)
+        resultData.innerHTML = JSON.stringify(result.data);
+    })
+    .catch((err)=>{
+        console.log(err)
+        resultData.innerHTML = JSON.stringify(err.data);
+    })
+})
+//List roles and available permissions to add to the role
+addToRole.addEventListener('click',()=>{
+    console.log('permisions added')
+})
+//Opens modal which list roles and permissions
+listRP.addEventListener('click',()=>{
+    let emailAdmin = localStorage.getItem('user_email');
+    let acces_token = localStorage.getItem("access_token");
+
+    let params = {};
+    let additionalParams = {
+        headers:{
+            'Authorizationtoken':'Bearer ' + acces_token
+        },
+    }
+
+    let body ={
+        "email":emailAdmin,
+    };
+  
+    apigClient.actionsListRolesPost(params,body,additionalParams)
+    .then( (result) => {
+        console.log(result)
+
+        const ul = document.querySelector(".list-group"); 
+
+        for (let i = 0; i < result.data.roles.length; i++) {
+        const li = document.createElement("li");
+        li.classList.add("list-group-item", "list-group-item-secondary");
+
+        const checkbox = document.createElement("input");
+        checkbox.classList.add("form-check-input", "me-1");
+        checkbox.setAttribute("type", "checkbox");
+        checkbox.setAttribute("value", "");
+        checkbox.setAttribute("aria-label", "...");
+
+        const text = document.createTextNode(result.data.roles[i].name);
+
+        li.appendChild(checkbox);
+        li.appendChild(text);
+
+        ul.appendChild(li); 
+        }
     })
     .catch((err)=>{
         console.log(err)

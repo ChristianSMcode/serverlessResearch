@@ -77,6 +77,48 @@ Resources:
             Method: post
             RestApiId: !Ref Auth0Test
 
+  createRole:
+    Type: AWS::Serverless::Function 
+    Properties:
+      Environment:
+        Variables:
+          DOMAIN: "ressolve.us.auth0.com"
+          CLIENT_ID: "wPZkMbglCKYMMX2H8EN1WstSss71nqgP"
+          CLIENT_SECRET: "AuNrgnLNSv5aDqz75FK6Sax7ebeldTKELDEg3GCpvroQgPScGfLYmzzYjXqTGw46"
+      CodeUri: functions/actions/createRole
+      Handler: createRole.lambdaHandler
+      Runtime: nodejs16.x
+      Architectures:
+      - x86_64
+      Events:
+        RestApiEvent:
+          Type: Api 
+          Properties:
+            Path: /actions/createRole
+            Method: post
+            RestApiId: !Ref Auth0Test
+
+  listRoles:
+    Type: AWS::Serverless::Function 
+    Properties:
+      Environment:
+        Variables:
+          DOMAIN: "ressolve.us.auth0.com"
+          CLIENT_ID: "wPZkMbglCKYMMX2H8EN1WstSss71nqgP"
+          CLIENT_SECRET: "AuNrgnLNSv5aDqz75FK6Sax7ebeldTKELDEg3GCpvroQgPScGfLYmzzYjXqTGw46"
+      CodeUri: functions/actions/listRoles
+      Handler: listRoles.lambdaHandler
+      Runtime: nodejs16.x
+      Architectures:
+      - x86_64
+      Events:
+        RestApiEvent:
+          Type: Api 
+          Properties:
+            Path: /actions/listRoles
+            Method: post
+            RestApiId: !Ref Auth0Test
+
   createOrgUser:
     Type: AWS::Serverless::Function 
     Properties:
@@ -672,4 +714,88 @@ Resources:
                 type: aws_proxy
                 uri:
                   Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${auth0.Arn}/invocations
+                httpMethod: POST
+          
+          /actions/createRole:
+            options:
+              consumes:
+              - "application/json"
+              responses:
+                "200":
+                  description: "200 response"
+                  headers:
+                    Access-Control-Allow-Origin:
+                      type: "string"
+                    Access-Control-Allow-Methods:
+                      type: "string"
+                    Access-Control-Allow-Headers:
+                      type: "string"
+              x-amazon-apigateway-integration:
+                responses:
+                  default:
+                    statusCode: "200"
+                    responseParameters:
+                      method.response.header.Access-Control-Allow-Methods: "'OPTIONS,POST'"
+                      method.response.header.Access-Control-Allow-Headers: "'Content-Type,Authorizationtoken,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,Header-Test'"
+                      method.response.header.Access-Control-Allow-Origin: "'*'"
+                requestTemplates:
+                  application/json: "{\"statusCode\": 200}"
+                passthroughBehavior: "when_no_match"
+                type: "mock"
+            post:
+              consumes:
+              - application/json
+              produces:
+              - application/json
+              responses:
+                '200':
+                  description: ok
+              security:
+                - Auth0Authorizer: []
+              x-amazon-apigateway-integration:
+                type: aws_proxy
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${createRole.Arn}/invocations
+                httpMethod: POST
+          
+          /actions/listRoles:
+            options:
+              consumes:
+              - "application/json"
+              responses:
+                "200":
+                  description: "200 response"
+                  headers:
+                    Access-Control-Allow-Origin:
+                      type: "string"
+                    Access-Control-Allow-Methods:
+                      type: "string"
+                    Access-Control-Allow-Headers:
+                      type: "string"
+              x-amazon-apigateway-integration:
+                responses:
+                  default:
+                    statusCode: "200"
+                    responseParameters:
+                      method.response.header.Access-Control-Allow-Methods: "'OPTIONS,POST'"
+                      method.response.header.Access-Control-Allow-Headers: "'Content-Type,Authorizationtoken,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,Header-Test'"
+                      method.response.header.Access-Control-Allow-Origin: "'*'"
+                requestTemplates:
+                  application/json: "{\"statusCode\": 200}"
+                passthroughBehavior: "when_no_match"
+                type: "mock"
+            post:
+              consumes:
+              - application/json
+              produces:
+              - application/json
+              responses:
+                '200':
+                  description: ok
+              security:
+                - Auth0Authorizer: []
+              x-amazon-apigateway-integration:
+                type: aws_proxy
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${listRoles.Arn}/invocations
                 httpMethod: POST

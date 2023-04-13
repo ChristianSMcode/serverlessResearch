@@ -1173,6 +1173,458 @@
 					"body": "{\n    \"message\": \"New user created under your organization (org_DiuOBInSaMCZkCC4)\"\n}"
 				}
 			]
+		},
+		{
+			"name": "testhelloscope",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://7f7wzet988.execute-api.us-west-2.amazonaws.com/testing/testhelloscope",
+					"protocol": "https",
+					"host": [
+						"7f7wzet988",
+						"execute-api",
+						"us-west-2",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"testing",
+						"testhelloscope"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "testhelloscope",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://7f7wzet988.execute-api.us-west-2.amazonaws.com/testing/testhelloscope",
+							"protocol": "https",
+							"host": [
+								"7f7wzet988",
+								"execute-api",
+								"us-west-2",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"testing",
+								"testhelloscope"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "44"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 13 Apr 2023 20:12:34 GMT"
+						},
+						{
+							"key": "x-amzn-RequestId",
+							"value": "8bd3abb6-efe6-4635-a619-d23914b41836"
+						},
+						{
+							"key": "x-amz-apigw-id",
+							"value": "DVRIAGasvHcFihw="
+						},
+						{
+							"key": "X-Cache",
+							"value": "Miss from cloudfront"
+						},
+						{
+							"key": "Via",
+							"value": "1.1 2beba14c8979ba338e534793fa2224d6.cloudfront.net (CloudFront)"
+						},
+						{
+							"key": "X-Amz-Cf-Pop",
+							"value": "BOG50-P2"
+						},
+						{
+							"key": "X-Amz-Cf-Id",
+							"value": "UbpZpXueinpyPUlS0kbsrpF8Imej2iDRsZRlrTR0-Xxua23R5gErUw=="
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"msg\": \"This comes from a mock integration\"\n}"
+				}
+			]
+		},
+		{
+			"name": "createRole",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorizationtoken",
+						"value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjNmLWk1YVo5QWFMU2p3cEYzeG5ZRyJ9.eyJpc3MiOiJodHRwczovL3Jlc3NvbHZlLnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2NDM1ZGNlZWI3YWRkMTVhODliNDM5YzEiLCJhdWQiOiJodHRwczovL3Jlc3NvbHZlVGVzdEFwaS5jb20iLCJpYXQiOjE2ODE0MjAyMDQsImV4cCI6MTY4MTUwNjYwNCwiYXpwIjoid1Baa01iZ2xDS1lNTVgySDhFTjFXc3RTc3M3MW5xZ1AiLCJndHkiOiJwYXNzd29yZCIsInBlcm1pc3Npb25zIjpbXX0.dadvVItRRhMFnWzMKeQ_B-6QU8qsK2sCHYrpXHFr_2Qjq5JjvbPI9aEyk2D5eHsziIhEMGTd4Cm_aQZ67VPhIOCRMGxWtn2wnseuXCDxsbLdOOgXpXmWP4paG6S1R6W66WyG-TkAglSxhhgU40OKh4GDAT79IHsGVAb3Sih3gFwDis3gXcpxd6FtfKKH4Chi-kz782ZFFRHTIyC3EbRY8OAZLvtPtorPQeIw_-o4j0q9UTGHzHtSBJuHhA8yUD0TV_5xElWwpQDAs5EhXfnUZTY4UDawLRlpEMjebSa-rSejqTGaYzdLPuN19-O_idr3OWhQ7S24Yv6anr7VkrDffQ",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"roleName\":\"testRoleA\",\r\n    \"description\":\"testRoleA\",\r\n    \"email\":\"claro@gmail.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://7f7wzet988.execute-api.us-west-2.amazonaws.com/testing/actions/createRole",
+					"protocol": "https",
+					"host": [
+						"7f7wzet988",
+						"execute-api",
+						"us-west-2",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"testing",
+						"actions",
+						"createRole"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "createRole",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorizationtoken",
+								"value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjNmLWk1YVo5QWFMU2p3cEYzeG5ZRyJ9.eyJpc3MiOiJodHRwczovL3Jlc3NvbHZlLnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2NDM1ZGNlZWI3YWRkMTVhODliNDM5YzEiLCJhdWQiOiJodHRwczovL3Jlc3NvbHZlVGVzdEFwaS5jb20iLCJpYXQiOjE2ODE0MjAyMDQsImV4cCI6MTY4MTUwNjYwNCwiYXpwIjoid1Baa01iZ2xDS1lNTVgySDhFTjFXc3RTc3M3MW5xZ1AiLCJndHkiOiJwYXNzd29yZCIsInBlcm1pc3Npb25zIjpbXX0.dadvVItRRhMFnWzMKeQ_B-6QU8qsK2sCHYrpXHFr_2Qjq5JjvbPI9aEyk2D5eHsziIhEMGTd4Cm_aQZ67VPhIOCRMGxWtn2wnseuXCDxsbLdOOgXpXmWP4paG6S1R6W66WyG-TkAglSxhhgU40OKh4GDAT79IHsGVAb3Sih3gFwDis3gXcpxd6FtfKKH4Chi-kz782ZFFRHTIyC3EbRY8OAZLvtPtorPQeIw_-o4j0q9UTGHzHtSBJuHhA8yUD0TV_5xElWwpQDAs5EhXfnUZTY4UDawLRlpEMjebSa-rSejqTGaYzdLPuN19-O_idr3OWhQ7S24Yv6anr7VkrDffQ",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"roleName\":\"testRoleA\",\r\n    \"description\":\"testRoleA\",\r\n    \"email\":\"claro@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://7f7wzet988.execute-api.us-west-2.amazonaws.com/testing/actions/createRole",
+							"protocol": "https",
+							"host": [
+								"7f7wzet988",
+								"execute-api",
+								"us-west-2",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"testing",
+								"actions",
+								"createRole"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "27"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 13 Apr 2023 21:10:27 GMT"
+						},
+						{
+							"key": "x-amzn-RequestId",
+							"value": "2046274e-7507-4edf-ae28-0fb2c747c6a1"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "x-amz-apigw-id",
+							"value": "DVZmLEgPPHcFbow="
+						},
+						{
+							"key": "X-Amzn-Trace-Id",
+							"value": "Root=1-64386fc0-394aab485da1504962450d28;Sampled=0;lineage=7969d5e4:0|2e6d463e:0"
+						},
+						{
+							"key": "X-Cache",
+							"value": "Miss from cloudfront"
+						},
+						{
+							"key": "Via",
+							"value": "1.1 17958ab807b2df3164d1d4004473bdc6.cloudfront.net (CloudFront)"
+						},
+						{
+							"key": "X-Amz-Cf-Pop",
+							"value": "BOG50-P2"
+						},
+						{
+							"key": "X-Amz-Cf-Id",
+							"value": "G1VVYdFyNL_PXsoFIRiuolU1B3QKJ8Ej9i3xlY5SbqOt3cYH7O-4PA=="
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"Role created.\"\n}"
+				},
+				{
+					"name": "createRole",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorizationtoken",
+								"value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjNmLWk1YVo5QWFMU2p3cEYzeG5ZRyJ9.eyJpc3MiOiJodHRwczovL3Jlc3NvbHZlLnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2NDM1ZGNlZWI3YWRkMTVhODliNDM5YzEiLCJhdWQiOiJodHRwczovL3Jlc3NvbHZlVGVzdEFwaS5jb20iLCJpYXQiOjE2ODE0MjAyMDQsImV4cCI6MTY4MTUwNjYwNCwiYXpwIjoid1Baa01iZ2xDS1lNTVgySDhFTjFXc3RTc3M3MW5xZ1AiLCJndHkiOiJwYXNzd29yZCIsInBlcm1pc3Npb25zIjpbXX0.dadvVItRRhMFnWzMKeQ_B-6QU8qsK2sCHYrpXHFr_2Qjq5JjvbPI9aEyk2D5eHsziIhEMGTd4Cm_aQZ67VPhIOCRMGxWtn2wnseuXCDxsbLdOOgXpXmWP4paG6S1R6W66WyG-TkAglSxhhgU40OKh4GDAT79IHsGVAb3Sih3gFwDis3gXcpxd6FtfKKH4Chi-kz782ZFFRHTIyC3EbRY8OAZLvtPtorPQeIw_-o4j0q9UTGHzHtSBJuHhA8yUD0TV_5xElWwpQDAs5EhXfnUZTY4UDawLRlpEMjebSa-rSejqTGaYzdLPuN19-O_idr3OWhQ7S24Yv6anr7VkrDffQ",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"roleName\":\"testRoleA\",\r\n    \"description\":\"testRoleA\",\r\n    \"email\":\"cris920sdm@hotmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://7f7wzet988.execute-api.us-west-2.amazonaws.com/testing/actions/createRole",
+							"protocol": "https",
+							"host": [
+								"7f7wzet988",
+								"execute-api",
+								"us-west-2",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"testing",
+								"actions",
+								"createRole"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "54"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 13 Apr 2023 21:11:48 GMT"
+						},
+						{
+							"key": "x-amzn-RequestId",
+							"value": "0ffbd820-a5cd-4dc2-b170-0cd054665f47"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "x-amz-apigw-id",
+							"value": "DVZzHGx7vHcFwvA="
+						},
+						{
+							"key": "X-Amzn-Trace-Id",
+							"value": "Root=1-64387013-3bdd17652b9e722006f16379;Sampled=0;lineage=2e6d463e:0"
+						},
+						{
+							"key": "X-Cache",
+							"value": "Error from cloudfront"
+						},
+						{
+							"key": "Via",
+							"value": "1.1 17958ab807b2df3164d1d4004473bdc6.cloudfront.net (CloudFront)"
+						},
+						{
+							"key": "X-Amz-Cf-Pop",
+							"value": "BOG50-P2"
+						},
+						{
+							"key": "X-Amz-Cf-Id",
+							"value": "H8YS5T__ntSJIWZ_9BkYZM0RuhAlQMMas9IZmSmREi1JqXNNsdDj7w=="
+						}
+					],
+					"cookie": [],
+					"body": "\"Only users within a custom company can create roles.\""
+				}
+			]
+		},
+		{
+			"name": "listRoles",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorizationtoken",
+						"value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjNmLWk1YVo5QWFMU2p3cEYzeG5ZRyJ9.eyJpc3MiOiJodHRwczovL3Jlc3NvbHZlLnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2NDM1ZGNlZWI3YWRkMTVhODliNDM5YzEiLCJhdWQiOiJodHRwczovL3Jlc3NvbHZlVGVzdEFwaS5jb20iLCJpYXQiOjE2ODE0MjU1NTEsImV4cCI6MTY4MTUxMTk1MSwiYXpwIjoid1Baa01iZ2xDS1lNTVgySDhFTjFXc3RTc3M3MW5xZ1AiLCJndHkiOiJwYXNzd29yZCIsInBlcm1pc3Npb25zIjpbXX0.F1xIpMSW4wPMJ0b09Kf9UJOxYo_1K5vXox34-kBOFQuzdOAvU8Wuus1umQ2Mo4ODbc_YGhMPiTxKQplnRnpavZV19h2CuBGoPLpIq7gGrQhG6BbYVZDiPwv6JmayvsUmVPC0IWvwhaoG7TySOxKwQ4cPKneS6kSthS4FXDeQSi0xhbsB10mphqP8sCHqv1yJ8xCgqAn4K_UQTVc7ZEwDQFY-c4o6fQSXNKPQGqcaqITe7VwZFuPmx9cw-V-KMD9MqwyoT7Fc7lZEbSQckvQtizI0Y-ue0qslAG71Q_QaLHJKfo-WYN4uy_OFoDE13-65A3Rr_XzduCLKZnZIXe-4xw",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\":\"claro@gmail.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://7f7wzet988.execute-api.us-west-2.amazonaws.com/testing/actions/listRoles",
+					"protocol": "https",
+					"host": [
+						"7f7wzet988",
+						"execute-api",
+						"us-west-2",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"testing",
+						"actions",
+						"listRoles"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "listRoles",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorizationtoken",
+								"value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjNmLWk1YVo5QWFMU2p3cEYzeG5ZRyJ9.eyJpc3MiOiJodHRwczovL3Jlc3NvbHZlLnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2NDM1ZGNlZWI3YWRkMTVhODliNDM5YzEiLCJhdWQiOiJodHRwczovL3Jlc3NvbHZlVGVzdEFwaS5jb20iLCJpYXQiOjE2ODE0MjU1NTEsImV4cCI6MTY4MTUxMTk1MSwiYXpwIjoid1Baa01iZ2xDS1lNTVgySDhFTjFXc3RTc3M3MW5xZ1AiLCJndHkiOiJwYXNzd29yZCIsInBlcm1pc3Npb25zIjpbXX0.F1xIpMSW4wPMJ0b09Kf9UJOxYo_1K5vXox34-kBOFQuzdOAvU8Wuus1umQ2Mo4ODbc_YGhMPiTxKQplnRnpavZV19h2CuBGoPLpIq7gGrQhG6BbYVZDiPwv6JmayvsUmVPC0IWvwhaoG7TySOxKwQ4cPKneS6kSthS4FXDeQSi0xhbsB10mphqP8sCHqv1yJ8xCgqAn4K_UQTVc7ZEwDQFY-c4o6fQSXNKPQGqcaqITe7VwZFuPmx9cw-V-KMD9MqwyoT7Fc7lZEbSQckvQtizI0Y-ue0qslAG71Q_QaLHJKfo-WYN4uy_OFoDE13-65A3Rr_XzduCLKZnZIXe-4xw",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"claro@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://7f7wzet988.execute-api.us-west-2.amazonaws.com/testing/actions/listRoles",
+							"protocol": "https",
+							"host": [
+								"7f7wzet988",
+								"execute-api",
+								"us-west-2",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"testing",
+								"actions",
+								"listRoles"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "105"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 13 Apr 2023 22:41:47 GMT"
+						},
+						{
+							"key": "x-amzn-RequestId",
+							"value": "d7c14d37-7eb1-4b6e-beda-b37abf28a535"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "x-amz-apigw-id",
+							"value": "DVm-WHntvHcFggQ="
+						},
+						{
+							"key": "X-Amzn-Trace-Id",
+							"value": "Root=1-64388528-2a3fdc7e29e53a5b7c061af5;Sampled=0;lineage=7969d5e4:0|35f7fda2:0"
+						},
+						{
+							"key": "X-Cache",
+							"value": "Miss from cloudfront"
+						},
+						{
+							"key": "Via",
+							"value": "1.1 8c0bde47bf09c95d1b9da4a65b9fcda0.cloudfront.net (CloudFront)"
+						},
+						{
+							"key": "X-Amz-Cf-Pop",
+							"value": "BOG50-P2"
+						},
+						{
+							"key": "X-Amz-Cf-Id",
+							"value": "D1C2j5r9pY7duP_--j0ko10Cor6hDLx9Bec8daTuscinO8bdWB1DoQ=="
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"roles\": [\n        {\n            \"id\": \"rol_tygrI6fAd9Sni6zA\",\n            \"name\": \"roleB-organization-claro\",\n            \"description\": \"roleB testing\"\n        }\n    ]\n}"
+				}
+			]
 		}
 	]
 }

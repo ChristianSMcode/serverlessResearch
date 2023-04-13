@@ -125,7 +125,13 @@ h4{
     text-align: center;
 }
 
-.testAction,.deleteUser,.changePass,.listUsers,.create-org-user {
+.addToRole-container-lists{
+    display: flex;
+    justify-content: space-around;
+}
+
+.testAction,.deleteUser,.changePass,.listUsers,.create-org-user,
+.createRole,.listRP{
     background-color: purple;
     color: white;
     padding: 8px 16px;

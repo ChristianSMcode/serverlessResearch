@@ -119,6 +119,78 @@ apigClientFactory.newClient = function (config) {
     };
     
     
+    apigClient.actionsCreateRolePost = function (params, body, additionalParams) {
+        if(additionalParams === undefined) { additionalParams = {}; }
+        
+        apiGateway.core.utils.assertParametersDefined(params, [], ['body']);
+        
+        var actionsCreateRolePostRequest = {
+            verb: 'post'.toUpperCase(),
+            path: pathComponent + uritemplate('/actions/createRole').expand(apiGateway.core.utils.parseParametersToObject(params, [])),
+            headers: apiGateway.core.utils.parseParametersToObject(params, []),
+            queryParams: apiGateway.core.utils.parseParametersToObject(params, []),
+            body: body
+        };
+        
+        
+        return apiGatewayClient.makeRequest(actionsCreateRolePostRequest, authType, additionalParams, config.apiKey);
+    };
+    
+    
+    apigClient.actionsCreateRoleOptions = function (params, body, additionalParams) {
+        if(additionalParams === undefined) { additionalParams = {}; }
+        
+        apiGateway.core.utils.assertParametersDefined(params, [], ['body']);
+        
+        var actionsCreateRoleOptionsRequest = {
+            verb: 'options'.toUpperCase(),
+            path: pathComponent + uritemplate('/actions/createRole').expand(apiGateway.core.utils.parseParametersToObject(params, [])),
+            headers: apiGateway.core.utils.parseParametersToObject(params, []),
+            queryParams: apiGateway.core.utils.parseParametersToObject(params, []),
+            body: body
+        };
+        
+        
+        return apiGatewayClient.makeRequest(actionsCreateRoleOptionsRequest, authType, additionalParams, config.apiKey);
+    };
+    
+    
+    apigClient.actionsListRolesPost = function (params, body, additionalParams) {
+        if(additionalParams === undefined) { additionalParams = {}; }
+        
+        apiGateway.core.utils.assertParametersDefined(params, [], ['body']);
+        
+        var actionsListRolesPostRequest = {
+            verb: 'post'.toUpperCase(),
+            path: pathComponent + uritemplate('/actions/listRoles').expand(apiGateway.core.utils.parseParametersToObject(params, [])),
+            headers: apiGateway.core.utils.parseParametersToObject(params, []),
+            queryParams: apiGateway.core.utils.parseParametersToObject(params, []),
+            body: body
+        };
+        
+        
+        return apiGatewayClient.makeRequest(actionsListRolesPostRequest, authType, additionalParams, config.apiKey);
+    };
+    
+    
+    apigClient.actionsListRolesOptions = function (params, body, additionalParams) {
+        if(additionalParams === undefined) { additionalParams = {}; }
+        
+        apiGateway.core.utils.assertParametersDefined(params, [], ['body']);
+        
+        var actionsListRolesOptionsRequest = {
+            verb: 'options'.toUpperCase(),
+            path: pathComponent + uritemplate('/actions/listRoles').expand(apiGateway.core.utils.parseParametersToObject(params, [])),
+            headers: apiGateway.core.utils.parseParametersToObject(params, []),
+            queryParams: apiGateway.core.utils.parseParametersToObject(params, []),
+            body: body
+        };
+        
+        
+        return apiGatewayClient.makeRequest(actionsListRolesOptionsRequest, authType, additionalParams, config.apiKey);
+    };
+    
+    
     apigClient.usersChangePasswordPost = function (params, body, additionalParams) {
         if(additionalParams === undefined) { additionalParams = {}; }
         
