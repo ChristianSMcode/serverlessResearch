@@ -35,10 +35,43 @@
 .rPass{
     margin-top: 10px;
 }
-.userTypeDiv{
+.userTypeDiv,.formsContainer{
     display: flex;
+    justify-content: space-around;
+}
+.buttons-container{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-width: 200px;
+    height: 200px;
+    overflow-y: scroll;
+}
+.actions-container{
+    display: flex;
+    justify-content: space-around;
+    
 }
 
+.card-container{
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+}
+
+.card{
+    margin: 5px;
+}
+
+h4{
+    display: block;
+}
+
+.resultsCont{
+    width: 400px;
+    height: 200px;
+    overflow-y: scroll;
+}
 .log:hover,
 .rPass:hover {
     background-color: darkblue;
@@ -92,7 +125,7 @@
     text-align: center;
 }
 
-.testAction,.deleteUser,.changePass,.listUsers {
+.testAction,.deleteUser,.changePass,.listUsers,.create-org-user {
     background-color: purple;
     color: white;
     padding: 8px 16px;
