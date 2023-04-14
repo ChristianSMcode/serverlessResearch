@@ -1891,6 +1891,139 @@
 					"body": "{\n    \"message\": \"Operation completed succesfully\"\n}"
 				}
 			]
+		},
+		{
+			"name": "getUserPermissions",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorizationtoken",
+						"value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjNmLWk1YVo5QWFMU2p3cEYzeG5ZRyJ9.eyJpc3MiOiJodHRwczovL3Jlc3NvbHZlLnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2NDM1ZGNlZWI3YWRkMTVhODliNDM5YzEiLCJhdWQiOiJodHRwczovL3Jlc3NvbHZlVGVzdEFwaS5jb20iLCJpYXQiOjE2ODE0OTYzMjEsImV4cCI6MTY4MTU4MjcyMSwiYXpwIjoid1Baa01iZ2xDS1lNTVgySDhFTjFXc3RTc3M3MW5xZ1AiLCJndHkiOiJwYXNzd29yZCIsInBlcm1pc3Npb25zIjpbInJlYWQ6dGVzdDIiLCJyZWFkOnRlc3RoZWxsb3Njb3BlIl19.mftQLhNR0LNXka6X6_jKObeGbRMxWHWIftlg47wmNWQoUIQhsVcNOzrcFMMIVc2pwr6aejCmpBXzMWid80-h9W-c6SvWPbO1nBad6X_lRy4Yl6czFG3IYDLBiQi5UqV-sHDViU3vuzeHRTDwSTN2XiIKzibODPU1SrTp1dX8bAWyBfJAlX5f_El_oPArf6AWmDCtry0bXUCRiNLqw3lck-N4RMt75FNICLo3IUA-mmHdJJwdQol1xIQl_4WiHb2rx3G6pgmSueGEX2uCyuEL_qQJRcOHH7SC7mkkbgIlhXCb6Apu4uLssfGePzxeq8_IibWlNa3qQK95AI18OjZIlw",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userId\":\"auth0|6435dceeb7add15a89b439c1\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://7f7wzet988.execute-api.us-west-2.amazonaws.com/testing/actions/getUserRoles",
+					"protocol": "https",
+					"host": [
+						"7f7wzet988",
+						"execute-api",
+						"us-west-2",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"testing",
+						"actions",
+						"getUserRoles"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "getUserPermissions",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorizationtoken",
+								"value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjNmLWk1YVo5QWFMU2p3cEYzeG5ZRyJ9.eyJpc3MiOiJodHRwczovL3Jlc3NvbHZlLnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2NDM1ZGNlZWI3YWRkMTVhODliNDM5YzEiLCJhdWQiOiJodHRwczovL3Jlc3NvbHZlVGVzdEFwaS5jb20iLCJpYXQiOjE2ODE0OTYzMjEsImV4cCI6MTY4MTU4MjcyMSwiYXpwIjoid1Baa01iZ2xDS1lNTVgySDhFTjFXc3RTc3M3MW5xZ1AiLCJndHkiOiJwYXNzd29yZCIsInBlcm1pc3Npb25zIjpbInJlYWQ6dGVzdDIiLCJyZWFkOnRlc3RoZWxsb3Njb3BlIl19.mftQLhNR0LNXka6X6_jKObeGbRMxWHWIftlg47wmNWQoUIQhsVcNOzrcFMMIVc2pwr6aejCmpBXzMWid80-h9W-c6SvWPbO1nBad6X_lRy4Yl6czFG3IYDLBiQi5UqV-sHDViU3vuzeHRTDwSTN2XiIKzibODPU1SrTp1dX8bAWyBfJAlX5f_El_oPArf6AWmDCtry0bXUCRiNLqw3lck-N4RMt75FNICLo3IUA-mmHdJJwdQol1xIQl_4WiHb2rx3G6pgmSueGEX2uCyuEL_qQJRcOHH7SC7mkkbgIlhXCb6Apu4uLssfGePzxeq8_IibWlNa3qQK95AI18OjZIlw",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userId\":\"auth0|6435dceeb7add15a89b439c1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://7f7wzet988.execute-api.us-west-2.amazonaws.com/testing/actions/getUserRoles",
+							"protocol": "https",
+							"host": [
+								"7f7wzet988",
+								"execute-api",
+								"us-west-2",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"testing",
+								"actions",
+								"getUserRoles"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "698"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 14 Apr 2023 18:20:06 GMT"
+						},
+						{
+							"key": "x-amzn-RequestId",
+							"value": "790f3032-2a22-49e7-867b-5f61472c5907"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "x-amz-apigw-id",
+							"value": "DYTleEU4PHcFYoA="
+						},
+						{
+							"key": "X-Amzn-Trace-Id",
+							"value": "Root=1-64399955-4ee6e1601bf1b4f2730de046;Sampled=0;lineage=cbfe6aa9:0"
+						},
+						{
+							"key": "X-Cache",
+							"value": "Miss from cloudfront"
+						},
+						{
+							"key": "Via",
+							"value": "1.1 ec470201f3187d3c37dc03ab135e3ad0.cloudfront.net (CloudFront)"
+						},
+						{
+							"key": "X-Amz-Cf-Pop",
+							"value": "BOG50-P2"
+						},
+						{
+							"key": "X-Amz-Cf-Id",
+							"value": "S-T67eNC-727yXuQVS0A6uV11iCOcfhz0Sw4vz1MtUbcvzvl5nfBjA=="
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"userRoles\": [\n        {\n            \"id\": \"rol_Nz1351QYVarS1WFL\",\n            \"name\": \"roleC-organization-claro\",\n            \"description\": \"test role c\"\n        }\n    ],\n    \"userScopes\": [\n        {\n            \"permission_name\": \"read:test2\",\n            \"description\": \"permision 2 for testing\",\n            \"resource_server_name\": \"ressolveTestApi\",\n            \"resource_server_identifier\": \"https://ressolveTestApi.com\",\n            \"sources\": [\n                {\n                    \"source_id\": \"rol_Nz1351QYVarS1WFL\",\n                    \"source_name\": \"roleC-organization-claro\",\n                    \"source_type\": \"ROLE\"\n                }\n            ]\n        },\n        {\n            \"permission_name\": \"read:testhelloscope\",\n            \"description\": \"Permission for testing\",\n            \"resource_server_name\": \"ressolveTestApi\",\n            \"resource_server_identifier\": \"https://ressolveTestApi.com\",\n            \"sources\": [\n                {\n                    \"source_id\": \"rol_Nz1351QYVarS1WFL\",\n                    \"source_name\": \"roleC-organization-claro\",\n                    \"source_type\": \"ROLE\"\n                }\n            ]\n        }\n    ]\n}"
+				}
+			]
 		}
 	]
 }
