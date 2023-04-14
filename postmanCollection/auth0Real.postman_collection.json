@@ -1625,6 +1625,139 @@
 					"body": "{\n    \"roles\": [\n        {\n            \"id\": \"rol_tygrI6fAd9Sni6zA\",\n            \"name\": \"roleB-organization-claro\",\n            \"description\": \"roleB testing\"\n        }\n    ]\n}"
 				}
 			]
+		},
+		{
+			"name": "listScopesApi",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorizationtoken",
+						"value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjNmLWk1YVo5QWFMU2p3cEYzeG5ZRyJ9.eyJpc3MiOiJodHRwczovL3Jlc3NvbHZlLnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2NDM1ZGNlZWI3YWRkMTVhODliNDM5YzEiLCJhdWQiOiJodHRwczovL3Jlc3NvbHZlVGVzdEFwaS5jb20iLCJpYXQiOjE2ODE0ODA5OTIsImV4cCI6MTY4MTU2NzM5MiwiYXpwIjoid1Baa01iZ2xDS1lNTVgySDhFTjFXc3RTc3M3MW5xZ1AiLCJndHkiOiJwYXNzd29yZCIsInBlcm1pc3Npb25zIjpbXX0.dLGi1IC3WmykDeWWzT6VzVaVd2jUJh9vLATsm6c6q18olCe1X97Z7TKHoDMhl65qzxVQCb59dIn-npZVwqpYWctSErp9m8pkjwh6N4tfAEe7fLChfeYqFpAhwGLUPlW7POgFpJc_AGrTID-M6bwuaXYwkEHj3mWcF5gD98PuLX8_LUKhBuSfAsTDxzGeuh9dDYHjNIC6kKJiEFGtRPv9UNV2wxn6drilPitgyZ51DbqWd_RZ-5q-tmKV5GtwdgU3MmfR6ec-D94VtwcZ9QcXtN64tKiw6IJNtPMjFS1Ebjl9i_09VIoaprl9ksi8nhoTER4wtOqB6ZbeyTOgee2NHw",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\":\"claro@gmail.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://7f7wzet988.execute-api.us-west-2.amazonaws.com/testing/actions/listScopesApi",
+					"protocol": "https",
+					"host": [
+						"7f7wzet988",
+						"execute-api",
+						"us-west-2",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"testing",
+						"actions",
+						"listScopesApi"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "listScopesApi",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorizationtoken",
+								"value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjNmLWk1YVo5QWFMU2p3cEYzeG5ZRyJ9.eyJpc3MiOiJodHRwczovL3Jlc3NvbHZlLnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2NDM1ZGNlZWI3YWRkMTVhODliNDM5YzEiLCJhdWQiOiJodHRwczovL3Jlc3NvbHZlVGVzdEFwaS5jb20iLCJpYXQiOjE2ODE0ODA5OTIsImV4cCI6MTY4MTU2NzM5MiwiYXpwIjoid1Baa01iZ2xDS1lNTVgySDhFTjFXc3RTc3M3MW5xZ1AiLCJndHkiOiJwYXNzd29yZCIsInBlcm1pc3Npb25zIjpbXX0.dLGi1IC3WmykDeWWzT6VzVaVd2jUJh9vLATsm6c6q18olCe1X97Z7TKHoDMhl65qzxVQCb59dIn-npZVwqpYWctSErp9m8pkjwh6N4tfAEe7fLChfeYqFpAhwGLUPlW7POgFpJc_AGrTID-M6bwuaXYwkEHj3mWcF5gD98PuLX8_LUKhBuSfAsTDxzGeuh9dDYHjNIC6kKJiEFGtRPv9UNV2wxn6drilPitgyZ51DbqWd_RZ-5q-tmKV5GtwdgU3MmfR6ec-D94VtwcZ9QcXtN64tKiw6IJNtPMjFS1Ebjl9i_09VIoaprl9ksi8nhoTER4wtOqB6ZbeyTOgee2NHw",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"claro@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://7f7wzet988.execute-api.us-west-2.amazonaws.com/testing/actions/listScopesApi",
+							"protocol": "https",
+							"host": [
+								"7f7wzet988",
+								"execute-api",
+								"us-west-2",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"testing",
+								"actions",
+								"listScopesApi"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "83"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 14 Apr 2023 14:04:38 GMT"
+						},
+						{
+							"key": "x-amzn-RequestId",
+							"value": "8c339155-11c1-4a72-be83-0ce04050a0d1"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "x-amz-apigw-id",
+							"value": "DXuKDFiVvHcF_XQ="
+						},
+						{
+							"key": "X-Amzn-Trace-Id",
+							"value": "Root=1-64395d73-77f14d7a7010b82558cb0427;Sampled=0;lineage=7969d5e4:0|2154b3cc:0"
+						},
+						{
+							"key": "X-Cache",
+							"value": "Miss from cloudfront"
+						},
+						{
+							"key": "Via",
+							"value": "1.1 ec470201f3187d3c37dc03ab135e3ad0.cloudfront.net (CloudFront)"
+						},
+						{
+							"key": "X-Amz-Cf-Pop",
+							"value": "BOG50-P2"
+						},
+						{
+							"key": "X-Amz-Cf-Id",
+							"value": "90V77WuBxDhHNq0X6mZF7fd-AX3VEhDDIqInwrIhIVzF2ep4rrCdfw=="
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"scopes\": [\n        {\n            \"value\": \"read:testhelloscope\",\n            \"description\": \"Permission for testing\"\n        }\n    ]\n}"
+				}
+			]
 		}
 	]
 }

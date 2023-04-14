@@ -191,6 +191,42 @@ apigClientFactory.newClient = function (config) {
     };
     
     
+    apigClient.actionsListScopesApiPost = function (params, body, additionalParams) {
+        if(additionalParams === undefined) { additionalParams = {}; }
+        
+        apiGateway.core.utils.assertParametersDefined(params, [], ['body']);
+        
+        var actionsListScopesApiPostRequest = {
+            verb: 'post'.toUpperCase(),
+            path: pathComponent + uritemplate('/actions/listScopesApi').expand(apiGateway.core.utils.parseParametersToObject(params, [])),
+            headers: apiGateway.core.utils.parseParametersToObject(params, []),
+            queryParams: apiGateway.core.utils.parseParametersToObject(params, []),
+            body: body
+        };
+        
+        
+        return apiGatewayClient.makeRequest(actionsListScopesApiPostRequest, authType, additionalParams, config.apiKey);
+    };
+    
+    
+    apigClient.actionsListScopesApiOptions = function (params, body, additionalParams) {
+        if(additionalParams === undefined) { additionalParams = {}; }
+        
+        apiGateway.core.utils.assertParametersDefined(params, [], ['body']);
+        
+        var actionsListScopesApiOptionsRequest = {
+            verb: 'options'.toUpperCase(),
+            path: pathComponent + uritemplate('/actions/listScopesApi').expand(apiGateway.core.utils.parseParametersToObject(params, [])),
+            headers: apiGateway.core.utils.parseParametersToObject(params, []),
+            queryParams: apiGateway.core.utils.parseParametersToObject(params, []),
+            body: body
+        };
+        
+        
+        return apiGatewayClient.makeRequest(actionsListScopesApiOptionsRequest, authType, additionalParams, config.apiKey);
+    };
+    
+    
     apigClient.usersChangePasswordPost = function (params, body, additionalParams) {
         if(additionalParams === undefined) { additionalParams = {}; }
         

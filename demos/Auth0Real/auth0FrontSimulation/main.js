@@ -23,6 +23,7 @@ const roleName = document.querySelector('.roleName');
 const addToRole = document.querySelector('.add-to-role-btn');
 const listRP = document.querySelector('.listRP');
 const roleDescription = document.querySelector('.roleDescription')
+console.log(apigClient)
 //LogUser-Save token
 log.addEventListener('click',()=>{
     let params = {};
@@ -363,9 +364,41 @@ listRP.addEventListener('click',()=>{
     .then( (result) => {
         console.log(result)
 
-        const ul = document.querySelector(".list-group"); 
-
+        const ul = document.querySelector(".rolesUl"); 
+        ul.innerHTML = "";
+        
         for (let i = 0; i < result.data.roles.length; i++) {
+          const li = document.createElement("li");
+          li.classList.add("list-group-item", "list-group-item-secondary");
+        
+          const radio = document.createElement("input");
+          radio.classList.add("form-check-input", "me-1");
+          radio.setAttribute("type", "radio");
+          radio.setAttribute("name", "roles"); // set the same name for all radio inputs to create a group
+          radio.setAttribute("value", "");
+          radio.setAttribute("aria-label", "...");
+        
+          const text = document.createTextNode(result.data.roles[i].name);
+        
+          li.appendChild(radio);
+          li.appendChild(text);
+        
+          ul.appendChild(li); 
+        }
+    })
+    .catch((err)=>{
+        console.log(err)
+        resultData.innerHTML = JSON.stringify(err.data);
+    })
+
+    apigClient.actionsListScopesApiPost(params,body,additionalParams)
+    .then( (result) => {
+        console.log(result)
+
+        const ul = document.querySelector(".scopesUl"); 
+        ul.innerHTML = ""
+
+        for (let i = 0; i < result.data.scopes.length; i++) {
         const li = document.createElement("li");
         li.classList.add("list-group-item", "list-group-item-secondary");
 
@@ -375,7 +408,7 @@ listRP.addEventListener('click',()=>{
         checkbox.setAttribute("value", "");
         checkbox.setAttribute("aria-label", "...");
 
-        const text = document.createTextNode(result.data.roles[i].name);
+        const text = document.createTextNode(result.data.scopes[i].value);
 
         li.appendChild(checkbox);
         li.appendChild(text);

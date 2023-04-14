@@ -126,6 +126,30 @@ Resources:
               Ref: Auth0Test
     Metadata:
       SamResourceId: listRoles
+  listScopesApi:
+    Type: AWS::Serverless::Function
+    Properties:
+      Environment:
+        Variables:
+          DOMAIN: ressolve.us.auth0.com
+          CLIENT_ID: wPZkMbglCKYMMX2H8EN1WstSss71nqgP
+          CLIENT_SECRET: AuNrgnLNSv5aDqz75FK6Sax7ebeldTKELDEg3GCpvroQgPScGfLYmzzYjXqTGw46
+          AUDIENCE: https://ressolveTestApi.com
+      CodeUri: s3://ressolve-research-gateway-auth0real/10b6a06fb6adc459cd7da9b374ab16e0
+      Handler: listScopesApi.lambdaHandler
+      Runtime: nodejs16.x
+      Architectures:
+      - x86_64
+      Events:
+        RestApiEvent:
+          Type: Api
+          Properties:
+            Path: /actions/listScopesApi
+            Method: post
+            RestApiId:
+              Ref: Auth0Test
+    Metadata:
+      SamResourceId: listScopesApi
   createOrgUser:
     Type: AWS::Serverless::Function
     Properties:
@@ -809,6 +833,47 @@ Resources:
                 type: aws_proxy
                 uri:
                   Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${listRoles.Arn}/invocations
+                httpMethod: POST
+          /actions/listScopesApi:
+            options:
+              consumes:
+              - application/json
+              responses:
+                '200':
+                  description: 200 response
+                  headers:
+                    Access-Control-Allow-Origin:
+                      type: string
+                    Access-Control-Allow-Methods:
+                      type: string
+                    Access-Control-Allow-Headers:
+                      type: string
+              x-amazon-apigateway-integration:
+                responses:
+                  default:
+                    statusCode: '200'
+                    responseParameters:
+                      method.response.header.Access-Control-Allow-Methods: '''OPTIONS,POST'''
+                      method.response.header.Access-Control-Allow-Headers: '''Content-Type,Authorizationtoken,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,Header-Test'''
+                      method.response.header.Access-Control-Allow-Origin: '''*'''
+                requestTemplates:
+                  application/json: '{"statusCode": 200}'
+                passthroughBehavior: when_no_match
+                type: mock
+            post:
+              consumes:
+              - application/json
+              produces:
+              - application/json
+              responses:
+                '200':
+                  description: ok
+              security:
+              - Auth0Authorizer: []
+              x-amazon-apigateway-integration:
+                type: aws_proxy
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${listScopesApi.Arn}/invocations
                 httpMethod: POST
     Metadata:
       SamResourceId: Auth0Test
