@@ -340,9 +340,50 @@ createRole.addEventListener('click',()=>{
         resultData.innerHTML = JSON.stringify(err.data);
     })
 })
-//List roles and available permissions to add to the role
+//Assigs preExisting permisions to preExistingRole
 addToRole.addEventListener('click',()=>{
-    console.log('permisions added')
+    let closeButton = document.querySelector('.close-role-add');
+    let scopesUl = document.querySelector('.scopesUl');
+    let selectedScopesNodes = scopesUl.querySelectorAll('input[name="scopes"]:checked');
+    let rolesUl = document.querySelector('.rolesUl');
+    let selectedRole = rolesUl.querySelector('input[name="roles"]:checked').value;
+    selectedScopesNodes=Array.from(selectedScopesNodes);
+    //['read:testhelloscope', 'read:test2']
+    let selectedScopes = selectedScopesNodes.map((node) => node.value)
+    
+
+    let emailAdmin = localStorage.getItem('user_email');
+    let acces_token = localStorage.getItem("access_token");
+
+    let params = {};
+    let additionalParams = {
+        headers:{
+            'Authorizationtoken':'Bearer ' + acces_token
+        },
+    }
+
+    let body ={
+        "email":emailAdmin,
+        "rolId":selectedRole,
+        "permissions":selectedScopes
+    };
+
+
+    apigClient.actionsAddScopesToRolePost(params,body,additionalParams)
+    .then( (result) => {
+        console.log(result)
+        resultData.innerHTML = JSON.stringify(result.data);
+        closeButton.click()
+    })
+    .catch((err)=>{
+        console.log(err)
+        resultData.innerHTML = JSON.stringify(err.data);
+        closeButton.click()
+    })
+    
+    
+    
+    
 })
 //Opens modal which list roles and permissions
 listRP.addEventListener('click',()=>{
@@ -375,7 +416,7 @@ listRP.addEventListener('click',()=>{
           radio.classList.add("form-check-input", "me-1");
           radio.setAttribute("type", "radio");
           radio.setAttribute("name", "roles"); // set the same name for all radio inputs to create a group
-          radio.setAttribute("value", "");
+          radio.setAttribute("value", result.data.roles[i].id);
           radio.setAttribute("aria-label", "...");
         
           const text = document.createTextNode(result.data.roles[i].name);
@@ -405,7 +446,8 @@ listRP.addEventListener('click',()=>{
         const checkbox = document.createElement("input");
         checkbox.classList.add("form-check-input", "me-1");
         checkbox.setAttribute("type", "checkbox");
-        checkbox.setAttribute("value", "");
+        checkbox.setAttribute("name","scopes")
+        checkbox.setAttribute("value", result.data.scopes[i].value);
         checkbox.setAttribute("aria-label", "...");
 
         const text = document.createTextNode(result.data.scopes[i].value);
@@ -421,3 +463,4 @@ listRP.addEventListener('click',()=>{
         resultData.innerHTML = JSON.stringify(err.data);
     })
 })
+

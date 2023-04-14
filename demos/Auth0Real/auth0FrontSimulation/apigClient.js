@@ -83,6 +83,42 @@ apigClientFactory.newClient = function (config) {
     
     
     
+    apigClient.actionsAddScopesToRolePost = function (params, body, additionalParams) {
+        if(additionalParams === undefined) { additionalParams = {}; }
+        
+        apiGateway.core.utils.assertParametersDefined(params, [], ['body']);
+        
+        var actionsAddScopesToRolePostRequest = {
+            verb: 'post'.toUpperCase(),
+            path: pathComponent + uritemplate('/actions/addScopesToRole').expand(apiGateway.core.utils.parseParametersToObject(params, [])),
+            headers: apiGateway.core.utils.parseParametersToObject(params, []),
+            queryParams: apiGateway.core.utils.parseParametersToObject(params, []),
+            body: body
+        };
+        
+        
+        return apiGatewayClient.makeRequest(actionsAddScopesToRolePostRequest, authType, additionalParams, config.apiKey);
+    };
+    
+    
+    apigClient.actionsAddScopesToRoleOptions = function (params, body, additionalParams) {
+        if(additionalParams === undefined) { additionalParams = {}; }
+        
+        apiGateway.core.utils.assertParametersDefined(params, [], ['body']);
+        
+        var actionsAddScopesToRoleOptionsRequest = {
+            verb: 'options'.toUpperCase(),
+            path: pathComponent + uritemplate('/actions/addScopesToRole').expand(apiGateway.core.utils.parseParametersToObject(params, [])),
+            headers: apiGateway.core.utils.parseParametersToObject(params, []),
+            queryParams: apiGateway.core.utils.parseParametersToObject(params, []),
+            body: body
+        };
+        
+        
+        return apiGatewayClient.makeRequest(actionsAddScopesToRoleOptionsRequest, authType, additionalParams, config.apiKey);
+    };
+    
+    
     apigClient.actionsAuth0Get = function (params, body, additionalParams) {
         if(additionalParams === undefined) { additionalParams = {}; }
         

@@ -141,6 +141,28 @@ Resources:
             Method: post
             RestApiId: !Ref Auth0Test
 
+  addScopesToRole:
+    Type: AWS::Serverless::Function 
+    Properties:
+      Environment:
+        Variables:
+          DOMAIN: "ressolve.us.auth0.com"
+          CLIENT_ID: "wPZkMbglCKYMMX2H8EN1WstSss71nqgP"
+          CLIENT_SECRET: "AuNrgnLNSv5aDqz75FK6Sax7ebeldTKELDEg3GCpvroQgPScGfLYmzzYjXqTGw46"
+          AUDIENCE: "https://ressolveTestApi.com"
+      CodeUri: functions/actions/addScopesToRole
+      Handler: addScopesToRole.lambdaHandler
+      Runtime: nodejs16.x
+      Architectures:
+      - x86_64
+      Events:
+        RestApiEvent:
+          Type: Api 
+          Properties:
+            Path: /actions/addScopesToRole
+            Method: post
+            RestApiId: !Ref Auth0Test
+
   createOrgUser:
     Type: AWS::Serverless::Function 
     Properties:
@@ -345,14 +367,14 @@ Resources:
               gatewayresponse.header.Access-Control-Allow-Headers: "'Content-Type,Authorizationtoken,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
           DEFAULT_4XX:
             responseTemplates:
-              application/json: '{"message": "400 error"}'
+              application/json: '{"message": "$context.error.message"}'
             responseParameters:
               gatewayresponse.header.Access-Control-Allow-Methods: "'GET,OPTIONS'"
               gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
               gatewayresponse.header.Access-Control-Allow-Headers: "'Content-Type,Authorizationtoken,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
           DEFAULT_5XX:
             responseTemplates:
-              application/json: '{"message": "500 error"}'
+              application/json: '{"message": "$context.error.message"}'
             responseParameters:
               gatewayresponse.header.Access-Control-Allow-Methods: "'GET,OPTIONS'"
               gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
@@ -862,4 +884,46 @@ Resources:
                 type: aws_proxy
                 uri:
                   Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${listScopesApi.Arn}/invocations
+                httpMethod: POST
+          
+          /actions/addScopesToRole:
+            options:
+              consumes:
+              - "application/json"
+              responses:
+                "200":
+                  description: "200 response"
+                  headers:
+                    Access-Control-Allow-Origin:
+                      type: "string"
+                    Access-Control-Allow-Methods:
+                      type: "string"
+                    Access-Control-Allow-Headers:
+                      type: "string"
+              x-amazon-apigateway-integration:
+                responses:
+                  default:
+                    statusCode: "200"
+                    responseParameters:
+                      method.response.header.Access-Control-Allow-Methods: "'OPTIONS,POST'"
+                      method.response.header.Access-Control-Allow-Headers: "'Content-Type,Authorizationtoken,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,Header-Test'"
+                      method.response.header.Access-Control-Allow-Origin: "'*'"
+                requestTemplates:
+                  application/json: "{\"statusCode\": 200}"
+                passthroughBehavior: "when_no_match"
+                type: "mock"
+            post:
+              consumes:
+              - application/json
+              produces:
+              - application/json
+              responses:
+                '200':
+                  description: ok
+              security:
+                - Auth0Authorizer: []
+              x-amazon-apigateway-integration:
+                type: aws_proxy
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${addScopesToRole.Arn}/invocations
                 httpMethod: POST

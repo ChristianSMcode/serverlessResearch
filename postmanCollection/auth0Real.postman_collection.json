@@ -1758,6 +1758,139 @@
 					"body": "{\n    \"scopes\": [\n        {\n            \"value\": \"read:testhelloscope\",\n            \"description\": \"Permission for testing\"\n        }\n    ]\n}"
 				}
 			]
+		},
+		{
+			"name": "addPermissionsToRole",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorizationtoken",
+						"value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjNmLWk1YVo5QWFMU2p3cEYzeG5ZRyJ9.eyJpc3MiOiJodHRwczovL3Jlc3NvbHZlLnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2NDM1ZGNlZWI3YWRkMTVhODliNDM5YzEiLCJhdWQiOiJodHRwczovL3Jlc3NvbHZlVGVzdEFwaS5jb20iLCJpYXQiOjE2ODE0ODUxMjAsImV4cCI6MTY4MTU3MTUyMCwiYXpwIjoid1Baa01iZ2xDS1lNTVgySDhFTjFXc3RTc3M3MW5xZ1AiLCJndHkiOiJwYXNzd29yZCIsInBlcm1pc3Npb25zIjpbXX0.XIj4547yI40ycT2biQzgaPQcVKRqYXiJ8KfuX1PzZUSCdCyZ5e0Gj53TFNJ2j8TByRVNqtvJEf8HoKQEi2ji5WLfABV6Qm0A_HQ_La1qrKm3-q33b_2d-NSzTYrZ_vCMPBvjyENCHqNjtAq-msbOq0p52y3AZcfJyULrFv19EJD0XBpD5hYxtiZUi_BaWc1IygjTHgIYnNMcd5-YLWlOLerAp8Ld9GykPMzv_j5km4xBO84-9HQl5jjuqOJbiNSQ6h0vAGrJgxAf-Ocdu8cxVCNj40g8prnfENQCkYCWc1mDgOkV969v0yI-Zg4DipSnncVzkWX2GYmOO-tWa_uACQ",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\":\"claro@gmail.com\",\r\n    \"rolId\":\"rol_Nz1351QYVarS1WFL\",\r\n    \"permissions\":[\"read:testhelloscope\", \"read:test2\"]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://7f7wzet988.execute-api.us-west-2.amazonaws.com/testing/actions/addScopesToRole",
+					"protocol": "https",
+					"host": [
+						"7f7wzet988",
+						"execute-api",
+						"us-west-2",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"testing",
+						"actions",
+						"addScopesToRole"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "addPermissionsToRole",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorizationtoken",
+								"value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjNmLWk1YVo5QWFMU2p3cEYzeG5ZRyJ9.eyJpc3MiOiJodHRwczovL3Jlc3NvbHZlLnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2NDM1ZGNlZWI3YWRkMTVhODliNDM5YzEiLCJhdWQiOiJodHRwczovL3Jlc3NvbHZlVGVzdEFwaS5jb20iLCJpYXQiOjE2ODE0ODUxMjAsImV4cCI6MTY4MTU3MTUyMCwiYXpwIjoid1Baa01iZ2xDS1lNTVgySDhFTjFXc3RTc3M3MW5xZ1AiLCJndHkiOiJwYXNzd29yZCIsInBlcm1pc3Npb25zIjpbXX0.XIj4547yI40ycT2biQzgaPQcVKRqYXiJ8KfuX1PzZUSCdCyZ5e0Gj53TFNJ2j8TByRVNqtvJEf8HoKQEi2ji5WLfABV6Qm0A_HQ_La1qrKm3-q33b_2d-NSzTYrZ_vCMPBvjyENCHqNjtAq-msbOq0p52y3AZcfJyULrFv19EJD0XBpD5hYxtiZUi_BaWc1IygjTHgIYnNMcd5-YLWlOLerAp8Ld9GykPMzv_j5km4xBO84-9HQl5jjuqOJbiNSQ6h0vAGrJgxAf-Ocdu8cxVCNj40g8prnfENQCkYCWc1mDgOkV969v0yI-Zg4DipSnncVzkWX2GYmOO-tWa_uACQ",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"claro@gmail.com\",\r\n    \"rolId\":\"rol_Nz1351QYVarS1WFL\",\r\n    \"permissions\":[\"read:testhelloscope\", \"read:test2\"]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://7f7wzet988.execute-api.us-west-2.amazonaws.com/testing/actions/addScopesToRole",
+							"protocol": "https",
+							"host": [
+								"7f7wzet988",
+								"execute-api",
+								"us-west-2",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"testing",
+								"actions",
+								"addScopesToRole"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "45"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 14 Apr 2023 15:27:04 GMT"
+						},
+						{
+							"key": "x-amzn-RequestId",
+							"value": "f02c2df3-1f6e-4bf2-af0c-c145673ac140"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "x-amz-apigw-id",
+							"value": "DX6PJHgQvHcF9pw="
+						},
+						{
+							"key": "X-Amzn-Trace-Id",
+							"value": "Root=1-643970c7-5b3b7375404fc32a5ae700ee;Sampled=0;lineage=b322531d:0"
+						},
+						{
+							"key": "X-Cache",
+							"value": "Miss from cloudfront"
+						},
+						{
+							"key": "Via",
+							"value": "1.1 975617464234925f8d09b6969ec6238c.cloudfront.net (CloudFront)"
+						},
+						{
+							"key": "X-Amz-Cf-Pop",
+							"value": "BOG50-P2"
+						},
+						{
+							"key": "X-Amz-Cf-Id",
+							"value": "LObfR17In7a1qrdZ6xCAvPgOqdX_D3rKMAAbjwDoXNmkXCiX57ZZLg=="
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"Operation completed succesfully\"\n}"
+				}
+			]
 		}
 	]
 }
